@@ -21,13 +21,13 @@ public:
 
 private:
 	//フェードインをしてよい
-    bool m_canFadeIn;
+    bool m_canFadeIn = false;
 
 	//ステージ数
-	int m_stageCount;
+	int m_stageCount = 0;
 
 	//現在選択しているステージ
-	int m_selectStage;
+	int m_selectStage = 0;
 
 	//フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;

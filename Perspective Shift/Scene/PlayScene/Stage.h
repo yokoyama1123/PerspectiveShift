@@ -46,6 +46,9 @@ namespace Yokoyama
         //ステージ外枠の当たり判定を返す関数
         std::vector<Yokoyama::WallData> GetWallData();
 
+        //セルの場所を変更する
+        void SetCellPosition(int cellnumber, DirectX::SimpleMath::Vector3 stagePosition);
+
     private:
         //----- 定数 -----//
         // ステージの大きさ(n倍)
@@ -81,6 +84,8 @@ namespace Yokoyama
         //----- メンバー関数 -----//
         //ステージデータを登録
         void RegistingStageData(const GameContext& gameContext);
+        //当たり判定の登録
+        void SetBoundingBox();
         //----------//
 	};
 }

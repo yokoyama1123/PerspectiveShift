@@ -11,6 +11,11 @@
 #include"Scene/PlayScene/PlayScene.h"
 #include"Scene/ResultScene/ResultScene.h"
 
+//imgui
+#include"imgui/imgui.h"
+#include"imgui/imgui_impl_win32.h"
+#include"imgui/imgui_impl_dx11.h"
+
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
@@ -27,6 +32,13 @@ Game::Game() noexcept(false)
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
     m_deviceResources->RegisterDeviceNotify(this);
+}
+
+Game::~Game()
+{
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 // Initialize the Direct3D resources required to run.
@@ -47,8 +59,32 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     */
 
-    // DirectX3Dのデバイスを取得する
     auto device = m_deviceResources->GetD3DDevice();
+    auto context = m_deviceResources->GetD3DDeviceContext();
+
+    //-----imguiの初期化-----//
+    IMGUI_CHECKVERSION();
+
+    //コンテキストの作成
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+
+    //Win32用の初期化
+    ImGui_ImplWin32_Init(window);
+
+    //DirectX11用の初期化
+    ImGui_ImplDX11_Init(device, context);
+
+    //フォントの設定
+    io.Fonts->AddFontFromFileTTF
+    (
+        "C:/Windows/Fonts/meiryo.ttc",
+        IMGUI_FONTSIZE,
+        nullptr,
+        io.Fonts->GetGlyphRangesJapanese()
+    );
+
+    //----------//
 
     // エフェクトを作成する工場
     EffectFactory fx(device);
@@ -57,8 +93,6 @@ void Game::Initialize(HWND window, int width, int height)
     //プロゼクション行列の設定
     m_projection = CreateProjectionMatrix();
 
-    // DirectX3Dのデバイスコンテキストを取得する
-    auto context = m_deviceResources->GetD3DDeviceContext();
     //スプライトバッチの作成
     m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
@@ -117,9 +151,10 @@ void Game::Initialize(HWND window, int width, int height)
         *m_debugRenderer,       // <- DebugRenderer 
         m_projection,           // <- プロゼクション行列
         *m_spriteBatch,         // <-スプライトバッチ
-        0,
+        0,                      // <-選択しているステージ
+        false,                  // <-デバッグモード
         m_mPlayer.get(),        // <- プレイヤーのモデル
-        m_mStages,             // <-ステージ外枠のモデル
+        m_mStages,              // <-ステージ外枠のモデル
         m_mGoal.get()  ,        // <- ゴールのモデル
         m_textureHandle.c_str(),// <- 板ポリゴンのテクスチャハンドル
         m_titlelogo,            // <- タイトルロゴのテクスチャ
@@ -137,6 +172,10 @@ void Game::Initialize(HWND window, int width, int height)
 // Executes the basic game loop.
 void Game::Tick()
 {
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
     m_timer.Tick([&]()
     {
         Update(m_timer);
@@ -203,6 +242,10 @@ void Game::Render()
     m_sceneManager.Render(*m_gameContext);
 
     m_deviceResources->PIXEndEvent();
+
+    //imguiの描画
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
     // Show the new frame.
     m_deviceResources->Present();
@@ -279,8 +322,8 @@ void Game::OnWindowSizeChanged(int width, int height)
 void Game::GetDefaultSize(int& width, int& height) const noexcept
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    width = Yokoyama::Screen::WIDTH;
-    height = Yokoyama::Screen::HEIGHT;
+    width = static_cast<int>(Yokoyama::Screen::WIDTH);
+    height = static_cast<int>(Yokoyama::Screen::HEIGHT);
 }
 #pragma endregion
 

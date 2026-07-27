@@ -4,34 +4,34 @@
 
 namespace Yokoyama
 {
-    //æ¿ãƒãƒªã‚´ãƒ³ã‚¯ãƒ©ã‚¹
+    //”Âƒ|ƒŠƒSƒ“ƒNƒ‰ƒX
 	class Plane
 	{
     public:
-        //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+        //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
         Plane(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, DirectX::CommonStates* pStates, const wchar_t* textureHandle);
 
-        //ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+        //ƒfƒXƒgƒ‰ƒNƒ^
         ~Plane() = default;
 
-        //æ¿ãƒãƒªã‚´ãƒ³ã®æç”»
+        //”Âƒ|ƒŠƒSƒ“‚Ì•`‰æ
         void Render(ID3D11DeviceContext* pContext, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, const std::vector<Yokoyama::CellData>& cellDatas);
 
     private:
-        //-----å®šæ•°é›†-----//
+        //-----’è”W-----//
 
         //----------//
 
-        //-----ãƒ¡ãƒ³ãƒãƒ¼å¤‰æ•°-----//
-        //ã‚³ãƒ¢ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
+        //-----ƒƒ“ƒo[•Ï”-----//
+        //ƒRƒ‚ƒ“ƒXƒe[ƒg
         DirectX::CommonStates* m_pStates;
-        //ãƒ™ãƒ¼ã‚·ãƒƒã‚¯ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+        //ƒx[ƒVƒbƒNƒGƒtƒFƒNƒg
         std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
-        //ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒãƒƒãƒ
+        //ƒvƒŠƒ~ƒeƒBƒuƒoƒbƒ`
         std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
-        //ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ¼
+        //ƒeƒNƒXƒ`ƒƒ[
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-        //ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
+        //ƒŒƒCƒAƒEƒg
         Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
         //----------//
 	};

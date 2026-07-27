@@ -37,6 +37,12 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 		// スペースキーが押されたら
         if (gameContext.keyboardTracker.pressed.Space)
 		{
+			//Ctrlキーを押していたらデバッグモードON
+			if (Keyboard::Get().GetState().LeftControl)
+			{
+				gameContext.isDebugMode = true;
+			}
+
 			//フェードインしてよい
             m_canFadeIn = true;
 		}
@@ -85,7 +91,7 @@ void StageSelectScene::OnEnter(GameContext& gameContext)
     m_canFadeIn = false;
 
 	//ステージ数を記録
-	m_stageCount = gameContext.stages.size();
+	m_stageCount = static_cast<int>(gameContext.stages.size());
 
 	//現在選択しているステージ
 	m_selectStage = gameContext.selectStage;

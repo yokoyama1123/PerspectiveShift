@@ -27,7 +27,7 @@ class Game final : public DX::IDeviceNotify
 public:
 
     Game() noexcept(false);
-    ~Game() = default;
+    ~Game();
 
     Game(Game&&) = default;
     Game& operator= (Game&&) = default;
@@ -113,6 +113,9 @@ private:
 private:
     //音量(1~0)
     static constexpr float SOUND_VOLUME = 0.2f;
+
+    //imguiのフォントサイズ
+    static constexpr float IMGUI_FONTSIZE = 20.0f;
 
     // キーボードトラッカー
     DirectX::Keyboard::KeyboardStateTracker m_keyboardTracker;

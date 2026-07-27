@@ -1,5 +1,18 @@
 #include "pch.h"
 #include "PlayScene.h"
+#include"imgui/imgui.h"
+#include "Windows.h"
+#include <memory>
+#include "SimpleMath.h"
+#include "../../GameContext.h"
+#include "ImaseLib/DebugRenderer.h"
+#include "ImaseLib/SceneManager.h"
+#include "Scene/FadeInOut.h"
+#include "Camera.h"
+#include "Collision.h"
+#include "Player.h"
+#include "Stage.h"
+#include "Scene/SceneId.h"
 
 using namespace DirectX;
 
@@ -66,6 +79,18 @@ void PlayScene::Render(GameContext& gameContext)
     // ビュー行列を取得
     m_view = m_camera->GetCameraMatrix();
 
+    if (gameContext.isDebugMode)
+    {
+        for (size_t i = 0; i < m_stage->GetCellDatas().size(); i++)
+        {
+            SimpleMath::Vector3 cellposition = m_stage->GetCellDatas()[i].stagePosition;
+            std::string cellnumber = "Cell" + std::to_string(i);
+            ImGui::DragFloat3(cellnumber.c_str(), &cellposition.x);
+            m_stage->SetCellPosition(i, cellposition);
+        }
+    }
+
+
     // プレイヤーの描画
     m_player->Render(gameContext, m_view, gameContext.projection);
 
@@ -74,10 +99,6 @@ void PlayScene::Render(GameContext& gameContext)
 
     //当たり判定の描画
     m_collision->Render(gameContext, m_view, gameContext.projection);
-
-    Imase::DebugRenderer& debugRenderer = gameContext.debugRenderer;
-
-    debugRenderer.DrawText({ 0.0f, 0.0f }, L"PlayScene");
 
 	// フェードイン描画
     m_fadeInOut->FedeInRender(gameContext);

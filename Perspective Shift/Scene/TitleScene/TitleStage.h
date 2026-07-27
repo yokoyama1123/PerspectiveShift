@@ -28,7 +28,7 @@ namespace Yokoyama
 		static constexpr DirectX::SimpleMath::Vector3 EYE = { 0,18,15 };
 
 		//ターゲットの位置
-		static constexpr DirectX::SimpleMath::Vector3 TARGET = { EYE.x, EYE.y - 0.3, EYE.z - 1 };
+		static constexpr DirectX::SimpleMath::Vector3 TARGET = { EYE.x, EYE.y - 0.3f, EYE.z - 1.0f };
 
 		//現在の回転角度
 		float m_rotate;

@@ -5,6 +5,8 @@
 #include "pch.h"
 #include "Game.h"
 
+#include"imgui/imgui_impl_win32.h"
+
 using namespace DirectX;
 
 #ifdef __clang__
@@ -123,6 +125,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 // Windows procedure
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    //imguiのメッセージ処理
+    extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))return true;
+
     static bool s_in_sizemove = false;
     static bool s_in_suspend = false;
     static bool s_minimized = false;

@@ -12,7 +12,6 @@ using namespace DirectX;
 /// <param name="textureHandle">板ポリゴンのテクスチャ</param>
 Yokoyama::Stage::Stage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const GameContext& gameContext)
 {
-
     //板ポリゴンの登録
     RegistingStageData(gameContext);
 
@@ -118,6 +117,17 @@ std::vector<Yokoyama::WallData> Yokoyama::Stage::GetWallData()
 }
 
 /// <summary>
+/// セルの場所を変更する
+/// </summary>
+/// <param name="cellnumber">どのセルか</param>
+/// <param name="stagePosition">変更する場所</param>
+void Yokoyama::Stage::SetCellPosition(int cellnumber, DirectX::SimpleMath::Vector3 stagePosition)
+{
+    m_cellDatas[cellnumber].stagePosition = stagePosition;
+    SetBoundingBox();
+}
+
+/// <summary>
 /// ステージデータを登録
 /// </summary>
 void Yokoyama::Stage::RegistingStageData(const GameContext& gameContext)
@@ -127,6 +137,14 @@ void Yokoyama::Stage::RegistingStageData(const GameContext& gameContext)
     //gameContext.saveLoad->SaveData("Stage0.json", m_cellDatas);
 
     //当たり判定の登録
+    SetBoundingBox();
+}
+
+/// <summary>
+/// 当たり判定の登録
+/// </summary>
+void Yokoyama::Stage::SetBoundingBox()
+{
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
         //プレイヤーの初期位置以外に当たり判定をつける

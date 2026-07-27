@@ -13,6 +13,9 @@ void ResultScene::Update(Imase::ISceneController<SceneId>& sceneController, Game
 
 	debugRenderer.DrawText({ 0.0f, 0.0f }, L"ResultScene");
 
+    //デバッグモードをOFFにする
+    gameContext.isDebugMode = false;
+
 	// フェードアウトが終わったかつフェードインしない
     if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
     {

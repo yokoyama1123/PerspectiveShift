@@ -33,6 +33,8 @@ void Yokoyama::Collision::Update(const GameContext& gameContext)
     {
         m_showCollision = !m_showCollision;
     }
+    //デバッグモードなら常に当たり判定を表示する
+    if (gameContext.isDebugMode) m_showCollision = true;
 
     //プレイヤーの当たり判定の登録
     if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox());
@@ -122,7 +124,7 @@ void Yokoyama::Collision::PlayerBlockCollision()
     //プレイヤーから近い順にソート
     for (int i = 0; i < sortBoxes.size() - 1; i++)
     {
-        for (int j = sortBoxes.size() - 2; j >= 0; j--)
+        for (int j = static_cast<int>(sortBoxes.size() - 2); j >= 0; j--)
         {
             if (SimpleMath::Vector3::Distance(sortBoxes[j].Center, m_pPlayer->GetCenterPosition())
             > SimpleMath::Vector3::Distance(sortBoxes[j + 1].Center, m_pPlayer->GetCenterPosition()))

@@ -35,6 +35,8 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
     {
         m_isCameraMode = !m_isCameraMode;
     }
+    //デバッグモードならカメラモードである
+    if (gameContext.isDebugMode) m_isCameraMode = true;
 
     // マウスのステートを取得
     auto state = Mouse::Get().GetState();

@@ -21,7 +21,7 @@ public:
 
 private:
     // フェードインをしてよい
-    bool m_canFadeIn;
+    bool m_canFadeIn = false;
 
     // フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;

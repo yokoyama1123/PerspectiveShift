@@ -40,6 +40,9 @@ struct GameContext
     //現在選択しているステージ
     int selectStage;
 
+    //デバッグモードかどうか
+    bool isDebugMode;
+
 	//----- モデル -----//
 	//プレイヤーのモデル
     DirectX::Model* playerModel;
