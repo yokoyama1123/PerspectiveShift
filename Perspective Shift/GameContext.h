@@ -59,6 +59,8 @@ struct GameContext
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& titlelogo;
     //フェードインアウト
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& fadeInOutTexture;
+    //スタートを促す
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& startTextTexture;
     //----------//
 
     //-----サウンド-----//

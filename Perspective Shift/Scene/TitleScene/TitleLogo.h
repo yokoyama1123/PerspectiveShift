@@ -20,6 +20,9 @@ namespace Yokoyama
 		//タイトルロゴの大きさ(倍率)
 		static constexpr float SCALELOGO = 0.8f;
 
+		//スタートテキストの大きさ(倍率)
+		static constexpr float SCALESTARTTEXT = 0.5f;
+
 		// 振幅（移動幅）
 		static constexpr float AMPLITUDE = 20.0f;   
 
@@ -32,6 +35,9 @@ namespace Yokoyama
 		//タイトルロゴの初期位置
 		DirectX::SimpleMath::Vector2 LOGOPOSITION;
 
+		//スタートテキストの位置
+		DirectX::SimpleMath::Vector2 STARTTEXTPOSITION{};
+
 		
 		// 経過時間
 		float m_time = 0.0f;         
@@ -39,9 +45,14 @@ namespace Yokoyama
 		//ロゴの場所
 		DirectX::SimpleMath::Vector2 m_position;
 	
+		//スタートテキストのカラー
+		DirectX::SimpleMath::Color m_startTextColor;
+
 		//タイトルロゴのRECT
 		RECT m_titleRect;
-	
+		//スタートテキストのRECT
+		RECT m_startTextRect;
+
 		//その画像のアスペクト比を返す(RECT)
 		RECT Getrect(ID3D11ShaderResourceView* srv);
 	};

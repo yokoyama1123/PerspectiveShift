@@ -6,14 +6,22 @@ using namespace DirectX;
 Yokoyama::TitleLogo::TitleLogo(GameContext& gameContext)
 	: m_time{}
 	, m_position{}
+	, m_startTextColor{1,1,1,1}
 	, m_titleRect{}
+	, m_startTextRect{}
 {
 	//タイトルロゴのRectを設定
 	m_titleRect = Getrect(gameContext.titlelogo.Get());
+	//スタートテキストのRectを設定
+	m_startTextRect = Getrect(gameContext.startTextTexture.Get());
 
 	//画面中央にロゴを移動
 	LOGOPOSITION.x = Yokoyama::Screen::CENTER_X - m_titleRect.right / 2.0f * SCALELOGO;
 	LOGOPOSITION.y = Yokoyama::Screen::CENTER_Y - m_titleRect.bottom / 2.0f * SCALELOGO;
+
+	//スタートテキストを移動
+	STARTTEXTPOSITION.x = Yokoyama::Screen::CENTER_X - m_startTextRect.right / 2.0f * SCALESTARTTEXT;
+	STARTTEXTPOSITION.y = Yokoyama::Screen::CENTER_X - m_startTextRect.bottom / 2.0f * SCALESTARTTEXT;
 }
 
 void Yokoyama::TitleLogo::Update(float elapsedTime)
@@ -29,6 +37,8 @@ void Yokoyama::TitleLogo::Update(float elapsedTime)
 	m_position.x = LOGOPOSITION.x;
 	m_position.y = LOGOPOSITION.y + offsetY;
 
+	//スタートテキストのα値を変更
+	m_startTextColor.w = sinf(m_time * 2.0f * PI / CYCLE);
 }
 
 void Yokoyama::TitleLogo::Render(GameContext& gameContext)
@@ -49,6 +59,17 @@ void Yokoyama::TitleLogo::Render(GameContext& gameContext)
 		0.0f,
 		SimpleMath::Vector2{ 0.0f,0.0f },
 		SCALELOGO
+	);
+
+	// スタートテキストの描画
+	gameContext.spriteBatch.Draw(
+		gameContext.startTextTexture.Get(),
+		STARTTEXTPOSITION,
+		&m_startTextRect,
+		m_startTextColor,
+		0.0f,
+		SimpleMath::Vector2{ 0.0f,0.0f },
+		SCALESTARTTEXT
 	);
 
 	//描画終了
