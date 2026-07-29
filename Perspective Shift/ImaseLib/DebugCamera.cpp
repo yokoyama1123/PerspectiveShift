@@ -13,8 +13,6 @@
 using namespace DirectX;
 using namespace Imase;
 
-const float DebugCamera::DEFAULT_CAMERA_DISTANCE = 5.0f;
-
 //--------------------------------------------------------------------------------------
 // コンストラクタ
 //--------------------------------------------------------------------------------------
@@ -25,7 +23,6 @@ DebugCamera::DebugCamera(int windowWidth, int windowHeight)
 	, m_xTmp(0.0f)
 	, m_x(0)
 	, m_y(0)
-	, m_scrollWheelValue(0)
 	, m_screenW(windowWidth)
 	, m_screenH(windowHeight)
 {
@@ -66,14 +63,6 @@ void DebugCamera::Update(bool isActive)
 		Motion(state.x, state.y);
 	}
 
-	// マウスのフォイール値を取得
-	m_scrollWheelValue = state.scrollWheelValue;
-	if (m_scrollWheelValue > 0)
-	{
-		m_scrollWheelValue = 0;
-		Mouse::Get().ResetScrollWheelValue();
-	}
-
 	// ビュー行列を算出する
 	SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_yTmp);
 	SimpleMath::Matrix rotX = SimpleMath::Matrix::CreateRotationX(m_xTmp);
@@ -85,14 +74,14 @@ void DebugCamera::Update(bool isActive)
 	SimpleMath::Vector3 up(0.0f, 1.0f, 0.0f);
 
 	eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
-	eye *= (DEFAULT_CAMERA_DISTANCE - m_scrollWheelValue / 100);
+	eye *= DEFAULT_CAMERA_DISTANCE;
 	up = SimpleMath::Vector3::Transform(up, rt.Invert());
 
 	m_eye = target + eye;
 	m_target = target;
 	m_up = up;
 
-	m_view = SimpleMath::Matrix::CreateTranslation({ -15, 0, 15 }) * SimpleMath::Matrix::CreateLookAt(eye, target, up);
+	m_view = SimpleMath::Matrix::CreateLookAt(eye, target, up);
 }
 
 //--------------------------------------------------------------------------------------

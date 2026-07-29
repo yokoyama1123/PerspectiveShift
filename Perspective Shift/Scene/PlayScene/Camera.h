@@ -1,6 +1,5 @@
 #pragma once
 #include "GameContext.h"
-#include "ImaseLib/DebugCamera.h"
 
 namespace Yokoyama
 {
@@ -42,6 +41,8 @@ namespace Yokoyama
         // カメラの距離
         static constexpr float DEFAULT_CAMERA_DISTANCE = 6.0f;
 
+        static constexpr float DEBUG_CAMERA_DISTANCE = 10.0f;
+
         // カメラが移動できる角度
         static constexpr float LIMIT = 89.9f;
 
@@ -53,6 +54,24 @@ namespace Yokoyama
         //----------//
 
         //-----メンバー変数-----//
+        //
+        int m_x;
+
+        //
+        int m_y;
+
+        //
+        float m_sx;
+        
+        //
+        float m_sy;
+
+        //
+        float m_xTmp;
+
+        //
+        float m_yTmp;
+
         // 横回転
         float m_yAngle;
     
@@ -82,17 +101,17 @@ namespace Yokoyama
     
         // マウストラッカー
         DirectX::Mouse::ButtonStateTracker m_tracker;
-
-        //デバッグカメラ
-        std::unique_ptr<Imase::DebugCamera>m_debugCamera;
         //----------//
 
         //-----メンバー関数-----//
         // カメラ移動
         void Motion(float x, float y);
-
+        //カメラの移動
+        void DebugMotion(int x, int y);
         // カメラモードの時の移動
         void MoveCamera(float elapsedTime, DirectX::SimpleMath::Vector3 dir);
+        //
+        void SetWindowSize(int& windowWidth, int& windowHeight);
         //----------//
 
     };

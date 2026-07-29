@@ -22,8 +22,6 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
     // 経過時間を取得する
     float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
 
-    //カメラ更新
-    m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
 
     //ステージの更新
     m_stage->Update(gameContext, elapsedTime);
@@ -31,6 +29,9 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
 	// フェードアウトが終わったかつフェードインしない
     if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
     {
+        //カメラ更新
+        m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
+
         // カメラモードでないかつデバッグモードでないならプレイヤー更新
         if (!m_camera->GetCameraMode() && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
@@ -100,12 +101,29 @@ void PlayScene::Render(GameContext& gameContext)
 
     if (gameContext.isDebugMode)
     {
+        std::string GuiName = "Stage" + std::to_string(gameContext.selectStage) + "Data";
+        ImGui::Begin(GuiName.c_str());
         for (size_t i = 0; i < m_stage->GetCellDatas().size(); i++)
         {
             SimpleMath::Vector3 cellposition = m_stage->GetCellDatas()[i].stagePosition;
             std::string cellnumber = "Cell" + std::to_string(i);
-            ImGui::DragFloat3(cellnumber.c_str(), &cellposition.x);
-            m_stage->SetCellPosition(i, cellposition);
+            if (ImGui::TreeNodeEx(cellnumber.c_str()))
+            {
+                ImGui::DragFloat3("pos", &cellposition.x);
+                m_stage->SetCellPosition(i, cellposition);
+                if (ImGui::Button("Delete"))
+                {
+
+                }
+
+                ImGui::TreePop();
+            }
+        }
+        ImGui::End();
+
+        if (ImGui::Button("Save"))
+        {
+
         }
     }
 

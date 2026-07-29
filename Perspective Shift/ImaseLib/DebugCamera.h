@@ -15,7 +15,7 @@ namespace Imase
 	class DebugCamera
 	{
 		// カメラの距離
-		static const float DEFAULT_CAMERA_DISTANCE;
+		static constexpr float DEFAULT_CAMERA_DISTANCE = 10.0f;
 
 		// 横回転
 		float m_yAngle, m_yTmp;
@@ -30,9 +30,6 @@ namespace Imase
 
 		// 生成されたビュー行列
 		DirectX::SimpleMath::Matrix m_view;
-
-		// スクロールフォイール値
-		int m_scrollWheelValue;
 
 		// 視点
 		DirectX::SimpleMath::Vector3 m_eye;

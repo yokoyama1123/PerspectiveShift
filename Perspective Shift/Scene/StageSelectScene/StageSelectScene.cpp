@@ -42,6 +42,10 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 			{
 				gameContext.isDebugMode = true;
 			}
+			else
+			{
+				gameContext.isDebugMode = false;
+			}
 
 			//フェードインしてよい
             m_canFadeIn = true;

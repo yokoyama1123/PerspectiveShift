@@ -7,17 +7,19 @@ using namespace DirectX;
 /// コンストラクタ
 /// </summary>
 Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
-    : m_yAngle{0.0f}
+    : m_x{0}
+    , m_y{0}
+    , m_yAngle{0.0f}
     , m_xAngle{0.0f}
     , m_isCameraMode{false}
     , m_view{}
-    , m_eye{0.0f, 29.0f, 0.0f}
-    , m_target{15,0,-15}
+    , m_eye{0.0f, 0.0f, 0.0f}
+    , m_target{ 15.0f, 15.0f, -15.0f }
     , m_up{0.0f, 1.0f, 0.0f}
     , m_velocity{}
     , m_prevControlPressed{false}
 {
-    m_debugCamera = std::make_unique<Imase::DebugCamera>(windowWidth, windowHeight);
+    SetWindowSize(windowWidth, windowHeight);
 }
 
 /// <summary>
@@ -25,6 +27,12 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
 /// </summary>
 void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const DirectX::SimpleMath::Vector3& target)
 {
+    // マウスのステートを取得
+    auto state = Mouse::Get().GetState();
+
+    // トラッカー更新
+    m_tracker.Update(state);
+
     if (!gameContext.isDebugMode)
     {
         // 速度の初期化
@@ -38,11 +46,6 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
         //デバッグモードならカメラモードである
         if (gameContext.isDebugMode) m_isCameraMode = true;
 
-        // マウスのステートを取得
-        auto state = Mouse::Get().GetState();
-
-        // トラッカー更新
-        m_tracker.Update(state);
 
         // カメラの回転を更新（相対モード：state.x, state.y は移動量）
         Motion(state.x, state.y);
@@ -94,10 +97,45 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
     }
     else
     {
-        m_debugCamera->Update();
-        m_eye = m_debugCamera->GetEyePosition();
-        m_target = m_debugCamera->GetTargetPosition();
-        m_up = m_debugCamera->GetUp();
+        // 相対モードなら何もしない
+        if (state.positionMode == Mouse::MODE_RELATIVE) return;
+
+        // マウスの左ボタンが押された
+        if (m_tracker.leftButton == Mouse::ButtonStateTracker::ButtonState::PRESSED)
+        {
+            // マウスの座標を取得
+            m_x = state.x;
+            m_y = state.y;
+        }
+        else if (m_tracker.leftButton == Mouse::ButtonStateTracker::ButtonState::RELEASED)
+        {
+            // 現在の回転を保存
+            m_xAngle = m_xTmp;
+            m_yAngle = m_yTmp;
+        }
+        // マウスのボタンが押されていたらカメラを移動させる
+        if (state.leftButton)
+        {
+            DebugMotion(state.x, state.y);
+        }
+
+        // ビュー行列を算出する
+        SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_yTmp);
+        SimpleMath::Matrix rotX = SimpleMath::Matrix::CreateRotationX(m_xTmp);
+
+        SimpleMath::Matrix rt = rotY * rotX;
+
+        SimpleMath::Vector3 eye(0.0f, 0.0f, 1.0f);
+        SimpleMath::Vector3 target(15.0f, 15.0f, -15.0f);
+        SimpleMath::Vector3 up(0.0f, 1.0f, 0.0f);
+
+        eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
+        eye *= DEBUG_CAMERA_DISTANCE;
+        up = SimpleMath::Vector3::Transform(up, rt.Invert());
+
+        m_eye = target + eye;
+        m_target = target;
+        m_up = up;
     }
 }
 
@@ -155,7 +193,7 @@ void Yokoyama::Camera::SetPosition(const DirectX::SimpleMath::Vector3& position)
 /// </summary>
 void Yokoyama::Camera::SetCameraMatrix()
 {
-    if (m_eye != SimpleMath::Vector3::Zero) m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
+    if (m_eye != m_target) m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
 }
 
 /// <summary>
@@ -188,13 +226,29 @@ void Yokoyama::Camera::Motion(float x, float y)
     }
 }
 
+void Yokoyama::Camera::DebugMotion(int x, int y)
+{
+    // マウスポインタの位置のドラッグ開始位置からの変位 (相対値)
+    float dx = (x - m_x) * m_sx;
+    float dy = (y - m_y) * m_sy;
+
+    if (dx != 0.0f || dy != 0.0f)
+    {
+        // Ｙ軸の回転
+        float yAngle = dx * XM_PI;
+        // Ｘ軸の回転
+        float xAngle = dy * XM_PI;
+
+        m_xTmp = m_xAngle + xAngle;
+        m_yTmp = m_yAngle + yAngle;
+    }
+}
+
 /// <summary>
 /// カメラモード時のカメラ自身の移動
 /// </summary>
 void Yokoyama::Camera::MoveCamera(float elapsedTime, DirectX::SimpleMath::Vector3 dir)
 {
-
-
     // 横方向ベクトル
     SimpleMath::Vector3 hor = dir.Cross(SimpleMath::Vector3::UnitY);
 
@@ -218,4 +272,11 @@ void Yokoyama::Camera::MoveCamera(float elapsedTime, DirectX::SimpleMath::Vector
 
     // 位置に速度を加算
     m_eye += m_velocity * elapsedTime;
+}
+
+void Yokoyama::Camera::SetWindowSize(int& windowWidth, int& windowHeight)
+{
+    // 画面サイズに対する相対的なスケールに調整
+    m_sx = 1.0f / float(windowWidth);
+    m_sy = 1.0f / float(windowHeight);
 }
