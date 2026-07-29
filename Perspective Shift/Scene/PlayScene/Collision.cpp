@@ -34,7 +34,10 @@ void Yokoyama::Collision::Update(const GameContext& gameContext)
         m_showCollision = !m_showCollision;
     }
     //デバッグモードなら常に当たり判定を表示する
-    if (gameContext.isDebugMode) m_showCollision = true;
+    if (gameContext.isDebugMode)
+    {
+        m_showCollision = true;
+    }
 
     //プレイヤーの当たり判定の登録
     if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox());

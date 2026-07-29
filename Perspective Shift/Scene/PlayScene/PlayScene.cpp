@@ -113,11 +113,15 @@ void PlayScene::Render(GameContext& gameContext)
                 m_stage->SetCellPosition(i, cellposition);
                 if (ImGui::Button("Delete"))
                 {
-
+                    m_stage->DeleteCell(i);
                 }
 
                 ImGui::TreePop();
             }
+        }
+        if (ImGui::Button("AddCell"))
+        {
+            m_stage->AddCell();
         }
         ImGui::End();
 

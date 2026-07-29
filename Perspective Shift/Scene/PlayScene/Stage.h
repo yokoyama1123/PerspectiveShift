@@ -49,6 +49,12 @@ namespace Yokoyama
         //セルの場所を変更する
         void SetCellPosition(int cellnumber, DirectX::SimpleMath::Vector3 stagePosition);
 
+        //そのセルを削除する
+        void DeleteCell(int cellnumber);
+
+        //セルの追加
+        void AddCell();
+
     private:
         //----- 定数 -----//
         // ステージの大きさ(n倍)

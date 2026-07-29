@@ -100,21 +100,21 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
         // 相対モードなら何もしない
         if (state.positionMode == Mouse::MODE_RELATIVE) return;
 
-        // マウスの左ボタンが押された
-        if (m_tracker.leftButton == Mouse::ButtonStateTracker::ButtonState::PRESSED)
+        // マウスの右ボタンが押された
+        if (m_tracker.rightButton == Mouse::ButtonStateTracker::ButtonState::PRESSED)
         {
             // マウスの座標を取得
             m_x = state.x;
             m_y = state.y;
         }
-        else if (m_tracker.leftButton == Mouse::ButtonStateTracker::ButtonState::RELEASED)
+        else if (m_tracker.rightButton== Mouse::ButtonStateTracker::ButtonState::RELEASED)
         {
             // 現在の回転を保存
             m_xAngle = m_xTmp;
             m_yAngle = m_yTmp;
         }
-        // マウスのボタンが押されていたらカメラを移動させる
-        if (state.leftButton)
+        // マウスの右ボタンが押されていたらカメラを移動させる
+        if (state.rightButton)
         {
             DebugMotion(state.x, state.y);
         }

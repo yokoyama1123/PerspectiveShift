@@ -127,6 +127,25 @@ void Yokoyama::Stage::SetCellPosition(int cellnumber, DirectX::SimpleMath::Vecto
     SetBoundingBox();
 }
 
+void Yokoyama::Stage::DeleteCell(int cellnumber)
+{
+    auto it = m_cellDatas.begin() + cellnumber;
+    m_cellDatas.erase(it);
+}
+
+void Yokoyama::Stage::AddCell()
+{
+    m_cellDatas.push_back
+    (
+        Yokoyama::CellData
+        { 
+            {0,0,0},
+            Yokoyama::CellType::Xm,
+            BoundingBox{{CellData::SIZE / 2, CellData::SIZE / 2, -CellData::SIZE / 2}, Yokoyama::CellData::DISTANCE}
+        }
+    );
+}
+
 /// <summary>
 /// ステージデータを登録
 /// </summary>
