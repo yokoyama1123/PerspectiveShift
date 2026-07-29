@@ -11,15 +11,13 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     , m_xAngle{0.0f}
     , m_isCameraMode{false}
     , m_view{}
-    , m_eye{0.0f, 0.0f, 0.0f}
-    , m_target{}
+    , m_eye{0.0f, 29.0f, 0.0f}
+    , m_target{15,0,-15}
     , m_up{0.0f, 1.0f, 0.0f}
     , m_velocity{}
     , m_prevControlPressed{false}
 {
-    // マウスを相対モードに設定（カーソル非表示＆中央固定）
-    Mouse::Get().SetMode(Mouse::MODE_RELATIVE);
-    Mouse::Get().ResetScrollWheelValue();
+    m_debugCamera = std::make_unique<Imase::DebugCamera>(windowWidth, windowHeight);
 }
 
 /// <summary>
@@ -27,69 +25,79 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
 /// </summary>
 void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const DirectX::SimpleMath::Vector3& target)
 {
-    // 速度の初期化
-    m_velocity = SimpleMath::Vector3::Zero;
-
-    // カメラモードの切り替え（左コントロールキー）
-    if (gameContext.keyboardTracker.pressed.LeftControl)
+    if (!gameContext.isDebugMode)
     {
-        m_isCameraMode = !m_isCameraMode;
-    }
-    //デバッグモードならカメラモードである
-    if (gameContext.isDebugMode) m_isCameraMode = true;
+        // 速度の初期化
+        m_velocity = SimpleMath::Vector3::Zero;
 
-    // マウスのステートを取得
-    auto state = Mouse::Get().GetState();
+        // カメラモードの切り替え（左コントロールキー）
+        if (gameContext.keyboardTracker.pressed.LeftControl)
+        {
+            m_isCameraMode = !m_isCameraMode;
+        }
+        //デバッグモードならカメラモードである
+        if (gameContext.isDebugMode) m_isCameraMode = true;
 
-    // トラッカー更新
-    m_tracker.Update(state);
+        // マウスのステートを取得
+        auto state = Mouse::Get().GetState();
 
-    // カメラの回転を更新（相対モード：state.x, state.y は移動量）
-    Motion(state.x, state.y);
+        // トラッカー更新
+        m_tracker.Update(state);
 
-    // 回転行列を作成
-    SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_yAngle);
-    SimpleMath::Matrix rotX = SimpleMath::Matrix::CreateRotationX(m_xAngle);
-    SimpleMath::Matrix rt = rotY * rotX;
+        // カメラの回転を更新（相対モード：state.x, state.y は移動量）
+        Motion(state.x, state.y);
 
-    // 上方向ベクトルの設定
-    m_up = SimpleMath::Vector3{ 0.0f, 1.0f, 0.0f };
-    m_up = SimpleMath::Vector3::Transform(m_up, rt.Invert());
+        // 回転行列を作成
+        SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_yAngle);
+        SimpleMath::Matrix rotX = SimpleMath::Matrix::CreateRotationX(m_xAngle);
+        SimpleMath::Matrix rt = rotY * rotX;
+
+        // 上方向ベクトルの設定
+        m_up = SimpleMath::Vector3{ 0.0f, 1.0f, 0.0f };
+        m_up = SimpleMath::Vector3::Transform(m_up, rt.Invert());
 
 
-    // カメラモードによるそれぞれの動き
-    if (!m_isCameraMode)
-    {
-        // プレイヤー追従モード
-        // カメラの位置の変数作成
-        SimpleMath::Vector3 eye(0.0f, 0.0f, 1.0f);
-        // カメラの位置を設定
-        eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
-        // プレイヤーから一定の距離離す
-        eye *= DEFAULT_CAMERA_DISTANCE;
+        // カメラモードによるそれぞれの動き
+        if (!m_isCameraMode)
+        {
+            // プレイヤー追従モード
+            // カメラの位置の変数作成
+            SimpleMath::Vector3 eye(0.0f, 0.0f, 1.0f);
+            // カメラの位置を設定
+            eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
+            // プレイヤーから一定の距離離す
+            eye *= DEFAULT_CAMERA_DISTANCE;
 
-        // 最終的なカメラの位置に反映
-        m_eye = target + eye;
+            // 最終的なカメラの位置に反映
+            m_eye = target + eye;
 
-        // ターゲットの位置の記録更新
-        m_target = target;
+            // ターゲットの位置の記録更新
+            m_target = target;
+        }
+        else
+        {
+            // 自由移動モード
+            SimpleMath::Vector3 lookDir(0.0f, 0.0f, -1.0f);
+            lookDir = SimpleMath::Vector3::Transform(lookDir, rt.Invert());
+
+            // 見ている方向ベクトル（Y方向無視）
+            SimpleMath::Vector3 dir = lookDir;
+            dir.y = 0;
+            dir.Normalize();
+
+            // カメラの位置更新（WASD + Space/Shift）
+            MoveCamera(elapsedTime, dir);
+
+            // ターゲットの更新
+            m_target = m_eye + lookDir;
+        }
     }
     else
     {
-        // 自由移動モード
-        SimpleMath::Vector3 lookDir(0.0f, 0.0f, -1.0f);
-        lookDir = SimpleMath::Vector3::Transform(lookDir, rt.Invert());
-
-        // 見ている方向ベクトル（Y方向無視）
-        SimpleMath::Vector3 dir = lookDir;
-        dir.y = 0;
-        dir.Normalize();
-
-        // カメラの位置更新（WASD + Space/Shift）
-        MoveCamera(elapsedTime, dir);
-
-        // ターゲットの更新
-        m_target = m_eye + lookDir;
+        m_debugCamera->Update();
+        m_eye = m_debugCamera->GetEyePosition();
+        m_target = m_debugCamera->GetTargetPosition();
+        m_up = m_debugCamera->GetUp();
     }
 }
 
@@ -147,7 +155,7 @@ void Yokoyama::Camera::SetPosition(const DirectX::SimpleMath::Vector3& position)
 /// </summary>
 void Yokoyama::Camera::SetCameraMatrix()
 {
-    if(m_eye != SimpleMath::Vector3::Zero)m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
+    if (m_eye != SimpleMath::Vector3::Zero) m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
 }
 
 /// <summary>

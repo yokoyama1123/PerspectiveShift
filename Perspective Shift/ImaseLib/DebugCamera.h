@@ -1,7 +1,7 @@
-ï»¿//--------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 // File: DebugCamera.h
 //
-// ãƒ‡ãƒãƒƒã‚°ç”¨ã‚«ãƒ¡ãƒ©ã‚¯ãƒ©ã‚¹
+// ƒfƒoƒbƒO—pƒJƒƒ‰ƒNƒ‰ƒX
 //
 // Date: 2018.4.15
 // Author: Hideyasu Imase
@@ -11,39 +11,42 @@
 namespace Imase
 {
 
-	// ãƒ‡ãƒãƒƒã‚°ç”¨ã‚«ãƒ¡ãƒ©ã‚¯ãƒ©ã‚¹
+	// ƒfƒoƒbƒO—pƒJƒƒ‰ƒNƒ‰ƒX
 	class DebugCamera
 	{
-		// ã‚«ãƒ¡ãƒ©ã®è·é›¢
+		// ƒJƒƒ‰‚Ì‹——£
 		static const float DEFAULT_CAMERA_DISTANCE;
 
-		// æ¨ªå›è»¢
+		// ‰¡‰ñ“]
 		float m_yAngle, m_yTmp;
 
-		// ç¸¦å›è»¢
+		// c‰ñ“]
 		float m_xAngle, m_xTmp;
 
-		// ãƒ‰ãƒ©ãƒƒã‚°ã•ã‚ŒãŸåº§æ¨™
+		// ƒhƒ‰ƒbƒO‚³‚ê‚½À•W
 		int m_x, m_y;
 
 		float m_sx, m_sy;
 
-		// ç”Ÿæˆã•ã‚ŒãŸãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
+		// ¶¬‚³‚ê‚½ƒrƒ…[s—ñ
 		DirectX::SimpleMath::Matrix m_view;
 
-		// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ•ã‚©ã‚¤ãƒ¼ãƒ«å€¤
+		// ƒXƒNƒ[ƒ‹ƒtƒHƒC[ƒ‹’l
 		int m_scrollWheelValue;
 
-		// è¦–ç‚¹
+		// ‹“_
 		DirectX::SimpleMath::Vector3 m_eye;
 
-		// æ³¨è¦–ç‚¹
+		// ’‹“_
 		DirectX::SimpleMath::Vector3 m_target;
 
-		// ãƒã‚¦ã‚¹ãƒˆãƒ©ãƒƒã‚«ãƒ¼
+		//ã•ûŒüƒxƒNƒgƒ‹
+		DirectX::SimpleMath::Vector3 m_up;
+
+		// ƒ}ƒEƒXƒgƒ‰ƒbƒJ[
 		DirectX::Mouse::ButtonStateTracker m_tracker;
 
-		// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º
+		// ƒXƒNƒŠ[ƒ“ƒTƒCƒY
 		int m_screenW, m_screenH;
 
 	private:
@@ -52,45 +55,51 @@ namespace Imase
 
 	public:
 		/// <summary>
-		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 		/// </summary>
-		/// <param name="windowWidth">ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºï¼ˆå¹…ï¼‰</param>
-		/// <param name="windowHeight">ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºï¼ˆé«˜ã•ï¼‰</param>
+		/// <param name="windowWidth">ƒEƒCƒ“ƒhƒEƒTƒCƒYi•j</param>
+		/// <param name="windowHeight">ƒEƒCƒ“ƒhƒEƒTƒCƒYi‚‚³j</param>
 		DebugCamera(int windowWidth, int windowHeight);
 
 		/// <summary>
-		/// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©ã®æ›´æ–°
+		/// ƒfƒoƒbƒOƒJƒƒ‰‚ÌXV
 		/// </summary>
-		/// <param name="isActive">trueã®å ´åˆã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–</param>
+		/// <param name="isActive">true‚Ìê‡ƒAƒNƒeƒBƒu‰»</param>
 		void Update(bool isActive = true);
 
 		/// <summary>
-		/// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©ã®ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®å–å¾—é–¢æ•°
+		/// ƒfƒoƒbƒOƒJƒƒ‰‚Ìƒrƒ…[s—ñ‚Ìæ“¾ŠÖ”
 		/// </summary>
-		/// <returns>ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—</returns>
+		/// <returns>ƒrƒ…[s—ñ</returns>
 		DirectX::SimpleMath::Matrix GetCameraMatrix();
 
 		/// <summary>
-		/// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã®å–å¾—é–¢æ•°
+		/// ƒfƒoƒbƒOƒJƒƒ‰‚ÌˆÊ’u‚Ìæ“¾ŠÖ”
 		/// </summary>
-		/// <returns>è¦–ç‚¹ã®ä½ç½®</returns>
+		/// <returns>‹“_‚ÌˆÊ’u</returns>
 		DirectX::SimpleMath::Vector3 GetEyePosition();
 
 		/// <summary>
-		/// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ã®å–å¾—é–¢æ•°
+		/// ƒfƒoƒbƒOƒJƒƒ‰‚Ì’‹“_‚Ìæ“¾ŠÖ”
 		/// </summary>
-		/// <returns>æ³¨è¦–ç‚¹ã®ä½ç½®</returns>
+		/// <returns>’‹“_‚ÌˆÊ’u</returns>
 		DirectX::SimpleMath::Vector3 GetTargetPosition();
 
 		/// <summary>
-		/// ç”»é¢ã‚µã‚¤ã‚ºã®è¨­å®šé–¢æ•°
+		/// ƒJƒƒ‰‚Ìã•ûŒüƒxƒNƒgƒ‹‚Ìæ“¾ŠÖ”
 		/// </summary>
-		/// <param name="windowWidth">ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºï¼ˆå¹…ï¼‰</param>
-		/// <param name="windowHeight">ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºï¼ˆé«˜ã•ï¼‰</param>
+		/// <returns>ã•ûŒüƒxƒNƒgƒ‹</returns>
+		DirectX::SimpleMath::Vector3 GetUp();
+
+		/// <summary>
+		/// ‰æ–ÊƒTƒCƒY‚Ìİ’èŠÖ”
+		/// </summary>
+		/// <param name="windowWidth">ƒEƒCƒ“ƒhƒEƒTƒCƒYi•j</param>
+		/// <param name="windowHeight">ƒEƒCƒ“ƒhƒEƒTƒCƒYi‚‚³j</param>
 		void SetWindowSize(int windowWidth, int windowHeight);
 
 		/// <summary>
-		/// ç”»é¢ã‚µã‚¤ã‚ºã®å–å¾—é–¢æ•°
+		/// ‰æ–ÊƒTƒCƒY‚Ìæ“¾ŠÖ”
 		/// </summary>
 		void GetWindowSize(int& windowWidth, int& windowHeight);
 	};

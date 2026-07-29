@@ -30,6 +30,12 @@ private:
     // フェードインをしてよい
     bool m_canFadeIn = false;
 
+    //リトライする
+    bool m_retry = false;
+
+    //前のシーンへいく
+    bool m_backScene = false;
+
     // フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
 

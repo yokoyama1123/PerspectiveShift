@@ -23,6 +23,9 @@ private:
 	//フェードインをしてよい
     bool m_canFadeIn = false;
 
+	//前のシーンへいく
+	bool m_backScene = false;
+
 	//ステージ数
 	int m_stageCount = 0;
 

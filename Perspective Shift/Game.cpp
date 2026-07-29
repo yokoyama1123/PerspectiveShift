@@ -196,6 +196,12 @@ void Game::Update(DX::StepTimer const& timer)
     // TODO: Add your game logic here.
     elapsedTime;
 
+    // 非表示 + 相対モード
+    if(!m_gameContext->isDebugMode) Mouse::Get().SetMode(Mouse::MODE_RELATIVE);
+
+    // 再表示 + 絶対座標モード
+    else Mouse::Get().SetMode(Mouse::MODE_ABSOLUTE);
+
     // キーボードトラッカーの更新
     auto keyboard = Keyboard::Get().GetState();
     m_keyboardTracker.Update(keyboard);
@@ -211,8 +217,7 @@ void Game::Update(DX::StepTimer const& timer)
         }
     }
 
-    //ESCキーでプログラムを終了
-    if (m_keyboardTracker.pressed.Escape) PostQuitMessage(0);
+
 
     //シーンの更新
     m_sceneManager.Update(*m_gameContext);

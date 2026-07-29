@@ -6,6 +6,9 @@ using namespace DirectX;
 // 更新
 void TitleScene::Update(Imase::ISceneController<SceneId>& sceneController, GameContext& gameContext)
 {
+	//ESCキーでプログラムを終了
+	if (gameContext.keyboardTracker.pressed.Escape) PostQuitMessage(0);
+
 	// 経過時間を取得する
 	float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
 

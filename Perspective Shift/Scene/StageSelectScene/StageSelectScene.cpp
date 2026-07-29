@@ -59,6 +59,14 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 		//フェードイン更新
         m_fadeInOut->FedeInUpdate(elapsedTime, 1.0f, m_titleBGMInstance.get());
 	}
+	//ESCキーが押されたら
+	if (gameContext.keyboardTracker.pressed.Escape)
+	{
+		//フェードインしてよい
+		m_canFadeIn = true;
+		//前のシーンへいく
+		m_backScene = true;
+	}
 
 	//フェードインし終わった
 	if (m_fadeInOut->GetFedeInEnd())
@@ -66,7 +74,9 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 		//選んだステージを記録
 		gameContext.selectStage = m_selectStage;
 		//次のシーンへ
-        sceneController.RequestSwitch(SceneId::Play);
+		if (!m_backScene) sceneController.RequestSwitch(SceneId::Play);
+		//前のシーン
+		else sceneController.RequestSwitch(SceneId::Title);
 	}
 }
 

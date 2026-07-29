@@ -1,7 +1,7 @@
-ï»¿//--------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 // File: DebugCamera.cpp
 //
-// ãƒ‡ãƒãƒƒã‚°ç”¨ã‚«ãƒ¡ãƒ©ã‚¯ãƒ©ã‚¹
+// ƒfƒoƒbƒO—pƒJƒƒ‰ƒNƒ‰ƒX
 //
 // Date: 2018.4.15
 // Author: Hideyasu Imase
@@ -16,49 +16,57 @@ using namespace Imase;
 const float DebugCamera::DEFAULT_CAMERA_DISTANCE = 5.0f;
 
 //--------------------------------------------------------------------------------------
-// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 //--------------------------------------------------------------------------------------
 DebugCamera::DebugCamera(int windowWidth, int windowHeight)
-	: m_yAngle(0.0f), m_yTmp(0.0f), m_xAngle(0.0f), m_xTmp(0.0f), m_x(0), m_y(0), m_scrollWheelValue(0), m_screenW(windowWidth), m_screenH(windowHeight)
+	: m_yAngle(0.0f)
+	, m_yTmp(0.0f)
+	, m_xAngle(0.0f)
+	, m_xTmp(0.0f)
+	, m_x(0)
+	, m_y(0)
+	, m_scrollWheelValue(0)
+	, m_screenW(windowWidth)
+	, m_screenH(windowHeight)
 {
 	SetWindowSize(windowWidth, windowHeight);
 
-	// ãƒã‚¦ã‚¹ã®ãƒ•ã‚©ã‚¤ãƒ¼ãƒ«å€¤ã‚’ãƒªã‚»ãƒƒãƒˆ
+	// ƒ}ƒEƒX‚ÌƒtƒHƒC[ƒ‹’l‚ğƒŠƒZƒbƒg
 	Mouse::Get().ResetScrollWheelValue();
 }
 
 //--------------------------------------------------------------------------------------
-// æ›´æ–°
+// XV
 //--------------------------------------------------------------------------------------
 void DebugCamera::Update(bool isActive)
 {
 	auto state = Mouse::Get().GetState();
 
-	// ç›¸å¯¾ãƒ¢ãƒ¼ãƒ‰ãªã‚‰ä½•ã‚‚ã—ãªã„
+	// ‘Š‘Îƒ‚[ƒh‚È‚ç‰½‚à‚µ‚È‚¢
 	if (state.positionMode == Mouse::MODE_RELATIVE) return;
 
 	m_tracker.Update(state);
 
-	// ãƒã‚¦ã‚¹ã®å·¦ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸ
+	// ƒ}ƒEƒX‚Ì¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
 	if (m_tracker.leftButton == Mouse::ButtonStateTracker::ButtonState::PRESSED)
 	{
-		// ãƒã‚¦ã‚¹ã®åº§æ¨™ã‚’å–å¾—
+		// ƒ}ƒEƒX‚ÌÀ•W‚ğæ“¾
 		m_x = state.x;
 		m_y = state.y;
 	}
 	else if (m_tracker.leftButton == Mouse::ButtonStateTracker::ButtonState::RELEASED)
 	{
-		// ç¾åœ¨ã®å›è»¢ã‚’ä¿å­˜
+		// Œ»İ‚Ì‰ñ“]‚ğ•Û‘¶
 		m_xAngle = m_xTmp;
 		m_yAngle = m_yTmp;
 	}
-	// ãƒã‚¦ã‚¹ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã‚«ãƒ¡ãƒ©ã‚’ç§»å‹•ã•ã›ã‚‹
+	// ƒ}ƒEƒX‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚çƒJƒƒ‰‚ğˆÚ“®‚³‚¹‚é
 	if (isActive && state.leftButton)
 	{
 		Motion(state.x, state.y);
 	}
 
-	// ãƒã‚¦ã‚¹ã®ãƒ•ã‚©ã‚¤ãƒ¼ãƒ«å€¤ã‚’å–å¾—
+	// ƒ}ƒEƒX‚ÌƒtƒHƒC[ƒ‹’l‚ğæ“¾
 	m_scrollWheelValue = state.scrollWheelValue;
 	if (m_scrollWheelValue > 0)
 	{
@@ -66,40 +74,41 @@ void DebugCamera::Update(bool isActive)
 		Mouse::Get().ResetScrollWheelValue();
 	}
 
-	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’ç®—å‡ºã™ã‚‹
+	// ƒrƒ…[s—ñ‚ğZo‚·‚é
 	SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_yTmp);
 	SimpleMath::Matrix rotX = SimpleMath::Matrix::CreateRotationX(m_xTmp);
 
 	SimpleMath::Matrix rt = rotY * rotX;
 
 	SimpleMath::Vector3 eye(0.0f, 1.0f, 1.0f);
-	SimpleMath::Vector3 target(0.0f, 0.0f, 0.0f);
+	SimpleMath::Vector3 target(15.0f, 15.0f, -15.0f);
 	SimpleMath::Vector3 up(0.0f, 1.0f, 0.0f);
 
 	eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
 	eye *= (DEFAULT_CAMERA_DISTANCE - m_scrollWheelValue / 100);
 	up = SimpleMath::Vector3::Transform(up, rt.Invert());
 
-	m_eye = eye;
+	m_eye = target + eye;
 	m_target = target;
+	m_up = up;
 
-	m_view = SimpleMath::Matrix::CreateLookAt(eye, target, up);
+	m_view = SimpleMath::Matrix::CreateTranslation({ -15, 0, 15 }) * SimpleMath::Matrix::CreateLookAt(eye, target, up);
 }
 
 //--------------------------------------------------------------------------------------
-// è¡Œåˆ—ã®ç”Ÿæˆ
+// s—ñ‚Ì¶¬
 //--------------------------------------------------------------------------------------
 void DebugCamera::Motion(int x, int y)
 {
-	// ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®ä½ç½®ã®ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹ä½ç½®ã‹ã‚‰ã®å¤‰ä½ (ç›¸å¯¾å€¤)
+	// ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ÌˆÊ’u‚Ìƒhƒ‰ƒbƒOŠJnˆÊ’u‚©‚ç‚Ì•ÏˆÊ (‘Š‘Î’l)
 	float dx = (x - m_x) * m_sx;
 	float dy = (y - m_y) * m_sy;
 
 	if (dx != 0.0f || dy != 0.0f)
 	{
-		// ï¼¹è»¸ã®å›è»¢
+		// ‚x²‚Ì‰ñ“]
 		float yAngle = dx * XM_PI;
-		// ï¼¸è»¸ã®å›è»¢
+		// ‚w²‚Ì‰ñ“]
 		float xAngle = dy * XM_PI;
 
 		m_xTmp = m_xAngle + xAngle;
@@ -122,9 +131,14 @@ DirectX::SimpleMath::Vector3 DebugCamera::GetTargetPosition()
 	return m_target;
 }
 
+DirectX::SimpleMath::Vector3 Imase::DebugCamera::GetUp()
+{
+	return m_up;
+}
+
 void DebugCamera::SetWindowSize(int windowWidth, int windowHeight)
 {
-	// ç”»é¢ã‚µã‚¤ã‚ºã«å¯¾ã™ã‚‹ç›¸å¯¾çš„ãªã‚¹ã‚±ãƒ¼ãƒ«ã«èª¿æ•´
+	// ‰æ–ÊƒTƒCƒY‚É‘Î‚·‚é‘Š‘Î“I‚ÈƒXƒP[ƒ‹‚É’²®
 	m_sx = 1.0f / float(windowWidth);
 	m_sy = 1.0f / float(windowHeight);
 }

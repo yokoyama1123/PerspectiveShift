@@ -31,18 +31,33 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
 	// フェードアウトが終わったかつフェードインしない
     if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
     {
-
-        // カメラモードでないならプレイヤー更新
-        if(!m_camera->GetCameraMode()) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
+        // カメラモードでないかつデバッグモードでないならプレイヤー更新
+        if (!m_camera->GetCameraMode() && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
         //当たり判定の更新
         m_collision->Update(gameContext);
 
-        // 何かしらの条件
+        // ゲームクリアしたら
         if (m_collision->GetStageClear())
         {
             // フェードインしてよい
             m_canFadeIn = true;
+        }
+        //Rキーが押されたら
+        if (gameContext.keyboardTracker.pressed.R)
+        {
+            //フェードインしてよい
+            m_canFadeIn = true;
+            //リトライする
+            m_retry = true;
+        }
+        //ESCキーが押されたら
+        if (gameContext.keyboardTracker.pressed.Escape)
+        {
+            //フェードインしてよい
+            m_canFadeIn = true;
+            //前のシーンへいく
+            m_backScene = true;
         }
     }
     else
@@ -61,8 +76,12 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
     // フェードインし終わった
     if (m_fadeInOut->GetFedeInEnd())
     {
-        // 次のシーンへ
-        sceneController.RequestSwitch(SceneId::Result);
+        // リトライでないかつ前のシーンに行かなければ次のシーンへ
+        if(!m_retry && !m_backScene)sceneController.RequestSwitch(SceneId::Result);
+        // リトライ
+        else if(m_retry) sceneController.RequestSwitch(SceneId::Play);
+        //前のシーン
+        else if(m_backScene) sceneController.RequestSwitch(SceneId::StageSelect);
     }
 }
 

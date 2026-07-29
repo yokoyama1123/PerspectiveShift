@@ -1,5 +1,6 @@
 #pragma once
 #include "GameContext.h"
+#include "ImaseLib/DebugCamera.h"
 
 namespace Yokoyama
 {
@@ -81,6 +82,9 @@ namespace Yokoyama
     
         // マウストラッカー
         DirectX::Mouse::ButtonStateTracker m_tracker;
+
+        //デバッグカメラ
+        std::unique_ptr<Imase::DebugCamera>m_debugCamera;
         //----------//
 
         //-----メンバー関数-----//
