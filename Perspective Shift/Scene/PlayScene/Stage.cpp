@@ -153,8 +153,6 @@ void Yokoyama::Stage::RegistingStageData(const GameContext& gameContext)
 {
     m_cellDatas = gameContext.saveLoad->GetCellDatas(*gameContext.saveLoad->GetStagesJson(gameContext.selectStage));
 
-    //gameContext.saveLoad->SaveData("Stage0.json", m_cellDatas);
-
     //“–‚½‚è”»’è‚Ì“o˜^
     SetBoundingBox();
 }

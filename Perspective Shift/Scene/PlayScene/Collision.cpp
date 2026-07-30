@@ -50,7 +50,7 @@ void Yokoyama::Collision::Update(const GameContext& gameContext)
     PlayerBlockCollision();
 
     //プレイヤーとゴールの当たり判定(プレイヤーの当たり判定の位置修正がすべて終了してから行う)
-    PlayerGoalCollision();
+    PlayerGoalCollision(gameContext.isDebugMode);
 
     //カメラとステージ外枠の当たり判定と位置修正
     CameraStageCollision();
@@ -240,7 +240,7 @@ void Yokoyama::Collision::PlayerStageCollision()
 /// <summary>
 /// プレイヤーとゴールの当たり判定
 /// </summary>
-void Yokoyama::Collision::PlayerGoalCollision()
+void Yokoyama::Collision::PlayerGoalCollision(bool isDebugMode)
 {
     for (size_t i = 0; i < m_pStage->GetCellDatas().size(); i++)
     {
@@ -248,7 +248,9 @@ void Yokoyama::Collision::PlayerGoalCollision()
         {
             if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetCellDatas()[i].boundingBox))
             {
-                m_stageClear = true;
+                //デバッグモードならクリアしない
+                if(!isDebugMode) m_stageClear = true;
+
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetCellDatas()[i].boundingBox, Colors::Pink);
             }
             else

@@ -59,17 +59,13 @@ void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector
     }
 
     // ファイルに保存
-    std::string fileAddress{};
-    fileAddress = "Resources/StageData/" + filename;
+    std::string fileAddress = "Resources/StageData/" + filename;
 
     std::ofstream output_file(fileAddress);
     if (output_file.is_open())
     {
         output_file << idata.dump(4);  // 4スペースでインデント
         output_file.close();
-    }
-    else
-    {
     }
 }
 

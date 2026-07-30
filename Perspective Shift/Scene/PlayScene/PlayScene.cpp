@@ -127,8 +127,10 @@ void PlayScene::Render(GameContext& gameContext)
 
         if (ImGui::Button("Save"))
         {
-
+            std::string fileName = "Stage" + std::to_string(gameContext.selectStage) + ".json";
+            gameContext.saveLoad->SaveData(fileName, m_stage->GetCellDatas());
         }
+        m_player->SetPosition(m_stage->GetPlayerSetPosition());
     }
 
 

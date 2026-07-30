@@ -63,7 +63,7 @@ namespace Yokoyama
         //プレイヤーとステージ外枠の当たり判定と位置修正
         void PlayerStageCollision();
         //プレイヤーとゴールの当たり判定
-        void PlayerGoalCollision();
+        void PlayerGoalCollision(bool isDebugMode);
         //カメラとステージ外枠の当たり判定と位置修正
         void CameraStageCollision();
         //----------//
