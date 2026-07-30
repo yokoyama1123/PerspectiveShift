@@ -110,6 +110,7 @@ bool Yokoyama::Collision::HitCheckAABB2AABB(const BoundingBox& box1, const Bound
 /// </summary>
 void Yokoyama::Collision::PlayerBlockCollision()
 {
+    
     //ソートしたステージデータ
     std::vector<BoundingBox> sortBoxes{};
     //ソートのための仮ボックス
@@ -122,6 +123,12 @@ void Yokoyama::Collision::PlayerBlockCollision()
         {
             sortBoxes.push_back(m_pStage->GetCellDatas()[i].boundingBox);
         }
+    }
+
+    //ブロックが無かったら何もしない
+    if (sortBoxes.size() == 0)
+    {
+        return;
     }
 
     //プレイヤーから近い順にソート
