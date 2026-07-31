@@ -1,5 +1,6 @@
 #include"pch.h"
 #include "Collision.h"
+#include <algorithm>
 
 using namespace DirectX;
 
@@ -131,20 +132,13 @@ void Yokoyama::Collision::PlayerBlockCollision()
         return;
     }
 
-    //プレイヤーから近い順にソート
-    for (int i = 0; i < sortBoxes.size() - 1; i++)
-    {
-        for (int j = static_cast<int>(sortBoxes.size() - 2); j >= 0; j--)
-        {
-            if (SimpleMath::Vector3::Distance(sortBoxes[j].Center, m_pPlayer->GetCenterPosition())
-            > SimpleMath::Vector3::Distance(sortBoxes[j + 1].Center, m_pPlayer->GetCenterPosition()))
-            {
-                tmp = sortBoxes[j];
-                sortBoxes[j] = sortBoxes[j + 1];
-                sortBoxes[j + 1] = tmp;
-            }
+    // プレイヤーから近い順にソート
+    std::sort(sortBoxes.begin(), sortBoxes.end(),
+        [this](const auto& a, const auto& b) {
+            return SimpleMath::Vector3::Distance(a.Center, m_pPlayer->GetCenterPosition())
+                < SimpleMath::Vector3::Distance(b.Center, m_pPlayer->GetCenterPosition());
         }
-    }
+    );
 
     // 修正する移動量
     SimpleMath::Vector3 addpos{};
