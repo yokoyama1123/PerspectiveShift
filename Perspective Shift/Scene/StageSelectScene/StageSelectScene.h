@@ -20,22 +20,22 @@ public:
 	void OnEnter(GameContext& gameContext) override;
 
 private:
-	//フェードインをしてよい
+	// フェードインをしてよい
     bool m_canFadeIn = false;
 
-	//前のシーンへいく
+	// 前のシーンへいく
 	bool m_backScene = false;
 
-	//ステージ数
+	// ステージ数
 	int m_stageCount = 0;
 
-	//現在選択しているステージ
+	// 現在選択しているステージ
 	int m_selectStage = 0;
 
-	//フェードインアウト
+	// フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
 
-	//BGMのインスタンス
+	// BGMのインスタンス
 	std::unique_ptr<DirectX::SoundEffectInstance> m_titleBGMInstance;
 };
 

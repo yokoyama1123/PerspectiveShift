@@ -5,7 +5,6 @@
 #include <memory>
 #include "SimpleMath.h"
 #include "../../GameContext.h"
-#include "ImaseLib/DebugRenderer.h"
 #include "ImaseLib/SceneManager.h"
 #include "Scene/FadeInOut.h"
 #include "Camera.h"
@@ -28,6 +27,9 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
 	// フェードアウトが終わったかつフェードインしない
     if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
     {
+        //タイマーの後進
+        m_timer->Update(elapsedTime);
+
         // カメラ更新
         m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
 
@@ -96,15 +98,16 @@ void PlayScene::Render(GameContext& gameContext)
     // DirectX3Dのデバイスコンテキストを取得する
     auto context = gameContext.deviceResources.GetD3DDeviceContext();
 
-    // ビュー行列を設定
-    //m_camera->SetCameraMatrix();
     // ビュー行列を取得
     m_view = m_camera->GetCameraMatrix();
 
+    // デバッグモードならIMGUの表示
     if (gameContext.isDebugMode)
     {
+        // GUIの作成
         std::string GuiName = "Stage" + std::to_string(gameContext.selectStage) + "Data";
         ImGui::Begin(GuiName.c_str());
+        // セルデータを表示
         for (size_t i = 0; i < m_stage->GetCellDatas().size(); i++)
         {
             SimpleMath::Vector3 cellposition = m_stage->GetCellDatas()[i].stagePosition;
@@ -112,7 +115,9 @@ void PlayScene::Render(GameContext& gameContext)
             if (ImGui::TreeNodeEx(cellnumber.c_str()))
             {
                 ImGui::DragFloat3("pos", &cellposition.x);
+                // GUIでの変更を反映
                 m_stage->SetCellPosition(i, cellposition);
+                // このセルを消すボタン
                 if (ImGui::Button("Delete"))
                 {
                     m_stage->DeleteCell(i);
@@ -121,17 +126,21 @@ void PlayScene::Render(GameContext& gameContext)
                 ImGui::TreePop();
             }
         }
+        // セルを追加するボタン
         if (ImGui::Button("AddCell"))
         {
             m_stage->AddCell();
         }
         ImGui::End();
 
+        // ステージデータの変更をセーブするボタン
         if (ImGui::Button("Save"))
         {
             std::string fileName = "Stage" + std::to_string(gameContext.selectStage) + ".json";
             gameContext.saveLoad->SaveData(fileName, m_stage->GetCellDatas());
         }
+
+        // GUIでの変更を反映
         m_player->SetPosition(m_stage->GetPlayerSetPosition());
     }
 
@@ -139,11 +148,14 @@ void PlayScene::Render(GameContext& gameContext)
     // プレイヤーの描画
     m_player->Render(gameContext, m_view, gameContext.projection);
 
-    //ステージの描画
+    // ステージの描画
     m_stage->Render(gameContext, m_view, gameContext.projection, context);
 
-    //当たり判定の描画
+    // 当たり判定の描画
     m_collision->Render(gameContext, m_view, gameContext.projection);
+
+    //タイマーの描画
+    m_timer->Render(gameContext);
 
 	// フェードイン描画
     m_fadeInOut->FedeInRender(gameContext);
@@ -178,12 +190,15 @@ void PlayScene::OnEnter(GameContext& gameContext)
     // プレイヤーを作成
     m_player = std::make_unique<Yokoyama::Player>(m_stage->GetPlayerSetPosition());
 
-    //当たり判定の作成
+    // 当たり判定の作成
     m_collision = std::make_unique<Yokoyama::Collision>(device, context, m_player.get(), m_stage.get(), m_camera.get());
 
-    //タイトルBGMのインスタンス作成
+    //タイマーの作成
+    m_timer = std::make_unique<Yokoyama::Timer>();
+
+    // タイトルBGMのインスタンス作成
     m_playBGMInstance = gameContext.playBGM->CreateInstance();
 
-    //BGM再生(ループ)
+    // BGM再生(ループ)
     m_playBGMInstance->Play(true);
 }

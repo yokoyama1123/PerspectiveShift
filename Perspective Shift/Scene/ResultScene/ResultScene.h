@@ -26,7 +26,7 @@ private:
     // フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
 
-	//BGMのインスタンス
+	// BGMのインスタンス
 	std::unique_ptr<DirectX::SoundEffectInstance> m_titleBGMInstance;
 };
 

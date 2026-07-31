@@ -21,19 +21,19 @@ public:
 	void OnEnter(GameContext& gameContext) override;
 
 private:
-	//フェードインをしてよい
+	// フェードインをしてよい
     bool m_canFadeIn = false;
 
-	//フェードインアウト
+	// フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
 
-	//タイトルロゴ
+	// タイトルロゴ
 	std::unique_ptr<Yokoyama::TitleLogo> m_titleLogo;
 
-	//背景のステージ
+	// 背景のステージ
 	std::unique_ptr<Yokoyama::TitleStage> m_titleStage;
 
-	//BGMのインスタンス
+	// BGMのインスタンス
 	std::unique_ptr<DirectX::SoundEffectInstance> m_titleBGMInstance;
 };
 

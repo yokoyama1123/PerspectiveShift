@@ -3,13 +3,12 @@
 #include "../../ImaseLib/SceneManager.h"
 #include "GameContext.h"
 #include "../SceneId.h"
-
 #include"Scene/FadeInOut.h"
-
 #include "Collision.h"
 #include "Camera.h"
 #include "Player.h"
 #include "Stage.h"
+#include "Timer.h"
 
 class PlayScene : public Imase::SceneBase<SceneId, GameContext>
 {
@@ -30,28 +29,31 @@ private:
     // フェードインをしてよい
     bool m_canFadeIn = false;
 
-    //リトライする
+    // リトライする
     bool m_retry = false;
 
-    //前のシーンへいく
+    // 前のシーンへいく
     bool m_backScene = false;
 
     // フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
 
-    //カメラ
+    // カメラ
     std::unique_ptr<Yokoyama::Camera> m_camera;
 
     // プレイヤー
     std::unique_ptr<Yokoyama::Player> m_player;
 
-    //ステージ
+    // ステージ
     std::unique_ptr<Yokoyama::Stage> m_stage;
 
-    //当たり判定
+    // 当たり判定
     std::unique_ptr<Yokoyama::Collision> m_collision;
 
-    //BGMのインスタンス
+    //タイマー
+    std::unique_ptr<Yokoyama::Timer> m_timer;
+
+    // BGMのインスタンス
     std::unique_ptr<DirectX::SoundEffectInstance> m_playBGMInstance;
 };
 

@@ -76,53 +76,52 @@ private:
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
 
-    //プロゼクション行列
+    // プロゼクション行列
     DirectX::SimpleMath::Matrix m_projection;
 
     // ----- モデル ----- //
-    //プレイヤーのモデル
+    // プレイヤーのモデル
     std::unique_ptr<DirectX::Model> m_mPlayer;
-    //ステージの外枠モデル
+    // ステージの外枠モデル
     std::vector<std::unique_ptr<DirectX::Model>> m_mStages;
-    //ゴール
+    // ゴール
     std::unique_ptr<DirectX::Model> m_mGoal;
     //----------//
 
     //-----テクスチャハンドル-----//
-    //板ポリゴンのテクスチャ
+    // 板ポリゴンのテクスチャ
     std::wstring m_textureHandle{};
-    //タイトルロゴのテクスチャ
+    // タイトルロゴのテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titlelogo;
-    //フェードインアウトのテクスチャ
+    // フェードインアウトのテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fadeInOutTexture;
-    //スタートを促すテキストのテクスチャ
+    // スタートを促すテキストのテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_startTextTexture;
     //----------//
 
     //-----サウンドハンドル-----//
-    //タイトルシーンのBGM
+    // タイトルシーンのBGM
     std::unique_ptr<DirectX::SoundEffect> m_titleBGM;
-    //プレイシーンのBGM
+    // プレイシーンのBGM
     std::unique_ptr<DirectX::SoundEffect> m_palyBGM;
     //----------//
 
-    //-----セーブロードクラス-----//
+    // セーブロード
     std::unique_ptr<Yokoyama::SaveLoad> m_saveLoad;
-    //----------//
 
     // --------------------------------------------------------------------- //
 
 private:
-    //音量(1~0)
+    // 音量(1~0)
     static constexpr float SOUND_VOLUME = 0.2f;
 
-    //imguiのフォントサイズ
+    // imguiのフォントサイズ
     static constexpr float IMGUI_FONTSIZE = 20.0f;
 
     // キーボードトラッカー
     DirectX::Keyboard::KeyboardStateTracker m_keyboardTracker;
     
-    //オーディオエンジン
+    // オーディオエンジン
     std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
 
     // コモンステート
@@ -134,7 +133,7 @@ private:
     // ゲームコンテキスト
     std::optional<GameContext> m_gameContext;
 
-    //スプライトバッチ
+    // スプライトバッチ
     std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 
     // シーンマネージャー

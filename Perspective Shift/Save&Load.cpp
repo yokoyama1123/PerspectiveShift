@@ -5,15 +5,23 @@
 
 using namespace DirectX;
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Yokoyama::SaveLoad::SaveLoad()
 	:m_stages{}
 {
     LoadData();
 }
 
-
+/// <summary>
+/// ステージデータを保存する
+/// </summary>
+/// <param name="filename">ファイル名(?.json)</param>
+/// <param name="cellDatas">ステージデータ</param>
 void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector<Yokoyama::CellData>& cellDatas)
 {
+    // jsonを作成
     json idata =
     {
         {"bestTime",0},
@@ -24,6 +32,7 @@ void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector
         },
     };
 
+    // セルのタイプと座標を保存
     for (size_t i = 0; i < cellDatas.size(); i++)
     {
         switch (cellDatas[i].type)
@@ -60,7 +69,6 @@ void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector
 
     // ファイルに保存
     std::string fileAddress = "Resources/StageData/" + filename;
-
     std::ofstream output_file(fileAddress);
     if (output_file.is_open())
     {
@@ -69,11 +77,21 @@ void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector
     }
 }
 
+/// <summary>
+/// ステージデータを返す
+/// </summary>
+/// <param name="stageNumber">ステージナンバー</param>
+/// <returns>ステージデータ(json)</returns>
 json* Yokoyama::SaveLoad::GetStagesJson(int stageNumber)
 {
     return &m_stages[stageNumber];
 }
 
+/// <summary>
+/// josnのステージデータを渡すとCellDatasを返す
+/// </summary>
+/// <param name="stage">ステージデータ(json)</param>
+/// <returns>ステージデータ</returns>
 std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
 {
     std::vector<Yokoyama::CellData> celldatas{};
@@ -98,35 +116,47 @@ std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
 	return celldatas;
 }
 
+/// <summary>
+/// josnのステージデータを渡すとBestTimeを返す
+/// </summary>
+/// <param name="stage">ステージデータ(json)</param>
+/// <returns>ベストタイム</returns>
 float Yokoyama::SaveLoad::GetBestTime(json stage)
 {
     return stage["bestTime"];
 }
 
+/// <summary>
+/// 全てのステージデータを読み込む
+/// </summary>
 void Yokoyama::SaveLoad::LoadData()
 {
+    // ステージデータがある場所
     std::string path = "Resources/StageData/";
     
+    // ステージデータの数
     size_t count{};
 
+    // フォルダが見つかるたびにカウント
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
-        //フォルダが見つかるたびにカウント
         ++count;
     }
 
+    // ステージデータのファイル名
     std::string filename{};
 
     for (size_t i = 0; i < count; i++)
     {
         filename = path + "Stage" + std::to_string(i) + ".json";
 
-        //ファイルから読み込み
-        std::ifstream satage0(filename);
-        if (satage0.is_open())
+        // ファイルから読み込み
+        std::ifstream satage(filename);
+        if (satage.is_open())
         {
-            m_stages.push_back(json::parse(satage0));
-            satage0.close();
+            // ステージデータの読み込み
+            m_stages.push_back(json::parse(satage));
+            satage.close();
         }
     }
 }

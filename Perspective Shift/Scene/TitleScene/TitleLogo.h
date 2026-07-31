@@ -3,58 +3,55 @@
 
 namespace Yokoyama
 {
+	// タイトルロゴ
 	class TitleLogo
 	{
 	public:
-		//コンストラクタ
+		// コンストラクタ
 		TitleLogo(GameContext& gameContext);
-		//デストラクタ
+		// デストラクタ
 		~TitleLogo() = default;
 	
-		//更新
+		// 更新
 		void Update(float elapsedTime);
-		//描画
+		// 描画
 		void Render(GameContext& gameContext);
 	
 	private:
-		//タイトルロゴの大きさ(倍率)
+		//----- 定数 -----//
+		// タイトルロゴの大きさ(倍率)
 		static constexpr float SCALELOGO = 0.8f;
-
-		//スタートテキストの大きさ(倍率)
+		// スタートテキストの大きさ(倍率)
 		static constexpr float SCALESTARTTEXT = 0.5f;
-
 		// 振幅（移動幅）
 		static constexpr float AMPLITUDE = 20.0f;   
-
-		//周期(秒数)
+		// 周期(秒数)
 		static constexpr float CYCLE = 4.0f;
-
-		//円周率
+		// 円周率
 		static constexpr float PI = 3.14159265358979f;
-
-		//タイトルロゴの初期位置
+		// タイトルロゴの初期位置
 		DirectX::SimpleMath::Vector2 LOGOPOSITION;
-
-		//スタートテキストの位置
+		// スタートテキストの位置
 		DirectX::SimpleMath::Vector2 STARTTEXTPOSITION{};
-
+		//----------//
 		
+		//----- メンバー変数 -----//
 		// 経過時間
-		float m_time = 0.0f;         
-
-		//ロゴの場所
+		float m_time = 0.0f;
+		// ロゴの場所
 		DirectX::SimpleMath::Vector2 m_position;
-	
-		//スタートテキストのカラー
+		// スタートテキストのカラー
 		DirectX::SimpleMath::Color m_startTextColor;
-
-		//タイトルロゴのRECT
+		// タイトルロゴのRECT
 		RECT m_titleRect;
-		//スタートテキストのRECT
+		// スタートテキストのRECT
 		RECT m_startTextRect;
-
-		//その画像のアスペクト比を返す(RECT)
+		//----------//
+		
+		//----- メンバー関数 -----//
+		// その画像のアスペクト比を返す(RECT)
 		RECT Getrect(ID3D11ShaderResourceView* srv);
+		//----------//
 	};
 }
 

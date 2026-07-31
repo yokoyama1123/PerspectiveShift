@@ -14,7 +14,7 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     , m_isCameraMode{false}
     , m_view{}
     , m_eye{0.0f, 0.0f, 0.0f}
-    , m_target{ 15.0f, 15.0f, -15.0f }
+    , m_target{ 15.0f, 0.0f, -15.0f }
     , m_up{0.0f, 1.0f, 0.0f}
     , m_velocity{}
     , m_prevControlPressed{false}

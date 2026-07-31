@@ -6,6 +6,7 @@
 
 namespace Yokoyama
 {
+    // ステージ外枠のタイプ
     enum class WallType
     {
         Xm,
@@ -16,15 +17,18 @@ namespace Yokoyama
         Zp,
     };
 
+    // ステージ外枠のデータ
     struct WallData
     {
+        // 当たり判定
         DirectX::BoundingBox boundingBox;
 
+        // タイプ
         WallType type;
     };
 
 
-	//ステージクラス
+	// ステージクラス
     class Stage
     {
     public:
@@ -40,28 +44,28 @@ namespace Yokoyama
         // プレイヤーの初期位置を返す関数
         DirectX::SimpleMath::Vector3 GetPlayerSetPosition();
 
-        //ステージデータを返す関数
+        // ステージデータを返す関数
         std::vector<Yokoyama::CellData> GetCellDatas();
 
-        //ステージ外枠の当たり判定を返す関数
+        // ステージ外枠の当たり判定を返す関数
         std::vector<Yokoyama::WallData> GetWallData();
 
-        //セルの場所を変更する
+        // セルの場所を変更する
         void SetCellPosition(int cellnumber, DirectX::SimpleMath::Vector3 stagePosition);
 
-        //そのセルを削除する
+        // そのセルを削除する
         void DeleteCell(int cellnumber);
 
-        //セルの追加
+        // セルの追加
         void AddCell();
 
     private:
         //----- 定数 -----//
         // ステージの大きさ(n倍)
         static constexpr float STAGESCALE = 10.0f;
+        // ゴールの大きさ(n倍)
         static constexpr float GOALSCALE = 0.8f;
-
-        //ステージ外枠の当たり判定
+        // ステージ外枠の当たり判定
         std::vector<Yokoyama::WallData> WALL_DATA{
             {DirectX::BoundingBox{DirectX::SimpleMath::Vector3{-1, 3 * STAGESCALE / 2, -(3 * STAGESCALE / 2)},DirectX::SimpleMath::Vector3{1, 3 * STAGESCALE / 2, 3 * STAGESCALE / 2}}, WallType::Xm},
             {DirectX::BoundingBox{DirectX::SimpleMath::Vector3{ 3 * STAGESCALE + 1, 3 * STAGESCALE / 2, -(3 * STAGESCALE / 2)}, DirectX::SimpleMath::Vector3{ 1, 3 * STAGESCALE / 2, 3 * STAGESCALE / 2}}, WallType::Xp},
@@ -75,22 +79,18 @@ namespace Yokoyama
         //----- メンバー変数 -----//
         // ステージのワールド行列
         DirectX::SimpleMath::Matrix m_worldStage;
-
-        //ゴールのワールド行列
+        // ゴールのワールド行列
         DirectX::SimpleMath::Matrix m_worldGoal;
-
-        //どこに何があるかをまとめたやつ
+        // どこに何があるかをまとめたやつ
         std::vector<CellData> m_cellDatas;
-
-        //板ポリゴン
+        // 板ポリゴン
         std::unique_ptr<Yokoyama::Plane> m_plane;
-
         //----------//
 
         //----- メンバー関数 -----//
-        //ステージデータを登録
+        // ステージデータを登録
         void RegistingStageData(const GameContext& gameContext);
-        //当たり判定の登録
+        // 当たり判定の登録
         void SetBoundingBox();
         //----------//
 	};

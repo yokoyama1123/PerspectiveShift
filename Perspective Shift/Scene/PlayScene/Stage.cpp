@@ -12,10 +12,10 @@ using namespace DirectX;
 /// <param name="textureHandle">板ポリゴンのテクスチャ</param>
 Yokoyama::Stage::Stage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const GameContext& gameContext)
 {
-    //板ポリゴンの登録
+    // 板ポリゴンの登録
     RegistingStageData(gameContext);
 
-    //板ポリゴンの作成
+    // 板ポリゴンの作成
     m_plane = std::make_unique<Yokoyama::Plane>(pDevice, pContext, &gameContext.commonStates, gameContext.textureHandle);
 }
 
@@ -26,17 +26,19 @@ Yokoyama::Stage::Stage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, con
 /// <param name="elapsedTime">elapsedTime</param>
 void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
 {
+    // ゴールの位置
     SimpleMath::Vector3 goalPosition{};
 
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
         if (m_cellDatas[i].type == CellType::Goal)
         {
+            // ゴールの位置を設定
             goalPosition = m_cellDatas[i].boundingBox.Center;
         }
     }
 
-    //ワールド行列への反映
+    // ワールド行列への反映
     m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
 
     m_worldGoal = SimpleMath::Matrix::CreateScale(GOALSCALE) * //大きさ
@@ -52,7 +54,7 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
 /// <param name="pContext">コンテキスト</param>
 void Yokoyama::Stage::Render(const GameContext& gameContext, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, ID3D11DeviceContext* pContext)
 {
-     //ステージのモデルの描画
+     // ステージのモデルの描画
     gameContext.stages[gameContext.selectStage]->Draw(
         gameContext.deviceResources.GetD3DDeviceContext(),
         gameContext.commonStates,
@@ -61,7 +63,7 @@ void Yokoyama::Stage::Render(const GameContext& gameContext, const DirectX::Simp
         projection
     );
 
-    //ゴールのモデルの描画
+    // ゴールのモデルの描画
     gameContext.goalModel->Draw(
         gameContext.deviceResources.GetD3DDeviceContext(),
         gameContext.commonStates,
@@ -70,24 +72,24 @@ void Yokoyama::Stage::Render(const GameContext& gameContext, const DirectX::Simp
         projection
     );
 
-    //板ポリゴンの描画
+    // 板ポリゴンの描画
     m_plane->Render(pContext, view, projection, m_cellDatas);
 }
 
 /// <summary>
 /// プレイヤーの初期位置を返す関数
 /// </summary>
-/// <returns>PlayerSetPosition</returns>
+/// <returns>プレイヤーの初期位置</returns>
 DirectX::SimpleMath::Vector3 Yokoyama::Stage::GetPlayerSetPosition()
 {
     DirectX::SimpleMath::Vector3 playerPosition{};
 
-    //セルデータの中からプレイヤーの初期位置を探す
+    // セルデータの中からプレイヤーの初期位置を探す
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
         if (m_cellDatas[i].type == CellType::Player)
         {
-            //そのマスの中心にプレイヤーを配置
+            // そのマスの中心にプレイヤーを配置
             playerPosition.x =   CellData::SIZE * m_cellDatas[i].stagePosition.x + CellData::SIZE / 2;
             playerPosition.y =   CellData::SIZE * m_cellDatas[i].stagePosition.y + CellData::SIZE / 2;
             playerPosition.z = -(CellData::SIZE * m_cellDatas[i].stagePosition.z + CellData::SIZE / 2);
@@ -127,14 +129,22 @@ void Yokoyama::Stage::SetCellPosition(int cellnumber, DirectX::SimpleMath::Vecto
     SetBoundingBox();
 }
 
+/// <summary>
+/// そのセルを削除する
+/// </summary>
+/// <param name="cellnumber">消したいセルの番号</param>
 void Yokoyama::Stage::DeleteCell(int cellnumber)
 {
     auto it = m_cellDatas.begin() + cellnumber;
     m_cellDatas.erase(it);
 }
 
+/// <summary>
+/// セルの追加
+/// </summary>
 void Yokoyama::Stage::AddCell()
 {
+    // ステージ座標0,0,0に追加する
     m_cellDatas.push_back
     (
         Yokoyama::CellData
@@ -153,7 +163,7 @@ void Yokoyama::Stage::RegistingStageData(const GameContext& gameContext)
 {
     m_cellDatas = gameContext.saveLoad->GetCellDatas(*gameContext.saveLoad->GetStagesJson(gameContext.selectStage));
 
-    //当たり判定の登録
+    // 当たり判定の登録
     SetBoundingBox();
 }
 
@@ -164,8 +174,8 @@ void Yokoyama::Stage::SetBoundingBox()
 {
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
-        //プレイヤーの初期位置以外に当たり判定をつける
-        //ゴールの当たり判定
+        // プレイヤーの初期位置以外に当たり判定をつける
+        // ゴールの当たり判定
         if (m_cellDatas[i].type == CellType::Goal)
         {
             m_cellDatas[i].boundingBox.Center =
@@ -173,10 +183,10 @@ void Yokoyama::Stage::SetBoundingBox()
                                      CellData::SIZE * m_cellDatas[i].stagePosition.y + CellData::SIZE / 2,
                                    -(CellData::SIZE * m_cellDatas[i].stagePosition.z + CellData::SIZE / 2) };
         }
-        //板ポリゴンの当たり判定
+        // 板ポリゴンの当たり判定
         else if (m_cellDatas[i].type != CellType::Player)
         {
-            //ステージ座標にあわせたワールド座標の当たり判定
+            // ステージ座標にあわせたワールド座標の当たり判定
             m_cellDatas[i].boundingBox.Center =
                 SimpleMath::Vector3{ CellData::SIZE * m_cellDatas[i].stagePosition.x + CellData::SIZE / 2,
                                      CellData::SIZE * m_cellDatas[i].stagePosition.y + CellData::SIZE / 2,

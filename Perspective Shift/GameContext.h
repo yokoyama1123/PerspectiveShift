@@ -31,47 +31,46 @@ struct GameContext
 	// デバッグ用の描画セット
 	Imase::DebugRenderer& debugRenderer;
 
-    //プロゼクション行列
+    // プロゼクション行列
     DirectX::SimpleMath::Matrix& projection;
 
-    //スプライトバッチ
+    // スプライトバッチ
     DirectX::SpriteBatch& spriteBatch;
 
-    //現在選択しているステージ
+    // 現在選択しているステージ
     int selectStage;
 
-    //デバッグモードかどうか
+    // デバッグモードかどうか
     bool isDebugMode;
 
 	//----- モデル -----//
-	//プレイヤーのモデル
+	// プレイヤーのモデル
     DirectX::Model* playerModel;
-    //ステージ外枠のモデル
+    // ステージ外枠のモデル
     std::vector<std::unique_ptr<DirectX::Model>>& stages;
-    //ゴールのモデル
+    // ゴールのモデル
     DirectX::Model* goalModel;
     // ---------- //
 
     //-----テクスチャ-----//
-    //板ポリゴンのテクスチャ
+    // 板ポリゴンのテクスチャ
     const wchar_t* textureHandle;
-    //タイトルロゴ
+    // タイトルロゴ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& titlelogo;
-    //フェードインアウト
+    // フェードインアウト
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& fadeInOutTexture;
-    //スタートを促す
+    // スタートを促す
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& startTextTexture;
     //----------//
 
     //-----サウンド-----//
-    //タイトルシーンのBGM
+    // タイトルシーンのBGM
     DirectX::SoundEffect* titleBGM;
-    //プレイシーンのBGM
+    // プレイシーンのBGM
     DirectX::SoundEffect* playBGM;
     //----------//
 
-    //-----セーブロードクラス-----//
+    //セーブロード
     std::unique_ptr<Yokoyama::SaveLoad> saveLoad;
-    //----------//
 };
 

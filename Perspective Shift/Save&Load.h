@@ -8,30 +8,29 @@ using json = nlohmann::json;
 
 namespace Yokoyama
 {
-	//ステージのセーブロードをするクラス
+	// ステージのセーブロードをするクラス
 	class SaveLoad
 	{
 	public:
-		//コンストラクタ
+		// コンストラクタ
 		SaveLoad();
-		//デストラクタ
+		// デストラクタ
 		~SaveLoad() = default;
-		//ステージデータをセーブする
+		// ステージデータを保存する
 		void SaveData(const std::string& filename, const std::vector<Yokoyama::CellData>& cellDatas);
 
-
-
-		//ステージデータを返す
+		// ステージデータを返す
 		json* GetStagesJson(int stageNumber);
 
-		//josnのステージデータを渡すとCellDatasを返す
+		// josnのステージデータを渡すとCellDatasを返す
 		std::vector<Yokoyama::CellData> GetCellDatas(json stage);
-		//josnのステージデータを渡すとBestTimeを返す
+
+		// josnのステージデータを渡すとBestTimeを返す
 		float GetBestTime(json stage);
 	private:
-		//ステージデータ
+		// ステージデータ
 		std::vector<json> m_stages;
-		//ロードする
+		// 全てのステージデータを読み込む
 		void LoadData();
 	};
 }

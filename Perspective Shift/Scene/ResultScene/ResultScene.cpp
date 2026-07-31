@@ -13,7 +13,7 @@ void ResultScene::Update(Imase::ISceneController<SceneId>& sceneController, Game
 
 	debugRenderer.DrawText({ 0.0f, 0.0f }, L"ResultScene");
 
-    //デバッグモードをOFFにする
+    // デバッグモードをOFFにする
     gameContext.isDebugMode = false;
 
 	// フェードアウトが終わったかつフェードインしない
@@ -71,9 +71,9 @@ void ResultScene::OnEnter(GameContext& gameContext)
     // フェードインアウトを作成
     m_fadeInOut = std::make_unique<Yokoyama::FadeInOut>();
 
-    //タイトルBGMのインスタンス作成
+    // タイトルBGMのインスタンス作成
     m_titleBGMInstance = gameContext.titleBGM->CreateInstance();
 
-    //BGM再生(ループ)
+    // BGM再生(ループ)
     m_titleBGMInstance->Play(true);
 }

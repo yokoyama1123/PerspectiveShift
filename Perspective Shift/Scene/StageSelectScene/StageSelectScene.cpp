@@ -12,32 +12,32 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 	Imase::DebugRenderer& debugRenderer = gameContext.debugRenderer;
 	debugRenderer.DrawText({ 0.0f, 0.0f }, L"StageSelectScene");
 
-	//フェードアウトが終わったかつフェードインしない
+	// フェードアウトが終わったかつフェードインしない
 	if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
 	{
-		//いろいろアプデ
+		// いろいろアプデ
 		// Aキーが押されたら選択しているステージ番号を-1
 		if (gameContext.keyboardTracker.pressed.A)
 		{
 			m_selectStage--;
-			//ステージ0の時に押したらステージ最大に行く
+			// ステージ0の時に押したらステージ最大に行く
 			if (m_selectStage < 0)m_selectStage = m_stageCount - 1;
 		}
 		// Dキーが押されたら選択しているステージ番号を+1
 		if (gameContext.keyboardTracker.pressed.D)
 		{
 			m_selectStage++;
-			//ステージ最大の時に押したらステージ0に行く
+			// ステージ最大の時に押したらステージ0に行く
 			if (m_selectStage >= m_stageCount)m_selectStage = 0;
 		}
-		//現在選択しているステージの表示
+		// 現在選択しているステージの表示
 		std::wstring stage = L"Stage:" + std::to_wstring(m_selectStage);
 		debugRenderer.DrawText({ Yokoyama::Screen::CENTER_X, Yokoyama::Screen::CENTER_Y }, stage);
 
 		// スペースキーが押されたら
         if (gameContext.keyboardTracker.pressed.Space)
 		{
-			//Ctrlキーを押していたらデバッグモードON
+			// Ctrlキーを押していたらデバッグモードON
 			if (Keyboard::Get().GetState().LeftControl)
 			{
 				gameContext.isDebugMode = true;
@@ -47,39 +47,39 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 				gameContext.isDebugMode = false;
 			}
 
-			//フェードインしてよい
+			// フェードインしてよい
             m_canFadeIn = true;
 		}
 	}
 	else
 	{
-		//フェードアウト更新
+		// フェードアウト更新
         m_fadeInOut->FedeOutUpdate(elapsedTime, 1.0f, m_titleBGMInstance.get());
 	}
 
-	//フェードインしてよい
+	// フェードインしてよい
 	if (m_canFadeIn)
 	{
-		//フェードイン更新
+		// フェードイン更新
         m_fadeInOut->FedeInUpdate(elapsedTime, 1.0f, m_titleBGMInstance.get());
 	}
-	//ESCキーが押されたら
+	// ESCキーが押されたら
 	if (gameContext.keyboardTracker.pressed.Escape)
 	{
-		//フェードインしてよい
+		// フェードインしてよい
 		m_canFadeIn = true;
-		//前のシーンへいく
+		// 前のシーンへいく
 		m_backScene = true;
 	}
 
-	//フェードインし終わった
+	// フェードインし終わった
 	if (m_fadeInOut->GetFedeInEnd())
 	{
-		//選んだステージを記録
+		// 選んだステージを記録
 		gameContext.selectStage = m_selectStage;
-		//次のシーンへ
+		// 次のシーンへ
 		if (!m_backScene) sceneController.RequestSwitch(SceneId::Play);
-		//前のシーン
+		// 前のシーン
 		else sceneController.RequestSwitch(SceneId::Title);
 	}
 }
@@ -91,9 +91,9 @@ void StageSelectScene::Render(GameContext& gameContext)
 
 
 
-	//フェードイン描画
+	// フェードイン描画
     m_fadeInOut->FedeInRender(gameContext);
-	//フェードアウト描画
+	// フェードアウト描画
     m_fadeInOut->FedeOutRnder(gameContext);
 }
 
@@ -101,21 +101,21 @@ void StageSelectScene::Render(GameContext& gameContext)
 void StageSelectScene::OnEnter(GameContext& gameContext)
 {
 	gameContext;
-	//フェードインをしてはいけない
+	// フェードインをしてはいけない
     m_canFadeIn = false;
 
-	//ステージ数を記録
+	// ステージ数を記録
 	m_stageCount = static_cast<int>(gameContext.stages.size());
 
-	//現在選択しているステージ
+	// 現在選択しているステージ
 	m_selectStage = gameContext.selectStage;
 
-	//フェードインアウトを作成
+	// フェードインアウトを作成
     m_fadeInOut = std::make_unique<Yokoyama::FadeInOut>();
 
-	//タイトルBGMのインスタンス作成
+	// タイトルBGMのインスタンス作成
 	m_titleBGMInstance = gameContext.titleBGM->CreateInstance();
 
-	//BGM再生(ループ)
+	// BGM再生(ループ)
 	m_titleBGMInstance->Play(true);
 }
