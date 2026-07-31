@@ -9,7 +9,7 @@
 
 namespace Yokoyama
 {
-    //当たり判定の検出と位置修正をするクラス
+    // 当たり判定の検出と位置修正をするクラス
     class Collision
     {
     public:
@@ -25,46 +25,36 @@ namespace Yokoyama
 
         // 当たり判定の描画
         void Render(const GameContext& gameContext, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
-
-        //ステージをクリアしたか
+        
+        // ステージをクリアしたか
         bool GetStageClear() const;
 
     private:
-        //----- 定数 -----//
-
-        //----------//
-
         //----- メンバー変数 -----//
         // コリジョン情報表示オブジェクト
         std::unique_ptr<Imase::CollisionRenderer> m_collisionRenderer;
-
-        //プレイヤーのポインタ
+        // プレイヤーのポインタ
         Yokoyama::Player* m_pPlayer;
-
-        //ステージのポインタ
+        // ステージのポインタ
         Yokoyama::Stage* m_pStage;
-
-        //カメラのポインタ
+        // カメラのポインタ
         Yokoyama::Camera* m_pCamera;
-
-        //当たり判定を表示するか
+        // 当たり判定を表示するか
         bool m_showCollision;
-
-        //ステージクリア
+        // ステージクリア
         bool m_stageClear;
         //----------//
 
         //----- メンバー関数 -----//
-        //AABBの当たり判定
+        // AABBの当たり判定
         bool HitCheckAABB2AABB(const DirectX::BoundingBox& box1, const DirectX::BoundingBox& box2);
-
-        //ステージのブロックとプレイヤーの当たり判定と修正
+        // ステージのブロックとプレイヤーの当たり判定と修正
         void PlayerBlockCollision();
-        //プレイヤーとステージ外枠の当たり判定と位置修正
+        // プレイヤーとステージ外枠の当たり判定と位置修正
         void PlayerStageCollision();
-        //プレイヤーとゴールの当たり判定
+        // プレイヤーとゴールの当たり判定
         void PlayerGoalCollision(bool isDebugMode);
-        //カメラとステージ外枠の当たり判定と位置修正
+        // カメラとステージ外枠の当たり判定と位置修正
         void CameraStageCollision();
         //----------//
     };

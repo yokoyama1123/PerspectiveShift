@@ -13,6 +13,7 @@ Yokoyama::Player::Player(DirectX::SimpleMath::Vector3 position)
     , m_elapsedTime{}
     , m_canJump{false}
 {
+    //中心からの距離を設定(当たり判定)
     m_boundingBox.Extents = DISTANCE;
 }
 
@@ -36,15 +37,15 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
     // ベクトルを正規化
     direction.Normalize();
 
-    //速さを初期化
+    // 速さを初期化
     m_velocity.x = 0.0f;
     m_velocity.z = 0.0f;
 
 
 
     // プレイヤーの方向ベクトルを計算
-    SimpleMath::Vector3 forward(m_world.m[2][0], m_world.m[2][1], m_world.m[2][2]); //前方向
-    SimpleMath::Vector3 right(m_world.m[0][0], m_world.m[0][1], m_world.m[0][2]);   //右方向
+    SimpleMath::Vector3 forward(m_world.m[2][0], m_world.m[2][1], m_world.m[2][2]); // 前方向
+    SimpleMath::Vector3 right(m_world.m[0][0], m_world.m[0][1], m_world.m[0][2]);   // 右方向
     SimpleMath::Vector3 backward = -forward;                                        // 後ろ
     SimpleMath::Vector3 left = -right;                                              // 左
 
@@ -64,50 +65,51 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
     backwardRight.Normalize();
     backwardLeft.Normalize();
 
-    //キーボードによるプレイヤーの動き
-    if (Keyboard::Get().GetState().W && Keyboard::Get().GetState().D)       //WDキー(右前方向)
+    // キーボードによるプレイヤーの動き
+    if (Keyboard::Get().GetState().W && Keyboard::Get().GetState().D)       // WDキー(右前方向)
     {
         Move(forwardRight, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().W && Keyboard::Get().GetState().A)  //WAキー(左前方向)
+    else if (Keyboard::Get().GetState().W && Keyboard::Get().GetState().A)  // WAキー(左前方向)
     {
         Move(forwardLeft, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().S && Keyboard::Get().GetState().D)  //SDキー(右後ろ方向)
+    else if (Keyboard::Get().GetState().S && Keyboard::Get().GetState().D)  // SDキー(右後ろ方向)
     {
         Move(backwardRight, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().S && Keyboard::Get().GetState().A)  //SAキー(左後ろ方向)
+    else if (Keyboard::Get().GetState().S && Keyboard::Get().GetState().A)  // SAキー(左後ろ方向)
     {
         Move(backwardLeft, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().W)                                  //Wキー(前方向)
+    else if (Keyboard::Get().GetState().W)                                  // Wキー(前方向)
     {
         Move(forward, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().S)                                  //Sキー(後ろ方向)
+    else if (Keyboard::Get().GetState().S)                                  // Sキー(後ろ方向)
     {
         Move(backward, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().D)                                  //Dキー(右方向)
+    else if (Keyboard::Get().GetState().D)                                  // Dキー(右方向)
     {   
         Move(right, direction, forward, elapsedTime);
     }
-    else if (Keyboard::Get().GetState().A)                                  //Aキー(左方向)
+    else if (Keyboard::Get().GetState().A)                                  // Aキー(左方向)
     {   
         Move(left, direction, forward, elapsedTime);
     }
 
+    // スペースキーでジャンプ
     if (Keyboard::Get().GetState().Space && m_canJump)
     {
         m_canJump = false;
         m_velocity.y += JUMP;
     }
 
-    //重力を加算
+    // 重力を加算
     m_velocity.y += -GRAVITY * elapsedTime;
 
-    //位置に速さを加算
+    // 位置に速さを加算
     m_position += m_velocity * elapsedTime;
 
     // 中心座標の更新
@@ -120,10 +122,10 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
 /// <param name="context">gameContext</param>
 void Yokoyama::Player::Render(const GameContext& gameContext, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
-    //行列を反映
-    m_world = SimpleMath::Matrix::CreateScale(SCALE) *          //大きさ
-              SimpleMath::Matrix::CreateRotationY(m_angle) *    //回転
-              SimpleMath::Matrix::CreateTranslation(m_position);//移動
+    // 行列を反映
+    m_world = SimpleMath::Matrix::CreateScale(SCALE) *          // 大きさ
+              SimpleMath::Matrix::CreateRotationY(m_angle) *    // 回転
+              SimpleMath::Matrix::CreateTranslation(m_position);// 移動
     // プレイヤーのモデルの描画
     gameContext.playerModel->Draw(
         gameContext.deviceResources.GetD3DDeviceContext(),
@@ -136,7 +138,7 @@ void Yokoyama::Player::Render(const GameContext& gameContext, const DirectX::Sim
 /// <summary>
 /// 重力の取得
 /// </summary>
-/// <returns>Gravity</returns>
+/// <returns>重力</returns>
 float Yokoyama::Player::GetGravity() const
 {
     return GRAVITY;
@@ -163,7 +165,7 @@ DirectX::SimpleMath::Vector3 Yokoyama::Player::GetCenterPosition() const
 /// <summary>
 /// 速さを取得
 /// </summary>
-/// <returns>velocity</returns>
+/// <returns>速さ</returns>
 DirectX::SimpleMath::Vector3 Yokoyama::Player::GetVelocity() const
 {
     return m_velocity * m_elapsedTime;
@@ -172,7 +174,7 @@ DirectX::SimpleMath::Vector3 Yokoyama::Player::GetVelocity() const
 /// <summary>
 /// AABBを取得
 /// </summary>
-/// <returns>BoundingBox</returns>
+/// <returns>当たり判定</returns>
 const DirectX::BoundingBox& Yokoyama::Player::GetBoundingBox()
 {
     // 中心座標の更新
@@ -233,7 +235,7 @@ void Yokoyama::Player::Move(SimpleMath::Vector3 orientation, SimpleMath::Vector3
     // 正面方向ベクトル(正規化済み)にスピードとエラペストタイムをかけたものをポジションに加算
     SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_angle);
     
-    //速さの計算
+    // 速さの計算
     m_velocity.x = -(SimpleMath::Vector3::Transform(forward, rotY) * SPEED).x;
     m_velocity.z = -(SimpleMath::Vector3::Transform(forward, rotY) * SPEED).z;
 

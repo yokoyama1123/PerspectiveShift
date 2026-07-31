@@ -1,7 +1,7 @@
 #pragma once
 #include"pch.h"
 
-//ステージ内のブロックの情報
+// ステージ内のブロックの情報
 namespace Yokoyama
 {
     // それが何か
@@ -23,6 +23,7 @@ namespace Yokoyama
     {
         // ステージの座標
         DirectX::SimpleMath::Vector3 stagePosition;
+
         // そこにあるもの
         Yokoyama::CellType type;
 

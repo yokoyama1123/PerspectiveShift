@@ -19,6 +19,7 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     , m_velocity{}
     , m_prevControlPressed{false}
 {
+    // 画面サイズに対する相対的なスケールを記録
     SetWindowSize(windowWidth, windowHeight);
 }
 
@@ -33,21 +34,19 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
     // トラッカー更新
     m_tracker.Update(state);
 
+    // デバッグモードでないなら
     if (!gameContext.isDebugMode)
     {
         // 速度の初期化
         m_velocity = SimpleMath::Vector3::Zero;
 
-        // カメラモードの切り替え（左コントロールキー）
+        // カメラモードの切り替え(左コントロールキー)
         if (gameContext.keyboardTracker.pressed.LeftControl)
         {
             m_isCameraMode = !m_isCameraMode;
         }
-        //デバッグモードならカメラモードである
-        if (gameContext.isDebugMode) m_isCameraMode = true;
 
-
-        // カメラの回転を更新（相対モード：state.x, state.y は移動量）
+        // カメラの回転を更新(相対モード：state.x, state.y は移動量)
         Motion(state.x, state.y);
 
         // 回転行列を作成
@@ -80,7 +79,9 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
         else
         {
             // 自由移動モード
+            // ターゲットの位置の変数作成
             SimpleMath::Vector3 lookDir(0.0f, 0.0f, -1.0f);
+            // ターゲットの位置を設定
             lookDir = SimpleMath::Vector3::Transform(lookDir, rt.Invert());
 
             // 見ている方向ベクトル（Y方向無視）
@@ -88,13 +89,14 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
             dir.y = 0;
             dir.Normalize();
 
-            // カメラの位置更新（WASD + Space/Shift）
+            // カメラの位置更新
             MoveCamera(elapsedTime, dir);
 
             // ターゲットの更新
             m_target = m_eye + lookDir;
         }
     }
+    // デバッグモード
     else
     {
         // 相対モードなら何もしない
@@ -119,20 +121,23 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
             DebugMotion(state.x, state.y);
         }
 
-        // ビュー行列を算出する
+        // 回転行列を作成
         SimpleMath::Matrix rotY = SimpleMath::Matrix::CreateRotationY(m_yTmp);
         SimpleMath::Matrix rotX = SimpleMath::Matrix::CreateRotationX(m_xTmp);
-
         SimpleMath::Matrix rt = rotY * rotX;
 
+        // 目、ターゲットの位置、上方向ベクトルの作成
         SimpleMath::Vector3 eye(0.0f, 0.0f, 1.0f);
         SimpleMath::Vector3 target(15.0f, 15.0f, -15.0f);
         SimpleMath::Vector3 up(0.0f, 1.0f, 0.0f);
 
+        // 目、ターゲットの位置、上方向ベクトルの設定
         eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
         eye *= DEBUG_CAMERA_DISTANCE;
         up = SimpleMath::Vector3::Transform(up, rt.Invert());
 
+
+        // 目、ターゲットの位置、上方向ベクトルの更新
         m_eye = target + eye;
         m_target = target;
         m_up = up;
@@ -197,8 +202,10 @@ void Yokoyama::Camera::SetCameraMatrix()
 }
 
 /// <summary>
-/// マウスによる回転処理（相対モード対応）
+/// マウスによる回転処理
 /// </summary>
+/// <param name="x">マウスのX座標</param>
+/// <param name="y">マウスのY座標</param>
 void Yokoyama::Camera::Motion(float x, float y)
 {
     // 相対モードでは x, y が移動量
@@ -226,6 +233,11 @@ void Yokoyama::Camera::Motion(float x, float y)
     }
 }
 
+/// <summary>
+/// デバッグモード時のマウスによる回転処理
+/// </summary>
+/// <param name="x">マウスのX座標</param>
+/// <param name="y">マウスのY座標</param>
 void Yokoyama::Camera::DebugMotion(int x, int y)
 {
     // マウスポインタの位置のドラッグ開始位置からの変位 (相対値)
@@ -247,6 +259,8 @@ void Yokoyama::Camera::DebugMotion(int x, int y)
 /// <summary>
 /// カメラモード時のカメラ自身の移動
 /// </summary>
+/// <param name="elapsedTime">elapsedTime</param>
+/// <param name="dir">見ている方向ベクトル</param>
 void Yokoyama::Camera::MoveCamera(float elapsedTime, DirectX::SimpleMath::Vector3 dir)
 {
     // 横方向ベクトル
@@ -274,6 +288,11 @@ void Yokoyama::Camera::MoveCamera(float elapsedTime, DirectX::SimpleMath::Vector
     m_eye += m_velocity * elapsedTime;
 }
 
+/// <summary>
+/// 画面サイズに対する相対的なスケールを記録
+/// </summary>
+/// <param name="windowWidth">ウィンドウの横幅</param>
+/// <param name="windowHeight">ウィンドウの縦幅</param>
 void Yokoyama::Camera::SetWindowSize(int& windowWidth, int& windowHeight)
 {
     // 画面サイズに対する相対的なスケールに調整

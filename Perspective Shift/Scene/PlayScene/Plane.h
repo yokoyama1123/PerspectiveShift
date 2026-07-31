@@ -4,34 +4,30 @@
 
 namespace Yokoyama
 {
-    //板ポリゴンクラス
+    // 板ポリゴンクラス
 	class Plane
 	{
     public:
-        //コンストラクタ
+        // コンストラクタ
         Plane(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, DirectX::CommonStates* pStates, const wchar_t* textureHandle);
 
-        //デストラクタ
+        // デストラクタ
         ~Plane() = default;
 
-        //板ポリゴンの描画
+        // 板ポリゴンの描画
         void Render(ID3D11DeviceContext* pContext, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, const std::vector<Yokoyama::CellData>& cellDatas);
 
     private:
-        //-----定数集-----//
-
-        //----------//
-
         //-----メンバー変数-----//
-        //コモンステート
+        // コモンステート
         DirectX::CommonStates* m_pStates;
-        //ベーシックエフェクト
+        // ベーシックエフェクト
         std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
-        //プリミティブバッチ
+        // プリミティブバッチ
         std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
-        //テクスチャー
+        // テクスチャー
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-        //レイアウト
+        // レイアウト
         Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
         //----------//
 	};

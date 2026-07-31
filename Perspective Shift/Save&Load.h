@@ -16,8 +16,10 @@ namespace Yokoyama
 		SaveLoad();
 		//デストラクタ
 		~SaveLoad() = default;
-		//セーブする
+		//ステージデータをセーブする
 		void SaveData(const std::string& filename, const std::vector<Yokoyama::CellData>& cellDatas);
+
+
 
 		//ステージデータを返す
 		json* GetStagesJson(int stageNumber);

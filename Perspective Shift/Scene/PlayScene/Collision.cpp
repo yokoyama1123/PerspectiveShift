@@ -28,32 +28,32 @@ Yokoyama::Collision::Collision(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 /// <param name="pStage">ステージオブジェクトのポインタ</param>
 void Yokoyama::Collision::Update(const GameContext& gameContext)
 {
-    //当たり判定を表示するかどうか(F3+B)
+    // 当たり判定を表示するかどうか(F3+B)
     if ((gameContext.keyboardTracker.pressed.F3 && Keyboard::Get().GetState().B) ||
         (gameContext.keyboardTracker.pressed.B && Keyboard::Get().GetState().F3))
     {
         m_showCollision = !m_showCollision;
     }
-    //デバッグモードなら常に当たり判定を表示する
+    // デバッグモードなら常に当たり判定を表示する
     if (gameContext.isDebugMode)
     {
         m_showCollision = true;
     }
 
-    //プレイヤーの当たり判定の登録
+    // プレイヤーの当たり判定の登録
     if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox());
 
 
-    //プレイヤーとステージ外枠の当たり判定と位置修正
+    // プレイヤーとステージ外枠の当たり判定と位置修正
     PlayerStageCollision();
 
-    //プレイヤーとブロックの当たり判定と位置修正
+    // プレイヤーとブロックの当たり判定と位置修正
     PlayerBlockCollision();
 
-    //プレイヤーとゴールの当たり判定(プレイヤーの当たり判定の位置修正がすべて終了してから行う)
+    // プレイヤーとゴールの当たり判定(プレイヤーの当たり判定の位置修正がすべて終了してから行う)
     PlayerGoalCollision(gameContext.isDebugMode);
 
-    //カメラとステージ外枠の当たり判定と位置修正
+    // カメラとステージ外枠の当たり判定と位置修正
     CameraStageCollision();
 }
 
@@ -70,7 +70,7 @@ void Yokoyama::Collision::Render(const GameContext& gameContext, SimpleMath::Mat
     // DirectX3Dのデバイスコンテキストを取得する
     auto context = gameContext.deviceResources.GetD3DDeviceContext();
 
-    //登録した当たり判定をまとめて描画
+    // 登録した当たり判定をまとめて描画
     m_collisionRenderer->DrawCollision(context, gameContext.commonStates, view, projection, Colors::White, Colors::White, 0.0f);
 }
 
@@ -91,6 +91,7 @@ bool Yokoyama::Collision::GetStageClear() const
 /// <returns>当たっていたらtrue</returns>
 bool Yokoyama::Collision::HitCheckAABB2AABB(const BoundingBox& box1, const BoundingBox& box2)
 {
+    //各軸が当たっているかどうか
     if (fabsf(box1.Center.x - box2.Center.x) > (box1.Extents.x + box2.Extents.x))
     {
         return false;
@@ -111,22 +112,22 @@ bool Yokoyama::Collision::HitCheckAABB2AABB(const BoundingBox& box1, const Bound
 /// </summary>
 void Yokoyama::Collision::PlayerBlockCollision()
 {
-    
-    //ソートしたステージデータ
+    // ソートしたステージデータ
     std::vector<BoundingBox> sortBoxes{};
-    //ソートのための仮ボックス
+    // ソートのための仮ボックス
     BoundingBox tmp{};
 
-    //ステージデータをコピー
+    // ステージデータをコピー
     for (size_t i = 0; i < m_pStage->GetCellDatas().size(); i++)
     {
+        // ブロックの情報のみをコピーする
         if ((m_pStage->GetCellDatas()[i].type != Yokoyama::CellType::Player) && (m_pStage->GetCellDatas()[i].type != Yokoyama::CellType::Goal))
         {
             sortBoxes.push_back(m_pStage->GetCellDatas()[i].boundingBox);
         }
     }
 
-    //ブロックが無かったら何もしない
+    // ブロックが無かったら何もしない
     if (sortBoxes.size() == 0)
     {
         return;
@@ -143,45 +144,45 @@ void Yokoyama::Collision::PlayerBlockCollision()
     // 修正する移動量
     SimpleMath::Vector3 addpos{};
 
-    //ステージデータの当たり判定の登録&当たっているこの判定&位置修正
+    // ステージデータの当たり判定の登録&当たっているこの判定&位置修正
     for (size_t i = 0; i < sortBoxes.size(); i++)
     {
-        //プレイヤーとブロックが当たっているか
+        // プレイヤーとブロックが当たっているか
         if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), sortBoxes[i]))
         {
-            //プレイヤーの位置修正(X座標)
+            // プレイヤーの位置修正(X座標)
             addpos = m_pPlayer->GetPosition();
             addpos.x -= m_pPlayer->GetVelocity().x;
             m_pPlayer->SetPosition(addpos);
 
             if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), sortBoxes[i]))
             {
-                //プレイヤーの位置修正(Z座標)
+                // プレイヤーの位置修正(Z座標)
                 addpos.x += m_pPlayer->GetVelocity().x;
                 addpos.z -= m_pPlayer->GetVelocity().z;
                 m_pPlayer->SetPosition(addpos);
 
                 if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), sortBoxes[i]))
                 {
-                    //プレイヤーの位置修正(Y座標)
+                    // プレイヤーの位置修正(Y座標)
                     addpos.z += m_pPlayer->GetVelocity().z;
                     addpos.y -= m_pPlayer->GetVelocity().y;
                     m_pPlayer->SetPosition(addpos);
 
-                    //地面に接している場合ジャンプができるようにする
+                    // 地面に接している場合ジャンプができるようにする
                     if (m_pPlayer->GetVelocity().y < 0) m_pPlayer->SetCanJump(true);
-                    //垂直抗力
+                    // 垂直抗力
                     m_pPlayer->SetVelocity(SimpleMath::Vector3{ m_pPlayer->GetVelocity().x, 0.0f, m_pPlayer->GetVelocity().z });
                 }
             }
 
-            //当たっているブロックとプレイヤーの当たり判定のを赤色にする
+            // 当たっているブロックとプレイヤーの当たり判定のを赤色にする
             if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox(), Colors::Red);
             if (m_showCollision) m_collisionRenderer->AddBoundingVolume(sortBoxes[i], Colors::Red);
         }
         else
         {
-            //ブロックの当たり判定の登録
+            // ブロックの当たり判定の登録
             if (m_showCollision) m_collisionRenderer->AddBoundingVolume(sortBoxes[i]);
         }
     }
@@ -196,43 +197,43 @@ void Yokoyama::Collision::PlayerStageCollision()
     SimpleMath::Vector3 addpos{};
     for (size_t i = 0; i < m_pStage->GetWallData().size(); i++)
     {
-        //プレイヤーとステージの壁が当たっているか
+        // プレイヤーとステージの壁が当たっているか
         if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetWallData()[i].boundingBox))
         {
-            //プレイヤーの位置修正(X座標)
+            // プレイヤーの位置修正(X座標)
             addpos = m_pPlayer->GetPosition();
             addpos.x -= m_pPlayer->GetVelocity().x;
             m_pPlayer->SetPosition(addpos);
 
             if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetWallData()[i].boundingBox))
             {
-                //プレイヤーの位置修正(Z座標)
+                // プレイヤーの位置修正(Z座標)
                 addpos.x += m_pPlayer->GetVelocity().x;
                 addpos.z -= m_pPlayer->GetVelocity().z;
                 m_pPlayer->SetPosition(addpos);
 
                 if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetWallData()[i].boundingBox))
                 {
-                    //プレイヤーの位置修正(Y座標)
+                    // プレイヤーの位置修正(Y座標)
                     addpos.z += m_pPlayer->GetVelocity().z;
                     addpos.y -= m_pPlayer->GetVelocity().y;
                     m_pPlayer->SetPosition(addpos);
 
-                    //地面に接している場合ジャンプができるようにする
+                    // 地面に接している場合ジャンプができるようにする
                     if (m_pPlayer->GetVelocity().y < 0) m_pPlayer->SetCanJump(true);
-                    //垂直抗力
+                    // 垂直抗力
                     m_pPlayer->SetVelocity(SimpleMath::Vector3{ m_pPlayer->GetVelocity().x, 0.0f, m_pPlayer->GetVelocity().z });
 
                 }
             }
 
-            //当たっているステージの壁とプレイヤーの当たり判定のを青色にする
+            // 当たっているステージの壁とプレイヤーの当たり判定のを青色にする
             if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox(), Colors::Blue);
             if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Blue);
         }
         else
         {
-            //ステージの壁の当たり判定の登録
+            // ステージの壁の当たり判定の登録
             if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox);
         }
     }
@@ -241,21 +242,28 @@ void Yokoyama::Collision::PlayerStageCollision()
 /// <summary>
 /// プレイヤーとゴールの当たり判定
 /// </summary>
+/// <param name="isDebugMode">デバッグモードかどうか</param>
 void Yokoyama::Collision::PlayerGoalCollision(bool isDebugMode)
 {
+    // デバッグモードならクリアしない
+    if (isDebugMode) return;
+
     for (size_t i = 0; i < m_pStage->GetCellDatas().size(); i++)
     {
         if (m_pStage->GetCellDatas()[i].type == CellType::Goal)
         {
+            // プレイヤーとゴールが当たっているか
             if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetCellDatas()[i].boundingBox))
             {
-                //デバッグモードならクリアしない
-                if(!isDebugMode) m_stageClear = true;
-
+                // ステージクリア
+                m_stageClear = true;
+                // 当たっているゴールとプレイヤーの当たり判定のをピンク色にする
+                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox(), Colors::Pink);
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetCellDatas()[i].boundingBox, Colors::Pink);
             }
             else
             {
+                // ゴールの当たり判定の登録
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetCellDatas()[i].boundingBox);
             }
         }
@@ -267,63 +275,75 @@ void Yokoyama::Collision::PlayerGoalCollision(bool isDebugMode)
 /// </summary>
 void Yokoyama::Collision::CameraStageCollision()
 {
-    //ステージ外枠の六面の当たり判定を確認する
+    // ステージ外枠の六面の当たり判定を確認する
     for (size_t i = 0; i < m_pStage->GetWallData().size(); i++)
     {
-        //どの面に当たったか
+        // どの面に当たったか
         switch (m_pStage->GetWallData()[i].type)
         {
-        case Yokoyama::WallType::Xm://Xマイナス方向の面
+        case Yokoyama::WallType::Xm:// Xマイナス方向の面
             if (m_pCamera->GetEyePosition().x < m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x)
             {
+                // 位置の修正
                 auto pos = m_pCamera->GetEyePosition();
                 pos.x = m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x;
                 m_pCamera->SetPosition(pos);
+                // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
             break;
-        case Yokoyama::WallType::Xp://Xプラス方向の面
+        case Yokoyama::WallType::Xp:// Xプラス方向の面
             if (m_pCamera->GetEyePosition().x > m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x)
             {
+                // 位置の修正
                 auto pos = m_pCamera->GetEyePosition();
                 pos.x = m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x;
                 m_pCamera->SetPosition(pos);
+                // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
             break;
-        case Yokoyama::WallType::Ym://Yマイナス方向の面
+        case Yokoyama::WallType::Ym:// Yマイナス方向の面
             if (m_pCamera->GetEyePosition().y < m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y)
             {
+                // 位置の修正
                 auto pos = m_pCamera->GetEyePosition();
                 pos.y = m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y;
                 m_pCamera->SetPosition(pos);
+                // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
             break;
-        case Yokoyama::WallType::Yp://Yプラス方向の面
+        case Yokoyama::WallType::Yp:// Yプラス方向の面
             if (m_pCamera->GetEyePosition().y > m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y)
             {
+                // 位置の修正
                 auto pos = m_pCamera->GetEyePosition();
                 pos.y = m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y;
                 m_pCamera->SetPosition(pos);
+                // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
             break;
-        case Yokoyama::WallType::Zm://Zマイナス方向の面
+        case Yokoyama::WallType::Zm:// Zマイナス方向の面
             if (m_pCamera->GetEyePosition().z < m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z)
             {
+                // 位置の修正
                 auto pos = m_pCamera->GetEyePosition();
                 pos.z = m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z;
                 m_pCamera->SetPosition(pos);
+                // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
             break;
-        case Yokoyama::WallType::Zp://Zプラス方向の面
+        case Yokoyama::WallType::Zp:// Zプラス方向の面
             if (m_pCamera->GetEyePosition().z > m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z)
             {
+                // 位置の修正
                 auto pos = m_pCamera->GetEyePosition();
                 pos.z = m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z;
                 m_pCamera->SetPosition(pos);
+                // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
             break;

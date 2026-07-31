@@ -22,21 +22,23 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
     // 経過時間を取得する
     float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
 
-
-    //ステージの更新
+    // ステージの更新
     m_stage->Update(gameContext, elapsedTime);
 
 	// フェードアウトが終わったかつフェードインしない
     if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
     {
-        //カメラ更新
+        // カメラ更新
         m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
 
         // カメラモードでないかつデバッグモードでないならプレイヤー更新
         if (!m_camera->GetCameraMode() && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
-        //当たり判定の更新
+        // 当たり判定の更新
         m_collision->Update(gameContext);
+
+        // ビュー行列を設定
+        m_camera->SetCameraMatrix();
 
         // ゲームクリアしたら
         if (m_collision->GetStageClear())
@@ -44,20 +46,20 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
             // フェードインしてよい
             m_canFadeIn = true;
         }
-        //Rキーが押されたら
+        // Rキーが押されたら
         if (gameContext.keyboardTracker.pressed.R)
         {
-            //フェードインしてよい
+            // フェードインしてよい
             m_canFadeIn = true;
-            //リトライする
+            // リトライする
             m_retry = true;
         }
-        //ESCキーが押されたら
+        // ESCキーが押されたら
         if (gameContext.keyboardTracker.pressed.Escape)
         {
-            //フェードインしてよい
+            // フェードインしてよい
             m_canFadeIn = true;
-            //前のシーンへいく
+            // 前のシーンへいく
             m_backScene = true;
         }
     }
@@ -81,7 +83,7 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         if(!m_retry && !m_backScene)sceneController.RequestSwitch(SceneId::Result);
         // リトライ
         else if(m_retry) sceneController.RequestSwitch(SceneId::Play);
-        //前のシーン
+        // 前のシーン
         else if(m_backScene) sceneController.RequestSwitch(SceneId::StageSelect);
     }
 }
@@ -94,8 +96,8 @@ void PlayScene::Render(GameContext& gameContext)
     // DirectX3Dのデバイスコンテキストを取得する
     auto context = gameContext.deviceResources.GetD3DDeviceContext();
 
-    //ビュー行列を設定
-    m_camera->SetCameraMatrix();
+    // ビュー行列を設定
+    //m_camera->SetCameraMatrix();
     // ビュー行列を取得
     m_view = m_camera->GetCameraMatrix();
 

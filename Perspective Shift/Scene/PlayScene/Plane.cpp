@@ -65,24 +65,24 @@ void Yokoyama::Plane::Render(ID3D11DeviceContext* pContext, const DirectX::Simpl
     // 板ポリゴン
     VertexPositionTexture v[4]{};
 
-    //ステージ座標からワールド座標へ変更するときの加算量
+    // ステージ座標からワールド座標へ変更するときの加算量
     SimpleMath::Vector3 addPosition{};
 
-    //描画開始
+    // 描画開始
     m_primitiveBatch->Begin();
 
-    //ステージデータの数だけ回す
+    // ステージデータの数だけ回す
     for (size_t i = 0; i < cellDatas.size(); i++)
     {
-        //ステージ座標を取得
+        // ステージ座標を取得
         addPosition = cellDatas[i].stagePosition;
         
-        //ステージ座標をワールド座標変更するために乗算
+        // ステージ座標をワールド座標変更するために乗算
         addPosition.x *=  CellData::SIZE;
         addPosition.y *=  CellData::SIZE;
         addPosition.z *= -CellData::SIZE;
 
-        //板ポリゴンを描画する方向による板ポリゴンの設定
+        // 板ポリゴンを描画する方向による板ポリゴンの設定
         switch (cellDatas[i].type)
         {
             case Yokoyama::CellType::Xp:
@@ -131,10 +131,10 @@ void Yokoyama::Plane::Render(ID3D11DeviceContext* pContext, const DirectX::Simpl
                 break;
         }
 
-        //板ポリゴンの描画
+        // 板ポリゴンの描画
         m_primitiveBatch->Draw(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP, v, 4);
      
     }
-    //描画終了
+    // 描画終了
     m_primitiveBatch->End();
 }

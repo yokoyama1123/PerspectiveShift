@@ -23,16 +23,16 @@ Yokoyama::FadeInOut::FadeInOut()
 /// <param name="bgm">流れているBGM</param>
 void Yokoyama::FadeInOut::FedeInUpdate(float elapsedTime, float fadeInSecond, SoundEffectInstance* bgm)
 {
-    //カウントを加算
+    // カウントを加算
     m_fadeInCount += 1.0f * elapsedTime;
 
-    //今の進行割合を計算
+    // 今の進行割合を計算
     m_fadeInPercent = m_fadeInCount / fadeInSecond;
 
-    //音量の調整
+    // 音量の調整
     if(bgm != nullptr) bgm->SetVolume(1.0f - m_fadeInPercent);
 
-    //進行度が100%以上なら終了
+    // 進行度が100%以上なら終了
     if(m_fadeInPercent >= 1.0f) m_fedeInEnd = true;
 }
 
@@ -43,16 +43,16 @@ void Yokoyama::FadeInOut::FedeInUpdate(float elapsedTime, float fadeInSecond, So
 /// <param name="bgm">流れているBGM</param>
 void Yokoyama::FadeInOut::FedeOutUpdate(float elapsedTime, float fadeOutSecond, SoundEffectInstance* bgm)
 {
-    //カウントを加算
+    // カウントを加算
     m_fadeOutCount += 1.0f * elapsedTime;
 
-    //今の進行割合を計算
+    // 今の進行割合を計算
     m_fadeOutPercent = m_fadeOutCount / fadeOutSecond;
 
-    //音量の調整
+    // 音量の調整
     if (bgm != nullptr) bgm->SetVolume(m_fadeOutPercent);
 
-    //進行度が100%以上なら終了
+    // 進行度が100%以上なら終了
     if(m_fadeOutPercent >= 1.0f) m_fedeOutEnd = true;
 }
 
