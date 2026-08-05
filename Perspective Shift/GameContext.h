@@ -61,6 +61,8 @@ struct GameContext
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& fadeInOutTexture;
     // スタートを促す
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& startTextTexture;
+    //数字
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& numbersTexture;
     //----------//
 
     //-----サウンド-----//

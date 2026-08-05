@@ -97,6 +97,8 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fadeInOutTexture;
     // スタートを促すテキストのテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_startTextTexture;
+    //数字のテクスチャ
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_numbersTexture;
     //----------//
 
     //-----サウンドハンドル-----//

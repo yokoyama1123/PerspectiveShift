@@ -126,6 +126,8 @@ void Game::Initialize(HWND window, int width, int height)
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/FadeInOut.dds", nullptr, m_fadeInOutTexture.ReleaseAndGetAddressOf()));
     //スタートを促すテキストのテクスチャの読み込み
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StartText2.dds", nullptr, m_startTextTexture.ReleaseAndGetAddressOf()));
+    //数字のテクスチャの読み込み
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/numbers.dds", nullptr, m_numbersTexture.ReleaseAndGetAddressOf()));
     //----------//
 
     //-----サウンドハンドル-----//
@@ -162,6 +164,7 @@ void Game::Initialize(HWND window, int width, int height)
         m_titlelogo,            // <- タイトルロゴのテクスチャ
         m_fadeInOutTexture,     // <- フェードインアウトのテクスチャ
         m_startTextTexture,     // <- スタートを促すテキストのテクスチャ
+        m_numbersTexture,       // <- 数字のテクスチャ
         m_titleBGM.get(),       // <- タイトルシーンのBGM
         m_palyBGM.get(),        // <- プレイシーンのBGM
         std::move(m_saveLoad)   // <- セーブロードクラス

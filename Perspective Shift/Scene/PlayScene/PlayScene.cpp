@@ -194,7 +194,7 @@ void PlayScene::OnEnter(GameContext& gameContext)
     m_collision = std::make_unique<Yokoyama::Collision>(device, context, m_player.get(), m_stage.get(), m_camera.get());
 
     //タイマーの作成
-    m_timer = std::make_unique<Yokoyama::Timer>();
+    m_timer = std::make_unique<Yokoyama::Timer>(gameContext);
 
     // タイトルBGMのインスタンス作成
     m_playBGMInstance = gameContext.playBGM->CreateInstance();
