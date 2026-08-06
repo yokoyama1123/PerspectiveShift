@@ -39,9 +39,6 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         // 当たり判定の更新
         m_collision->Update(gameContext);
 
-        // ビュー行列を設定
-        m_camera->SetCameraMatrix();
-
         // ゲームクリアしたら
         if (m_collision->GetStageClear())
         {
@@ -98,6 +95,9 @@ void PlayScene::Render(GameContext& gameContext)
     // DirectX3Dのデバイスコンテキストを取得する
     auto context = gameContext.deviceResources.GetD3DDeviceContext();
 
+    // ビュー行列を設定
+    m_camera->SetCameraMatrix();
+
     // ビュー行列を取得
     m_view = m_camera->GetCameraMatrix();
 
@@ -136,14 +136,12 @@ void PlayScene::Render(GameContext& gameContext)
         // ステージデータの変更をセーブするボタン
         if (ImGui::Button("Save"))
         {
-            std::string fileName = "Stage" + std::to_string(gameContext.selectStage) + ".json";
-            gameContext.saveLoad->SaveData(fileName, m_stage->GetCellDatas());
+            gameContext.saveLoad->SaveData(gameContext.selectStage, m_stage->GetCellDatas());
         }
 
         // GUIでの変更を反映
         m_player->SetPosition(m_stage->GetPlayerSetPosition());
     }
-
 
     // プレイヤーの描画
     m_player->Render(gameContext, m_view, gameContext.projection);

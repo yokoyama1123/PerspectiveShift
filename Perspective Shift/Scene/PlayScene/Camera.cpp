@@ -190,6 +190,7 @@ bool Yokoyama::Camera::GetCameraMode() const
 /// <param name="position">ê›íËÇµÇΩÇ¢ÉJÉÅÉâÇÃà íu</param>
 void Yokoyama::Camera::SetPosition(const DirectX::SimpleMath::Vector3& position)
 {
+    if(m_isCameraMode) m_target += position - m_eye;
     m_eye = position;
 }
 
@@ -198,7 +199,10 @@ void Yokoyama::Camera::SetPosition(const DirectX::SimpleMath::Vector3& position)
 /// </summary>
 void Yokoyama::Camera::SetCameraMatrix()
 {
-    if (m_eye != m_target) m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
+    if (m_eye != m_target)
+    {
+        m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
+    }
 }
 
 /// <summary>

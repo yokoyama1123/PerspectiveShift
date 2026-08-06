@@ -17,9 +17,9 @@ Yokoyama::SaveLoad::SaveLoad()
 /// <summary>
 /// ステージデータを保存する
 /// </summary>
-/// <param name="filename">ファイル名(?.json)</param>
+/// <param name="stageNumber">ステージナンバー</param>
 /// <param name="cellDatas">ステージデータ</param>
-void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector<Yokoyama::CellData>& cellDatas)
+void Yokoyama::SaveLoad::SaveData(int stageNumber, const std::vector<Yokoyama::CellData>& cellDatas)
 {
     // jsonを作成
     json idata =
@@ -68,13 +68,16 @@ void Yokoyama::SaveLoad::SaveData(const std::string& filename, const std::vector
     }
 
     // ファイルに保存
-    std::string fileAddress = "Resources/StageData/" + filename;
+    std::string fileAddress = "Resources/StageData/Stage" + std::to_string(stageNumber) + ".json";
     std::ofstream output_file(fileAddress);
     if (output_file.is_open())
     {
         output_file << idata.dump(4);  // 4スペースでインデント
         output_file.close();
     }
+
+    //ゲーム内のセルデータも更新
+    m_stages[stageNumber] = idata;
 }
 
 /// <summary>

@@ -126,6 +126,7 @@ void Yokoyama::Player::Render(const GameContext& gameContext, const DirectX::Sim
     m_world = SimpleMath::Matrix::CreateScale(SCALE) *          // ‘å‚«‚³
               SimpleMath::Matrix::CreateRotationY(m_angle) *    // ‰ñ“]
               SimpleMath::Matrix::CreateTranslation(m_position);// ˆÚ“®
+
     // ƒvƒŒƒCƒ„[‚Ìƒ‚ƒfƒ‹‚Ì•`‰æ
     gameContext.playerModel->Draw(
         gameContext.deviceResources.GetD3DDeviceContext(),
