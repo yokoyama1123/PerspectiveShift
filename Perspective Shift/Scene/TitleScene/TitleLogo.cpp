@@ -102,7 +102,7 @@ RECT Yokoyama::TitleLogo::Getrect(ID3D11ShaderResourceView* srv)
 
 	// リソースを2Dテクスチャとして扱う
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
-	HRESULT hr = resource.As(&texture);
+	resource.As(&texture);
 
 	// テクスチャの幅や高さなどを取得
 	D3D11_TEXTURE2D_DESC desc;

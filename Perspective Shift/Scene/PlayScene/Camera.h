@@ -14,6 +14,9 @@ namespace Yokoyama
     
         // 更新
         void Update(GameContext& gameContext, float elapsedTime, const DirectX::SimpleMath::Vector3& target);
+
+        // 描画
+        void Render(GameContext& gameContext);
     
         // 視点取得
         DirectX::SimpleMath::Vector3 GetEyePosition() const;
@@ -48,6 +51,10 @@ namespace Yokoyama
         static constexpr float SPEED = 13.0f;
         // 相対モード用の感度(1ピクセルあたりの回転量(ラジアン))
         static constexpr float SENSITIVITY = 0.003f;
+        //カメラモード時のテクスチャのスケール
+        static constexpr float SCALE = 10.0f;
+        // RECT
+        static constexpr RECT CAMERAMODERECT = { 0, 0, 16, 16 };
         //----------//
 
         //-----メンバー変数-----//

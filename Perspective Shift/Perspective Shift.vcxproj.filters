@@ -89,7 +89,9 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\PlayScene\Timer.cpp" />
+    <ClCompile Include="Scene\PlayScene\Timer.cpp">
+      <Filter>Scene\PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -196,7 +198,9 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\PlayScene\Timer.h" />
+    <ClInclude Include="Scene\PlayScene\Timer.h">
+      <Filter>Scene\PlayScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

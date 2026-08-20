@@ -144,6 +144,60 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
     }
 }
 
+void Yokoyama::Camera::Render(GameContext& gameContext)
+{
+    if (m_isCameraMode)
+    {
+        //描画開始
+        gameContext.spriteBatch.Begin(
+            DirectX::DX11::SpriteSortMode::SpriteSortMode_Deferred,// 通常のソートモード
+            gameContext.commonStates.NonPremultiplied(),           // 半透明
+            gameContext.commonStates.PointWrap()                   // テクスチャサンプラー
+        );
+
+        // カメラモード時の描画
+        gameContext.spriteBatch.Draw(
+            gameContext.cameramodeTexture.Get(),
+            SimpleMath::Vector2{ Screen::LEFT, Screen::BOTTOM - CAMERAMODERECT.bottom * SCALE },
+            &CAMERAMODERECT,
+            Colors::White,
+            XMConvertToRadians(0.0f),
+            SimpleMath::Vector2{ 0.0f,0.0f },
+            SCALE
+        );
+        gameContext.spriteBatch.Draw(
+            gameContext.cameramodeTexture.Get(),
+            SimpleMath::Vector2{ Screen::LEFT + CAMERAMODERECT.right * SCALE, Screen::TOP },
+            &CAMERAMODERECT,
+            Colors::White,
+            XMConvertToRadians(90.0f),
+            SimpleMath::Vector2{ 0.0f,0.0f },
+            SCALE
+        );
+        gameContext.spriteBatch.Draw(
+            gameContext.cameramodeTexture.Get(),
+            SimpleMath::Vector2{ Screen::RIGHT, Screen::TOP + CAMERAMODERECT.bottom * SCALE },
+            &CAMERAMODERECT,
+            Colors::White,
+            XMConvertToRadians(180.0f),
+            SimpleMath::Vector2{ 0.0f,0.0f },
+            SCALE
+        );
+        gameContext.spriteBatch.Draw(
+            gameContext.cameramodeTexture.Get(),
+            SimpleMath::Vector2{ Screen::RIGHT - CAMERAMODERECT.right * SCALE, Screen::BOTTOM },
+            &CAMERAMODERECT,
+            Colors::White,
+            XMConvertToRadians(270.0f),
+            SimpleMath::Vector2{ 0.0f,0.0f },
+            SCALE
+        );
+
+        // 描画終了
+        gameContext.spriteBatch.End();
+    }
+}
+
 /// <summary>
 /// カメラの位置を返す関数
 /// </summary>

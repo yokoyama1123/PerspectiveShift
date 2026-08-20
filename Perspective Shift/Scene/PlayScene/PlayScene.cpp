@@ -155,6 +155,9 @@ void PlayScene::Render(GameContext& gameContext)
     //タイマーの描画
     m_timer->Render(gameContext);
 
+    //カメラの描画
+    m_camera->Render(gameContext);
+
 	// フェードイン描画
     m_fadeInOut->FedeInRender(gameContext);
     // フェードアウト描画

@@ -114,7 +114,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage7.cmo", fx));
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage8.cmo", fx));
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage9.cmo", fx));
-    m_mGoal   = Model::CreateFromCMO(device, L"Resources/Models/Goal.cmo"  , fx);
+    m_mGoal   = Model::CreateFromCMO(device, L"Resources/Models/Goal.cmo", fx);
     // ---------- //
 
     //-----テクスチャのハンドル設定-----//
@@ -128,6 +128,8 @@ void Game::Initialize(HWND window, int width, int height)
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StartText2.dds", nullptr, m_startTextTexture.ReleaseAndGetAddressOf()));
     //数字のテクスチャの読み込み
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/numbers.dds", nullptr, m_numbersTexture.ReleaseAndGetAddressOf()));
+    //カメラモード時のテクスチャの読み込み
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/cameramode.dds", nullptr, m_cameramodeTexture.ReleaseAndGetAddressOf()));
     //----------//
 
     //-----サウンドハンドル-----//
@@ -165,6 +167,7 @@ void Game::Initialize(HWND window, int width, int height)
         m_fadeInOutTexture,     // <- フェードインアウトのテクスチャ
         m_startTextTexture,     // <- スタートを促すテキストのテクスチャ
         m_numbersTexture,       // <- 数字のテクスチャ
+        m_cameramodeTexture,    // <- カメラモード時のテクスチャ
         m_titleBGM.get(),       // <- タイトルシーンのBGM
         m_palyBGM.get(),        // <- プレイシーンのBGM
         std::move(m_saveLoad)   // <- セーブロードクラス
