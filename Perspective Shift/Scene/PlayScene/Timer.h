@@ -8,7 +8,7 @@ namespace Yokoyama
 	{
 	public:
 		// コンストラクタ
-		Timer(GameContext& gameContext);
+		Timer(GameContext& gameContext, int numberDigits = 4);
 
 		// デストラクタ
 		~Timer() = default;
@@ -33,7 +33,7 @@ namespace Yokoyama
         //-----メンバー変数-----//
 		// 現在の経過時間
 		float m_time;
-		//時間それぞれの桁の数字([0]分10の位、[1]分1の位、[2]秒10の位...)
+		//時間それぞれの桁の数字
 		std::vector<int> m_timeDigits;
 		// 数字それぞれのRECT
 		std::vector<RECT> m_numberRECTs;

@@ -153,7 +153,7 @@ void PlayScene::Render(GameContext& gameContext)
     m_collision->Render(gameContext, m_view, gameContext.projection);
 
     //タイマーの描画
-    m_timer->Render(gameContext);
+    if(!gameContext.isDebugMode) m_timer->Render(gameContext);
 
     //カメラの描画
     m_camera->Render(gameContext);

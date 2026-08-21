@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Timer.h"
-#include <cmath>
 
 using namespace DirectX;
 
@@ -8,7 +7,8 @@ using namespace DirectX;
 /// コンストラクタ
 /// </summary>
 /// <param name="gameContext">gameContext</param>
-Yokoyama::Timer::Timer(GameContext& gameContext)
+/// <param name="numberDigits">桁数</param>
+Yokoyama::Timer::Timer(GameContext& gameContext, int numberDigits)
 	: m_time{}
 {
 	//数字全てを描いた画像のRECT
@@ -16,7 +16,7 @@ Yokoyama::Timer::Timer(GameContext& gameContext)
 	//一つの数字のRECTの横幅を記録
 	float singleNumberSize = numbersRECT.right / 10.0f;
 	//一つの数字のRECT(数字全てを描いた画像のRECTで初期化)
-	RECT singleNumberRECT{numbersRECT};
+	RECT singleNumberRECT{ numbersRECT };
 
 	//数字一つずつのRECTを設定
 	for (size_t i = 0; i < 10; i++)
@@ -28,9 +28,8 @@ Yokoyama::Timer::Timer(GameContext& gameContext)
 		m_numberRECTs.push_back(singleNumberRECT);
 	}
 
-	//タイムを記録する桁数を設定
-	m_timeDigits.resize(4);
-
+	// 最大桁数
+	m_timeDigits.resize(numberDigits);  // 3桁固定
 }
 
 /// <summary>
@@ -42,25 +41,24 @@ void Yokoyama::Timer::Update(float elapsedTime)
 	// 経過時間を加算
 	m_time += elapsedTime;
 
-	// ミリ秒単位に変換
-	int totalMilliseconds = static_cast<int>(m_time * 1000.0f);
+	// 秒数に変換(小数点以下は切り捨て)
+	int totalSeconds = static_cast<int>(m_time);
 
-	// 分・秒に分解
-	int totalSeconds = totalMilliseconds / 1000;
-	int seconds = totalSeconds % 60;
-	int minutes = (totalSeconds / 60) % 60;
+	// 秒数を文字列化して各桁を取得
+	std::string secondsStr = std::to_string(totalSeconds);
 
-	// 桁数を確認して代入
+	// 桁数が足りない場合は先頭に'0'を詰める
+	while (secondsStr.length() < m_timeDigits.size())
+	{
+		secondsStr = "0" + secondsStr;
+	}
+
+	// 各桁を数値に変換して格納
 	int digitIndex = 0;
-
-	// 分の桁を記録
-	if (digitIndex < m_timeDigits.size()) m_timeDigits[digitIndex++] = (minutes / 10) % 10;  // 分10の位
-	if (digitIndex < m_timeDigits.size()) m_timeDigits[digitIndex++] = minutes % 10;         // 分1の位
-
-	// 秒の桁を記録
-	if (digitIndex < m_timeDigits.size()) m_timeDigits[digitIndex++] = (seconds / 10) % 10;  // 秒10の位
-	if (digitIndex < m_timeDigits.size()) m_timeDigits[digitIndex++] = seconds % 10;         // 秒1の位
-
+	for (size_t i = secondsStr.length() - m_timeDigits.size(); i < secondsStr.length(); i++)
+	{
+		m_timeDigits[digitIndex++] = secondsStr[i] - '0';
+	}
 }
 
 /// <summary>
@@ -80,7 +78,8 @@ void Yokoyama::Timer::Render(GameContext& gameContext)
 	SimpleMath::Vector2 numberPosition{};
 	for (size_t i = 0; i < m_timeDigits.size(); i++)
 	{
-		numberPosition.x = POSITION.x + (i * m_numberRECTs[0].right * SCALE * 1.1);
+		// 位置計算(右詰めにする場合は先頭の位置を調整)
+		numberPosition.x = POSITION.x + (i * m_numberRECTs[0].right * SCALE * 1.1f);
 
 		gameContext.spriteBatch.Draw(
 			gameContext.numbersTexture.Get(),
@@ -88,10 +87,9 @@ void Yokoyama::Timer::Render(GameContext& gameContext)
 			&m_numberRECTs[m_timeDigits[i]],
 			Colors::White,
 			0.0f,
-			SimpleMath::Vector2{ 0.0f,0.0f },
+			SimpleMath::Vector2{ 0.0f, 0.0f },
 			SCALE
 		);
-		
 	}
 
 	// 描画終了
