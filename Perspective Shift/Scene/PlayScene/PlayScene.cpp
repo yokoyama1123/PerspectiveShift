@@ -44,6 +44,9 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         {
             // フェードインしてよい
             m_canFadeIn = true;
+
+            //ベストタイムの更新
+            gameContext.saveLoad->SaveBestTime(gameContext.selectStage, m_timer->GetTime());
         }
         // Rキーが押されたら
         if (gameContext.keyboardTracker.pressed.R)

@@ -81,6 +81,29 @@ void Yokoyama::SaveLoad::SaveData(int stageNumber, const std::vector<Yokoyama::C
 }
 
 /// <summary>
+/// ベストタイムを保存する
+/// </summary>
+/// <param name="stageNumber">ステージナンバー<</param>
+/// <param name="time">クリアタイム</param>
+void Yokoyama::SaveLoad::SaveBestTime(int stageNumber, float time)
+{
+    //タイムを記録
+    if ( m_stages[stageNumber]["bestTime"] == 0 || m_stages[stageNumber]["bestTime"] >= time)
+    {
+        m_stages[stageNumber]["bestTime"] = time;
+    }
+
+    // ファイルに保存
+    std::string fileAddress = "Resources/StageData/Stage" + std::to_string(stageNumber) + ".json";
+    std::ofstream output_file(fileAddress);
+    if (output_file.is_open())
+    {
+        output_file << m_stages[stageNumber].dump(4);  // 4スペースでインデント
+        output_file.close();
+    }
+}
+
+/// <summary>
 /// ステージデータを返す
 /// </summary>
 /// <param name="stageNumber">ステージナンバー</param>

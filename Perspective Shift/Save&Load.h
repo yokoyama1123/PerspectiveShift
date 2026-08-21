@@ -19,6 +19,9 @@ namespace Yokoyama
 		// ステージデータを保存する
 		void SaveData(int stageNumber, const std::vector<Yokoyama::CellData>& cellDatas);
 
+		// ベストタイムを保存する
+		void SaveBestTime(int stageNumber, float time);
+
 		// ステージデータを返す
 		json* GetStagesJson(int stageNumber);
 
