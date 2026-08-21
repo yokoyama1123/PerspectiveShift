@@ -9,8 +9,6 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 	// 経過時間を取得する
 	float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
 
-	Imase::DebugRenderer& debugRenderer = gameContext.debugRenderer;
-	debugRenderer.DrawText({ 0.0f, 0.0f }, L"StageSelectScene");
 
 	// フェードアウトが終わったかつフェードインしない
 	if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
@@ -31,6 +29,7 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 			if (m_selectStage >= m_stageCount)m_selectStage = 0;
 		}
 		// 現在選択しているステージの表示
+		Imase::DebugRenderer& debugRenderer = gameContext.debugRenderer;
 		std::wstring stage = L"Stage:" + std::to_wstring(m_selectStage);
 		debugRenderer.DrawText({ Yokoyama::Screen::CENTER_X, Yokoyama::Screen::CENTER_Y }, stage);
 

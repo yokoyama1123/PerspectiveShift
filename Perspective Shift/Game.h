@@ -108,12 +108,12 @@ private:
     std::unique_ptr<DirectX::SoundEffect> m_titleBGM;
     // プレイシーンのBGM
     std::unique_ptr<DirectX::SoundEffect> m_palyBGM;
+    //　ジャンプの効果音
+    std::unique_ptr<DirectX::SoundEffect> m_jumpSound;
     //----------//
 
     // セーブロード
     std::unique_ptr<Yokoyama::SaveLoad> m_saveLoad;
-
-    // --------------------------------------------------------------------- //
 
 private:
     // 音量(1~0)

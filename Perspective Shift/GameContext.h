@@ -72,6 +72,8 @@ struct GameContext
     DirectX::SoundEffect* titleBGM;
     // プレイシーンのBGM
     DirectX::SoundEffect* playBGM;
+    // ジャンプの効果音
+    DirectX::SoundEffect* jumpSound;
     //----------//
 
     //セーブロード

@@ -58,7 +58,6 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
         m_up = SimpleMath::Vector3{ 0.0f, 1.0f, 0.0f };
         m_up = SimpleMath::Vector3::Transform(m_up, rt.Invert());
 
-
         // ƒJƒƒ‰ƒ‚[ƒh‚É‚æ‚é‚»‚ê‚¼‚ê‚Ì“®‚«
         if (!m_isCameraMode)
         {

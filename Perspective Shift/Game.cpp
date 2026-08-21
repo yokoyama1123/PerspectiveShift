@@ -135,6 +135,7 @@ void Game::Initialize(HWND window, int width, int height)
     //-----サウンドハンドル-----//
     m_titleBGM = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/TitleBGM.wav");
     m_palyBGM = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/PlayBGM.wav");
+    m_jumpSound = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Jump.wav");
     //----------//
 
     //-----セーブロードクラス-----//
@@ -170,6 +171,7 @@ void Game::Initialize(HWND window, int width, int height)
         m_cameramodeTexture,    // <- カメラモード時のテクスチャ
         m_titleBGM.get(),       // <- タイトルシーンのBGM
         m_palyBGM.get(),        // <- プレイシーンのBGM
+        m_jumpSound.get(),      // <- ジャンプの効果音
         std::move(m_saveLoad)   // <- セーブロードクラス
     );
 

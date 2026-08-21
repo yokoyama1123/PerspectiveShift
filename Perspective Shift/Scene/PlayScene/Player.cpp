@@ -104,6 +104,12 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
     {
         m_canJump = false;
         m_velocity.y += JUMP;
+
+        // ジャンプの効果音のインスタンス作成
+        m_jumpSoundInstance = gameContext.jumpSound->CreateInstance();
+
+        // 効果音の再生
+        m_jumpSoundInstance->Play(false);
     }
 
     // 重力を加算

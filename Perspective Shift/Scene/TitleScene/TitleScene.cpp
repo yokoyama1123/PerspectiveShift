@@ -11,9 +11,6 @@ void TitleScene::Update(Imase::ISceneController<SceneId>& sceneController, GameC
 
 	// 経過時間を取得する
 	float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
-
-	Imase::DebugRenderer& debugRenderer = gameContext.debugRenderer;
-	debugRenderer.DrawText({ 0.0f, 0.0f }, L"TitleScene");
 	
 	// タイトルロゴの更新
 	m_titleLogo->Update(elapsedTime);

@@ -58,6 +58,8 @@ namespace Yokoyama
         DirectX::SimpleMath::Vector3 m_velocity;
         // AABB（衝突判定用）
         DirectX::BoundingBox m_boundingBox;
+        // ジャンプの効果音のインスタンス
+        std::unique_ptr<DirectX::SoundEffectInstance> m_jumpSoundInstance;
         // プレイヤーの向き
         float m_angle;
         // elapsedTime
