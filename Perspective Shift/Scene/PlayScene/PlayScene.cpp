@@ -33,7 +33,7 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         // カメラ更新
         m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
 
-        // カメラモードでないかつデバッグモードでないならプレイヤー更新
+        // プレイヤー更新(カメラモードでないかつデバッグモードでない)
         if (!m_camera->GetCameraMode() && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
         // 当たり判定の更新

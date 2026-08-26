@@ -92,6 +92,9 @@
     <ClCompile Include="Scene\PlayScene\Timer.cpp">
       <Filter>Scene\PlayScene</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\ResultScene\StageClearText.cpp">
+      <Filter>Scene\ResultScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="Scene\PlayScene\Timer.h">
       <Filter>Scene\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\ResultScene\StageClearText.h">
+      <Filter>Scene\ResultScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

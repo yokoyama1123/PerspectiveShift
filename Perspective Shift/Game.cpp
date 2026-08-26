@@ -130,6 +130,8 @@ void Game::Initialize(HWND window, int width, int height)
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/numbers.dds", nullptr, m_numbersTexture.ReleaseAndGetAddressOf()));
     //カメラモード時のテクスチャの読み込み
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/cameramode.dds", nullptr, m_cameramodeTexture.ReleaseAndGetAddressOf()));
+    // ステージクリアのテクスチャの読み込み
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StageClear.dds", nullptr, m_stageClearTexture.ReleaseAndGetAddressOf()));
     //----------//
 
     //-----サウンドハンドル-----//
@@ -169,6 +171,7 @@ void Game::Initialize(HWND window, int width, int height)
         m_startTextTexture,     // <- スタートを促すテキストのテクスチャ
         m_numbersTexture,       // <- 数字のテクスチャ
         m_cameramodeTexture,    // <- カメラモード時のテクスチャ
+        m_stageClearTexture,    // <- ステージクリアのテクスチャ
         m_titleBGM.get(),       // <- タイトルシーンのBGM
         m_palyBGM.get(),        // <- プレイシーンのBGM
         m_jumpSound.get(),      // <- ジャンプの効果音

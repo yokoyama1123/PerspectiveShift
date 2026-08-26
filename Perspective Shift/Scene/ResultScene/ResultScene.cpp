@@ -12,6 +12,9 @@ void ResultScene::Update(Imase::ISceneController<SceneId>& sceneController, Game
     // デバッグモードをOFFにする
     gameContext.isDebugMode = false;
 
+    //ステージクリアの更新
+    m_stageClear->Update(elapsedTime);
+
 	// フェードアウトが終わったかつフェードインしない
     if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
     {
@@ -50,6 +53,8 @@ void ResultScene::Render(GameContext& gameContext)
 {
 	gameContext;
 
+    //ステージクリアの描画
+    m_stageClear->Render(gameContext);
 
     // フェードイン描画
     m_fadeInOut->FedeInRender(gameContext);
@@ -63,6 +68,9 @@ void ResultScene::OnEnter(GameContext& gameContext)
 	gameContext;
     // フェードインをしてはいけない
     m_canFadeIn = false;
+
+    //ステージクリアの作成
+    m_stageClear = std::make_unique<Yokoyama::StageClearText>(gameContext);
 
     // フェードインアウトを作成
     m_fadeInOut = std::make_unique<Yokoyama::FadeInOut>();

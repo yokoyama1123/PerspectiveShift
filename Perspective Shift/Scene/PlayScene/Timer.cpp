@@ -76,6 +76,7 @@ void Yokoyama::Timer::Render(GameContext& gameContext)
 
 	// タイムの描画
 	SimpleMath::Vector2 numberPosition{};
+	numberPosition.y = POSITION.y;
 	for (size_t i = 0; i < m_timeDigits.size(); i++)
 	{
 		// 位置計算(右詰めにする場合は先頭の位置を調整)

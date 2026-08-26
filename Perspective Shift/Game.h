@@ -101,6 +101,8 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_numbersTexture;
     //カメラモード時のテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cameramodeTexture;
+    //　ステージクリアのテクスチャ
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stageClearTexture;
     //----------//
 
     //-----サウンドハンドル-----//

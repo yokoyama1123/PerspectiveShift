@@ -65,6 +65,8 @@ struct GameContext
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& numbersTexture;
     // カメラモード時のテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& cameramodeTexture;
+    //ステージクリアのテクスチャ
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& stageClearTexture;
     //----------//
 
     //-----サウンド-----//
