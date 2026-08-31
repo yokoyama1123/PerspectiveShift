@@ -97,12 +97,14 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fadeInOutTexture;
     // スタートを促すテキストのテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_startTextTexture;
-    //数字のテクスチャ
+    // 数字のテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_numbersTexture;
-    //カメラモード時のテクスチャ
+    // カメラモード時のテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cameramodeTexture;
-    //　ステージクリアのテクスチャ
+    // ステージクリアのテクスチャ
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stageClearTexture;
+    // リザルトシーンの背景テクスチャ
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ResultBackgroundTexture;
     //----------//
 
     //-----サウンドハンドル-----//

@@ -95,6 +95,9 @@
     <ClCompile Include="Scene\ResultScene\StageClearText.cpp">
       <Filter>Scene\ResultScene</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\ResultScene\ResultBackground.cpp">
+      <Filter>Scene\ResultScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -205,6 +208,9 @@
       <Filter>Scene\PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ResultScene\StageClearText.h">
+      <Filter>Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\ResultScene\ResultBackground.h">
       <Filter>Scene\ResultScene</Filter>
     </ClInclude>
   </ItemGroup>

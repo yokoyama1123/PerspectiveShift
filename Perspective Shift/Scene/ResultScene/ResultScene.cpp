@@ -51,7 +51,8 @@ void ResultScene::Update(Imase::ISceneController<SceneId>& sceneController, Game
 // 描画
 void ResultScene::Render(GameContext& gameContext)
 {
-	gameContext;
+    //背景の描画
+    m_resultBackground->Render(gameContext);
 
     //ステージクリアの描画
     m_stageClear->Render(gameContext);
@@ -71,6 +72,9 @@ void ResultScene::OnEnter(GameContext& gameContext)
 
     //ステージクリアの作成
     m_stageClear = std::make_unique<Yokoyama::StageClearText>(gameContext);
+
+    // 背景の作成
+    m_resultBackground = std::make_unique<Yokoyama::ResultBackground>(gameContext);
 
     // フェードインアウトを作成
     m_fadeInOut = std::make_unique<Yokoyama::FadeInOut>();

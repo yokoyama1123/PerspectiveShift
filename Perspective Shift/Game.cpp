@@ -132,6 +132,8 @@ void Game::Initialize(HWND window, int width, int height)
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/cameramode.dds", nullptr, m_cameramodeTexture.ReleaseAndGetAddressOf()));
     // ステージクリアのテクスチャの読み込み
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StageClear.dds", nullptr, m_stageClearTexture.ReleaseAndGetAddressOf()));
+    // リザルトシーンの背景テクスチャの読み込み
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/ResultBackground.dds", nullptr, m_ResultBackgroundTexture.ReleaseAndGetAddressOf()));
     //----------//
 
     //-----サウンドハンドル-----//
@@ -153,29 +155,30 @@ void Game::Initialize(HWND window, int width, int height)
     //ゲームコンテキストの設定
     m_gameContext.emplace
     (
-        m_timer,                // <- StepTimer
-        *m_deviceResources,     // <- DeviceResources
-        m_keyboardTracker,      // <- KeyboardTracker
-        *m_states,              // <- CommonStates
-        *m_debugRenderer,       // <- DebugRenderer 
-        m_projection,           // <- プロゼクション行列
-        *m_spriteBatch,         // <-スプライトバッチ
-        0,                      // <-選択しているステージ
-        false,                  // <-デバッグモード
-        m_mPlayer.get(),        // <- プレイヤーのモデル
-        m_mStages,              // <-ステージ外枠のモデル
-        m_mGoal.get()  ,        // <- ゴールのモデル
-        m_textureHandle.c_str(),// <- 板ポリゴンのテクスチャハンドル
-        m_titlelogo,            // <- タイトルロゴのテクスチャ
-        m_fadeInOutTexture,     // <- フェードインアウトのテクスチャ
-        m_startTextTexture,     // <- スタートを促すテキストのテクスチャ
-        m_numbersTexture,       // <- 数字のテクスチャ
-        m_cameramodeTexture,    // <- カメラモード時のテクスチャ
-        m_stageClearTexture,    // <- ステージクリアのテクスチャ
-        m_titleBGM.get(),       // <- タイトルシーンのBGM
-        m_palyBGM.get(),        // <- プレイシーンのBGM
-        m_jumpSound.get(),      // <- ジャンプの効果音
-        std::move(m_saveLoad)   // <- セーブロードクラス
+        m_timer,                    // <- StepTimer
+        *m_deviceResources,         // <- DeviceResources
+        m_keyboardTracker,          // <- KeyboardTracker
+        *m_states,                  // <- CommonStates
+        *m_debugRenderer,           // <- DebugRenderer 
+        m_projection,               // <- プロゼクション行列
+        *m_spriteBatch,             // <-スプライトバッチ
+        0,                          // <-選択しているステージ
+        false,                      // <-デバッグモード
+        m_mPlayer.get(),            // <- プレイヤーのモデル
+        m_mStages,                  // <-ステージ外枠のモデル
+        m_mGoal.get()  ,            // <- ゴールのモデル
+        m_textureHandle.c_str(),    // <- 板ポリゴンのテクスチャハンドル
+        m_titlelogo,                // <- タイトルロゴのテクスチャ
+        m_fadeInOutTexture,         // <- フェードインアウトのテクスチャ
+        m_startTextTexture,         // <- スタートを促すテキストのテクスチャ
+        m_numbersTexture,           // <- 数字のテクスチャ
+        m_cameramodeTexture,        // <- カメラモード時のテクスチャ
+        m_stageClearTexture,        // <- ステージクリアのテクスチャ
+        m_ResultBackgroundTexture,  // <- リザルトシーンの背景テクスチャ
+        m_titleBGM.get(),           // <- タイトルシーンのBGM
+        m_palyBGM.get(),            // <- プレイシーンのBGM
+        m_jumpSound.get(),          // <- ジャンプの効果音
+        std::move(m_saveLoad)       // <- セーブロードクラス
     );
 
     //起動シーンの設定

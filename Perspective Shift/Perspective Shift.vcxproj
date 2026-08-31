@@ -214,6 +214,7 @@
     <ClInclude Include="Scene\PlayScene\PlayScene.h" />
     <ClInclude Include="Scene\PlayScene\Stage.h" />
     <ClInclude Include="Scene\PlayScene\Timer.h" />
+    <ClInclude Include="Scene\ResultScene\ResultBackground.h" />
     <ClInclude Include="Scene\ResultScene\ResultScene.h" />
     <ClInclude Include="Scene\ResultScene\StageClearText.h" />
     <ClInclude Include="Scene\SceneId.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="Scene\PlayScene\PlayScene.cpp" />
     <ClCompile Include="Scene\PlayScene\Stage.cpp" />
     <ClCompile Include="Scene\PlayScene\Timer.cpp" />
+    <ClCompile Include="Scene\ResultScene\ResultBackground.cpp" />
     <ClCompile Include="Scene\ResultScene\ResultScene.cpp" />
     <ClCompile Include="Scene\ResultScene\StageClearText.cpp" />
     <ClCompile Include="Scene\StageSelectScene\StageSelectScene.cpp" />

@@ -6,6 +6,7 @@
 
 #include"Scene/FadeInOut.h"
 #include"StageClearText.h"
+#include"ResultBackground.h"
 
 class ResultScene : public Imase::SceneBase<SceneId, GameContext>
 {
@@ -24,8 +25,11 @@ private:
     // フェードインをしてよい
     bool m_canFadeIn = false;
 
-	//ステージクリアテキスト
+	// ステージクリアテキスト
     std::unique_ptr<Yokoyama::StageClearText> m_stageClear;
+
+	//背景
+	std::unique_ptr<Yokoyama::ResultBackground> m_resultBackground;
 
     // フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
