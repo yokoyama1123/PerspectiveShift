@@ -9,7 +9,9 @@ using namespace DirectX;
 Yokoyama::Player::Player(DirectX::SimpleMath::Vector3 position)
     : m_position{ position }
     , m_velocity{}
-    , m_angle{0.0f}
+    , m_scale{SCALE}
+    , m_angle{}
+    , m_time{}
     , m_elapsedTime{}
     , m_canJump{false}
 {
@@ -40,7 +42,6 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
     // 速さを初期化
     m_velocity.x = 0.0f;
     m_velocity.z = 0.0f;
-
 
 
     // プレイヤーの方向ベクトルを計算
@@ -112,6 +113,9 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
         m_jumpSoundInstance->Play(false);
     }
 
+    //呼吸
+    BreathingMove(elapsedTime);
+
     // 重力を加算
     m_velocity.y += -GRAVITY * elapsedTime;
 
@@ -129,7 +133,7 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
 void Yokoyama::Player::Render(const GameContext& gameContext, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
 {
     // 行列を反映
-    m_world = SimpleMath::Matrix::CreateScale(SCALE) *          // 大きさ
+    m_world = SimpleMath::Matrix::CreateScale(m_scale) *          // 大きさ
               SimpleMath::Matrix::CreateRotationY(m_angle) *    // 回転
               SimpleMath::Matrix::CreateTranslation(m_position);// 移動
 
@@ -246,4 +250,28 @@ void Yokoyama::Player::Move(SimpleMath::Vector3 orientation, SimpleMath::Vector3
     m_velocity.x = -(SimpleMath::Vector3::Transform(forward, rotY) * SPEED).x;
     m_velocity.z = -(SimpleMath::Vector3::Transform(forward, rotY) * SPEED).z;
 
+}
+
+void Yokoyama::Player::BreathingMove(float elapsedTime)
+{
+    if (m_velocity == SimpleMath::Vector3::Zero)
+    {
+        // 時間を更新
+        m_time += elapsedTime;
+
+        if (m_time >= CYCLE)m_time = 0;
+
+        // サイン波で上下に移動（振幅20ピクセル、周期2秒）
+        float offset = AMPLITUDE * sinf(m_time * 2.0f * PI / CYCLE);
+
+        m_scale.x = SCALE + offset / 2;
+        m_scale.z = SCALE + offset / 2;
+        m_scale.y = SCALE - offset;
+    }
+    else
+    {
+        m_scale.x = SCALE;
+        m_scale.y = SCALE;
+        m_scale.z = SCALE;
+    }
 }

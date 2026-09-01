@@ -45,6 +45,12 @@ namespace Yokoyama
         static constexpr float GRAVITY = 50.0f;
         // ジャンプ力
         static constexpr float JUMP = 23.0f;
+        // 周期(秒数)
+        static constexpr float CYCLE = 2.0f;
+        // 振幅（移動幅）
+        static constexpr float AMPLITUDE = 0.1f;
+        // 円周率
+        static constexpr float PI = 3.14159265358979f;
         // 中心から各軸までの距離(当たり判定)
         static constexpr DirectX::SimpleMath::Vector3 DISTANCE = {1.0f, 1.0f, 1.0f};
         //----------//
@@ -56,12 +62,16 @@ namespace Yokoyama
         DirectX::SimpleMath::Vector3 m_position;
         // 速さ
         DirectX::SimpleMath::Vector3 m_velocity;
+        //現在の大きさ
+        DirectX::SimpleMath::Vector3 m_scale;
         // AABB（衝突判定用）
         DirectX::BoundingBox m_boundingBox;
         // ジャンプの効果音のインスタンス
         std::unique_ptr<DirectX::SoundEffectInstance> m_jumpSoundInstance;
         // プレイヤーの向き
         float m_angle;
+        //経過時間
+        float m_time;
         // elapsedTime
         float m_elapsedTime;
         // ジャンプできる
@@ -71,6 +81,8 @@ namespace Yokoyama
         //----- メンバー関数 -----//
         // プレイヤーの移動
         void Move(DirectX::SimpleMath::Vector3 orientation, DirectX::SimpleMath::Vector3 direction, DirectX::SimpleMath::Vector3 forward, float elapsedTime);
+        //プレイヤーの呼吸
+        void BreathingMove(float elapsedTime);
         //----------//
     };
 }
