@@ -129,6 +129,11 @@ void Yokoyama::Stage::SetCellPosition(int cellnumber, DirectX::SimpleMath::Vecto
     SetBoundingBox();
 }
 
+void Yokoyama::Stage::SetCellType(int cellnumber, Yokoyama::CellType type)
+{
+    m_cellDatas[cellnumber].type = type;
+}
+
 /// <summary>
 /// ‚»‚ÌƒZƒ‹‚ğíœ‚·‚é
 /// </summary>

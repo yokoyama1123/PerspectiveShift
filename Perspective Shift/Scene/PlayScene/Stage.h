@@ -53,6 +53,9 @@ namespace Yokoyama
         // セルの場所を変更する
         void SetCellPosition(int cellnumber, DirectX::SimpleMath::Vector3 stagePosition);
 
+        // セルのタイプを変更する
+        void SetCellType(int cellnumber, Yokoyama::CellType type);
+
         // そのセルを削除する
         void DeleteCell(int cellnumber);
 

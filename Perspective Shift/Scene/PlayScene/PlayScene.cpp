@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PlayScene.h"
-#include"imgui/imgui.h"
+#include"Imgui/imgui.h"
+#include"MagicEnum/magic_enum.hpp"
 #include "Windows.h"
 #include <memory>
 #include "SimpleMath.h"
@@ -110,6 +111,9 @@ void PlayScene::Render(GameContext& gameContext)
         // GUIの作成
         std::string GuiName = "Stage" + std::to_string(gameContext.selectStage) + "Data";
         ImGui::Begin(GuiName.c_str());
+
+        //セルデータの名前一覧
+
         // セルデータを表示
         for (size_t i = 0; i < m_stage->GetCellDatas().size(); i++)
         {
@@ -120,6 +124,19 @@ void PlayScene::Render(GameContext& gameContext)
                 ImGui::DragFloat3("pos", &cellposition.x);
                 // GUIでの変更を反映
                 m_stage->SetCellPosition(i, cellposition);
+
+                std::vector<const char*> typeNames;
+                for (auto name : magic_enum::enum_names<Yokoyama::CellType>()) 
+                {
+                    typeNames.emplace_back(name.data());
+                }
+
+                int selectType = static_cast<int>(m_stage->GetCellDatas()[i].type);
+
+                ImGui::Combo("Type", &selectType, typeNames.data(), static_cast<int>(typeNames.size()));
+
+                m_stage->SetCellType(i, static_cast<Yokoyama::CellType>(selectType));
+
                 // このセルを消すボタン
                 if (ImGui::Button("Delete"))
                 {

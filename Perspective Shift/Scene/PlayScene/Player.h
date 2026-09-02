@@ -47,7 +47,7 @@ namespace Yokoyama
         static constexpr float JUMP = 23.0f;
         // üŠú(•b”)
         static constexpr float CYCLE = 2.0f;
-        // U•iˆÚ“®•j
+        // U•(ˆÚ“®•)
         static constexpr float AMPLITUDE = 0.1f;
         // ‰~ü—¦
         static constexpr float PI = 3.14159265358979f;

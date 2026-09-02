@@ -113,7 +113,7 @@ void Yokoyama::Player::Update(const GameContext& gameContext, float elapsedTime,
         m_jumpSoundInstance->Play(false);
     }
 
-    //呼吸
+    // 呼吸
     BreathingMove(elapsedTime);
 
     // 重力を加算
@@ -254,24 +254,28 @@ void Yokoyama::Player::Move(SimpleMath::Vector3 orientation, SimpleMath::Vector3
 
 void Yokoyama::Player::BreathingMove(float elapsedTime)
 {
-    if (m_velocity == SimpleMath::Vector3::Zero)
+    //空中にいる
+    if (m_velocity.y != 0)
+    {
+        m_time = CYCLE * 0.75;
+
+        //縦に伸ばす
+        m_scale.x = SCALE - AMPLITUDE / 2;
+        m_scale.z = SCALE - AMPLITUDE / 2;
+        m_scale.y = SCALE + AMPLITUDE;
+    }
+    else
     {
         // 時間を更新
         m_time += elapsedTime;
 
         if (m_time >= CYCLE)m_time = 0;
 
-        // サイン波で上下に移動（振幅20ピクセル、周期2秒）
+        // サイン波により大きさを調節
         float offset = AMPLITUDE * sinf(m_time * 2.0f * PI / CYCLE);
 
         m_scale.x = SCALE + offset / 2;
         m_scale.z = SCALE + offset / 2;
         m_scale.y = SCALE - offset;
-    }
-    else
-    {
-        m_scale.x = SCALE;
-        m_scale.y = SCALE;
-        m_scale.z = SCALE;
     }
 }
