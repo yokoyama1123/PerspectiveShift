@@ -48,6 +48,8 @@ namespace Yokoyama
         //----- メンバー関数 -----//
         // AABBの当たり判定
         bool HitCheckAABB2AABB(const DirectX::BoundingBox& box1, const DirectX::BoundingBox& box2);
+        //線分と面の当たり判定
+        bool IntersectSegmentPlane(const DirectX::SimpleMath::Vector3& a, const DirectX::SimpleMath::Vector3& b, const DirectX::SimpleMath::Plane& p, DirectX::SimpleMath::Vector3* q);
         // ステージのブロックとプレイヤーの当たり判定と修正
         void PlayerBlockCollision();
         // プレイヤーとステージ外枠の当たり判定と位置修正

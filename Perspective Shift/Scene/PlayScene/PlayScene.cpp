@@ -35,7 +35,7 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
 
         // プレイヤー更新(カメラモードでないかつデバッグモードでない)
-        if (!m_camera->GetCameraMode() && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
+        if (m_camera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
         // 当たり判定の更新
         m_collision->Update(gameContext);
@@ -112,29 +112,38 @@ void PlayScene::Render(GameContext& gameContext)
         std::string GuiName = "Stage" + std::to_string(gameContext.selectStage) + "Data";
         ImGui::Begin(GuiName.c_str());
 
-        //セルデータの名前一覧
+        // セルデータの名前一覧
+        std::vector<const char*> typeNames;
+        for (auto name : magic_enum::enum_names<Yokoyama::CellType>())
+        {
+            typeNames.emplace_back(name.data());
+        }
 
         // セルデータを表示
         for (size_t i = 0; i < m_stage->GetCellDatas().size(); i++)
         {
+            //セルの位置を取得
             SimpleMath::Vector3 cellposition = m_stage->GetCellDatas()[i].stagePosition;
+            //セルの位置をint型で保存
+            int cellPosInt[3]{ cellposition.x ,cellposition.y ,cellposition.z };
+            //何番目のセルなのかを表示
             std::string cellnumber = "Cell" + std::to_string(i);
             if (ImGui::TreeNodeEx(cellnumber.c_str()))
             {
-                ImGui::DragFloat3("pos", &cellposition.x);
+                // 位置を表示
+                ImGui::DragInt3("Pos", &cellPosInt[0], 0.1f);
+
                 // GUIでの変更を反映
+                cellposition = { static_cast<float>(cellPosInt[0]),
+                                 static_cast<float>(cellPosInt[1]),
+                                 static_cast<float>(cellPosInt[2]) };
                 m_stage->SetCellPosition(i, cellposition);
 
-                std::vector<const char*> typeNames;
-                for (auto name : magic_enum::enum_names<Yokoyama::CellType>()) 
-                {
-                    typeNames.emplace_back(name.data());
-                }
-
+                // セルの現在のタイプを取得
                 int selectType = static_cast<int>(m_stage->GetCellDatas()[i].type);
-
+                // セルのタイプを表示
                 ImGui::Combo("Type", &selectType, typeNames.data(), static_cast<int>(typeNames.size()));
-
+                // GUIでの変更を反映
                 m_stage->SetCellType(i, static_cast<Yokoyama::CellType>(selectType));
 
                 // このセルを消すボタン

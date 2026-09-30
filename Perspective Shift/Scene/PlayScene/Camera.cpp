@@ -11,7 +11,7 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     , m_y{0}
     , m_yAngle{0.0f}
     , m_xAngle{0.0f}
-    , m_isCameraMode{false}
+    , m_cameraMode{Camera::CameraMode::Tracking}
     , m_view{}
     , m_eye{0.0f, 0.0f, 0.0f}
     , m_target{ 15.0f, 0.0f, -15.0f }
@@ -43,7 +43,14 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
         // カメラモードの切り替え(左コントロールキー)
         if (gameContext.keyboardTracker.pressed.LeftControl)
         {
-            m_isCameraMode = !m_isCameraMode;
+            if (m_cameraMode == Camera::CameraMode::Tracking)
+            {
+                m_cameraMode = Camera::CameraMode::FreeLook;
+            }
+            else if (m_cameraMode == Camera::CameraMode::FreeLook)
+            {
+                m_cameraMode = Camera::CameraMode::Tracking;
+            }
         }
 
         // カメラの回転を更新(相対モード：state.x, state.y は移動量)
@@ -58,12 +65,19 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
         m_up = SimpleMath::Vector3{ 0.0f, 1.0f, 0.0f };
         m_up = SimpleMath::Vector3::Transform(m_up, rt.Invert());
 
+        // カメラの位置の変数作成
+        SimpleMath::Vector3 eye(0.0f, 0.0f, 1.0f);
+        // ターゲットの位置の変数作成
+        SimpleMath::Vector3 lookDir(0.0f, 0.0f, -1.0f);
+        // ターゲットの位置を設定
+        lookDir = SimpleMath::Vector3::Transform(lookDir, rt.Invert());
+        // 見ている方向ベクトル（Y方向無視）
+        SimpleMath::Vector3 dir = lookDir;
+
         // カメラモードによるそれぞれの動き
-        if (!m_isCameraMode)
+        switch (m_cameraMode)
         {
-            // プレイヤー追従モード
-            // カメラの位置の変数作成
-            SimpleMath::Vector3 eye(0.0f, 0.0f, 1.0f);
+        case Yokoyama::Camera::CameraMode::Tracking:
             // カメラの位置を設定
             eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
             // プレイヤーから一定の距離離す
@@ -74,17 +88,8 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
 
             // ターゲットの位置の記録更新
             m_target = target;
-        }
-        else
-        {
-            // 自由移動モード
-            // ターゲットの位置の変数作成
-            SimpleMath::Vector3 lookDir(0.0f, 0.0f, -1.0f);
-            // ターゲットの位置を設定
-            lookDir = SimpleMath::Vector3::Transform(lookDir, rt.Invert());
-
-            // 見ている方向ベクトル（Y方向無視）
-            SimpleMath::Vector3 dir = lookDir;
+            break;
+        case Yokoyama::Camera::CameraMode::FreeLook:
             dir.y = 0;
             dir.Normalize();
 
@@ -93,6 +98,11 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
 
             // ターゲットの更新
             m_target = m_eye + lookDir;
+            break;
+        case Yokoyama::Camera::CameraMode::Switching:
+            break;
+        default:
+            break;
         }
     }
     // デバッグモード
@@ -145,7 +155,7 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
 
 void Yokoyama::Camera::Render(GameContext& gameContext)
 {
-    if (m_isCameraMode)
+    if (m_cameraMode == Camera::CameraMode::FreeLook)
     {
         //描画開始
         gameContext.spriteBatch.Begin(
@@ -214,6 +224,15 @@ DirectX::SimpleMath::Vector3 Yokoyama::Camera::GetTargetPosition() const
 }
 
 /// <summary>
+/// カメラの距離を返す関数
+/// </summary>
+/// <returns></returns>
+float Yokoyama::Camera::GetDefaultCameraDistance() const
+{
+    return DEFAULT_CAMERA_DISTANCE;
+}
+
+/// <summary>
 /// 速さ取得
 /// </summary>
 DirectX::SimpleMath::Vector3 Yokoyama::Camera::GetVelocity() const
@@ -232,9 +251,9 @@ DirectX::SimpleMath::Matrix Yokoyama::Camera::GetCameraMatrix() const
 /// <summary>
 /// カメラモードを返す関数
 /// </summary>
-bool Yokoyama::Camera::GetCameraMode() const
+Yokoyama::Camera::CameraMode Yokoyama::Camera::GetCameraMode() const
 {
-    return m_isCameraMode;
+    return m_cameraMode;
 }
 
 /// <summary>
@@ -243,7 +262,7 @@ bool Yokoyama::Camera::GetCameraMode() const
 /// <param name="position">設定したいカメラの位置</param>
 void Yokoyama::Camera::SetPosition(const DirectX::SimpleMath::Vector3& position)
 {
-    if(m_isCameraMode) m_target += position - m_eye;
+    if(m_cameraMode == Camera::CameraMode::FreeLook) m_target += position - m_eye;
     m_eye = position;
 }
 

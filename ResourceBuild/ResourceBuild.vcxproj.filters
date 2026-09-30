@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Models\Player.obj">
-      <Filter>Models</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Models\Stage0.obj">
       <Filter>Models</Filter>
     </MeshContentTask>
@@ -54,13 +51,5 @@
     <MeshContentTask Include="Models\Stage9.obj">
       <Filter>Models</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Models\Goal.obj">
-      <Filter>Models</Filter>
-    </MeshContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Textures\Cube.png">
-      <Filter>Textures</Filter>
-    </Image>
   </ItemGroup>
 </Project>

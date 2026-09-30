@@ -107,6 +107,19 @@ bool Yokoyama::Collision::HitCheckAABB2AABB(const BoundingBox& box1, const Bound
     return true;
 }
 
+bool Yokoyama::Collision::IntersectSegmentPlane(const DirectX::SimpleMath::Vector3& a, const DirectX::SimpleMath::Vector3& b, const DirectX::SimpleMath::Plane& p, DirectX::SimpleMath::Vector3* q)
+{
+    float t;
+    DirectX::SimpleMath::Vector3 ab = b - a;
+    t = (p.D() - p.Normal().Dot(a)) / p.Normal().Dot(ab);
+    if (t>= 0 && t < 1.0f)
+    {
+        (*q) = a + t * ab;
+        return true;
+    }
+    return false;
+}
+
 /// <summary>
 /// ステージのブロックとプレイヤーの当たり判定と修正
 /// </summary>
@@ -275,6 +288,9 @@ void Yokoyama::Collision::PlayerGoalCollision(bool isDebugMode)
 /// </summary>
 void Yokoyama::Collision::CameraStageCollision()
 {
+    auto cameraPos = m_pCamera->GetEyePosition();
+    SimpleMath::Plane plane{};
+    SimpleMath::Vector3 Intersection{};
     // ステージ外枠の六面の当たり判定を確認する
     for (size_t i = 0; i < m_pStage->GetWallData().size(); i++)
     {
@@ -285,9 +301,19 @@ void Yokoyama::Collision::CameraStageCollision()
             if (m_pCamera->GetEyePosition().x < m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x)
             {
                 // 位置の修正
-                auto pos = m_pCamera->GetEyePosition();
-                pos.x = m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x;
-                m_pCamera->SetPosition(pos);
+                cameraPos.x = m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x;
+                
+                //if (!m_pCamera->GetCameraMode())
+                //{
+                //    plane = SimpleMath::Plane(SimpleMath::Vector3(-1, 0, 0), m_pStage->GetWallData()[i].boundingBox.Center - SimpleMath::Vector3(m_pStage->GetWallData()[i].boundingBox.Extents.x, 0, 0));
+                //    IntersectSegmentPlane(m_pPlayer->GetPosition(), m_pCamera->GetEyePosition(), plane, &Intersection);
+                //    SimpleMath::Vector3 x = m_pCamera->GetEyePosition() - m_pPlayer->GetPosition();
+                //    x /= m_pCamera->GetDefaultCameraDistance();
+                //    x *= SimpleMath::Vector3::Distance(m_pPlayer->GetPosition(), Intersection);
+                //    cameraPos = m_pPlayer->GetPosition() + x;
+                //}
+
+                m_pCamera->SetPosition(cameraPos);
                 // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
@@ -296,9 +322,11 @@ void Yokoyama::Collision::CameraStageCollision()
             if (m_pCamera->GetEyePosition().x > m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x)
             {
                 // 位置の修正
-                auto pos = m_pCamera->GetEyePosition();
-                pos.x = m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x;
-                m_pCamera->SetPosition(pos);
+                cameraPos.x = m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x;
+                m_pCamera->SetPosition(cameraPos);
+
+                plane = SimpleMath::Plane{ SimpleMath::Vector3(1, 0, 0), m_pStage->GetWallData()[i].boundingBox.Center + SimpleMath::Vector3(m_pStage->GetWallData()[i].boundingBox.Extents.x, 0, 0) };
+
                 // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
@@ -307,9 +335,11 @@ void Yokoyama::Collision::CameraStageCollision()
             if (m_pCamera->GetEyePosition().y < m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y)
             {
                 // 位置の修正
-                auto pos = m_pCamera->GetEyePosition();
-                pos.y = m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y;
-                m_pCamera->SetPosition(pos);
+                cameraPos.y = m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y;
+                m_pCamera->SetPosition(cameraPos);
+
+                plane = SimpleMath::Plane(SimpleMath::Vector3(0, -1, 0), m_pStage->GetWallData()[i].boundingBox.Center - SimpleMath::Vector3(0, m_pStage->GetWallData()[i].boundingBox.Extents.y, 0));
+
                 // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
@@ -318,9 +348,11 @@ void Yokoyama::Collision::CameraStageCollision()
             if (m_pCamera->GetEyePosition().y > m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y)
             {
                 // 位置の修正
-                auto pos = m_pCamera->GetEyePosition();
-                pos.y = m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y;
-                m_pCamera->SetPosition(pos);
+                cameraPos.y = m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y;
+                m_pCamera->SetPosition(cameraPos);
+
+                plane = SimpleMath::Plane(SimpleMath::Vector3(0, 1, 0), m_pStage->GetWallData()[i].boundingBox.Center + SimpleMath::Vector3(0, m_pStage->GetWallData()[i].boundingBox.Extents.y, 0));
+
                 // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
@@ -329,9 +361,11 @@ void Yokoyama::Collision::CameraStageCollision()
             if (m_pCamera->GetEyePosition().z < m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z)
             {
                 // 位置の修正
-                auto pos = m_pCamera->GetEyePosition();
-                pos.z = m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z;
-                m_pCamera->SetPosition(pos);
+                cameraPos.z = m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z;
+                m_pCamera->SetPosition(cameraPos);
+
+                plane = SimpleMath::Plane(SimpleMath::Vector3(0, 0, -1), m_pStage->GetWallData()[i].boundingBox.Center - SimpleMath::Vector3(0, 0, m_pStage->GetWallData()[i].boundingBox.Extents.z));
+
                 // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }
@@ -340,9 +374,11 @@ void Yokoyama::Collision::CameraStageCollision()
             if (m_pCamera->GetEyePosition().z > m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z)
             {
                 // 位置の修正
-                auto pos = m_pCamera->GetEyePosition();
-                pos.z = m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z;
-                m_pCamera->SetPosition(pos);
+                cameraPos.z = m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z;
+                m_pCamera->SetPosition(cameraPos);
+
+                plane = SimpleMath::Plane(SimpleMath::Vector3(0, 0, 1), m_pStage->GetWallData()[i].boundingBox.Center + SimpleMath::Vector3(0, 0, m_pStage->GetWallData()[i].boundingBox.Extents.z));
+
                 // 当たった壁を緑色にする
                 if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
             }

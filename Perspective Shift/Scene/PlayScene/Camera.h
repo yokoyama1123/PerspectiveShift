@@ -7,6 +7,13 @@ namespace Yokoyama
     class Camera
     {
     public:
+        enum class CameraMode
+        {
+            Tracking,   //プレイヤー追従
+            FreeLook,   //独立
+            Switching,  //変化中
+        };
+
         // コンストラクタ
         Camera(int windowWidth, int windowHeight);
         // デストラクタ
@@ -23,6 +30,9 @@ namespace Yokoyama
     
         // 注視点取得
         DirectX::SimpleMath::Vector3 GetTargetPosition() const;
+
+        //カメラの距離取得
+        float GetDefaultCameraDistance()const;
     
         // 速さ取得
         DirectX::SimpleMath::Vector3 GetVelocity()const;
@@ -30,8 +40,8 @@ namespace Yokoyama
         // ビュー行列の取得関数
         DirectX::SimpleMath::Matrix GetCameraMatrix() const;
 
-        // カメラモードかどうか
-        bool GetCameraMode() const;
+        // カメラモード
+        Camera::CameraMode GetCameraMode() const;
 
         // 位置を設定
         void SetPosition(const DirectX::SimpleMath::Vector3& position);
@@ -74,10 +84,10 @@ namespace Yokoyama
         float m_yAngle;
         // 縦回転
         float m_xAngle;
-        // カメラモードである
-        bool m_isCameraMode;
-        // 前回のコントロールキー状態（トグル用）
+        // 前回のコントロールキー状態
         bool m_prevControlPressed;
+        // カメラのモード
+        Camera::CameraMode m_cameraMode;
         // 生成されたビュー行列
         DirectX::SimpleMath::Matrix m_view;
         // 視点
