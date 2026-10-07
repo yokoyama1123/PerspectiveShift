@@ -184,7 +184,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         }
         else if (m_cameraMode == Camera::CameraMode::FreeLook)
         {
-            m_cameraMode = Camera::CameraMode::Tracking;
+            m_cameraMode = Camera::CameraMode::Switching;
         }
     }
 
@@ -235,6 +235,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         m_target = m_eye + lookDir;
         break;
     case Yokoyama::Camera::CameraMode::Switching:
+        m_cameraMode = Camera::CameraMode::Tracking;
         break;
     default:
         break;

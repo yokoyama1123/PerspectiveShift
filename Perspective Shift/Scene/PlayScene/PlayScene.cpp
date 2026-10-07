@@ -69,14 +69,14 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
     else
     {
         // フェードアウト更新
-        m_fadeInOut->FedeOutUpdate(elapsedTime, 1.0f, m_playBGMInstance.get());
+        m_fadeInOut->FedeOutUpdate(elapsedTime, m_FadeOutTime, m_playBGMInstance.get());
     }
 
     // フェードインしてよい
     if (m_canFadeIn)
     {
         // フェードイン更新
-        m_fadeInOut->FedeInUpdate(elapsedTime, 1.0f, m_playBGMInstance.get());
+        m_fadeInOut->FedeInUpdate(elapsedTime, m_FadeInTime, m_playBGMInstance.get());
     }
 
     // フェードインし終わった

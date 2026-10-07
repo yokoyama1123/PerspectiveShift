@@ -28,9 +28,9 @@ namespace Yokoyama
 		// ステージの位置
 		static constexpr DirectX::SimpleMath::Vector3 STAGEPOSITION = { -15,0,15 };
 		// カメラの位置
-		static constexpr DirectX::SimpleMath::Vector3 EYE = { 0,18,15 };
+		static constexpr DirectX::SimpleMath::Vector3 EYE = { 0,15,15 };
 		// ターゲットの位置
-		static constexpr DirectX::SimpleMath::Vector3 TARGET = { EYE.x, EYE.y - 0.3f, EYE.z - 1.0f };
+		static constexpr DirectX::SimpleMath::Vector3 TARGET = { EYE.x, EYE.y, EYE.z - 1.0f };
 		//----------//
 
 		//----- メンバー変数 -----//

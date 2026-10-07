@@ -53,14 +53,14 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 	else
 	{
 		// フェードアウト更新
-        m_fadeInOut->FedeOutUpdate(elapsedTime, 1.0f, m_titleBGMInstance.get());
+        m_fadeInOut->FedeOutUpdate(elapsedTime, m_FadeOutTime, m_titleBGMInstance.get());
 	}
 
 	// フェードインしてよい
 	if (m_canFadeIn)
 	{
 		// フェードイン更新
-        m_fadeInOut->FedeInUpdate(elapsedTime, 1.0f, m_titleBGMInstance.get());
+        m_fadeInOut->FedeInUpdate(elapsedTime, m_FadeInTime, m_titleBGMInstance.get());
 	}
 	// ESCキーが押されたら
 	if (gameContext.keyboardTracker.pressed.Escape)

@@ -21,8 +21,15 @@ public:
 	void OnEnter(GameContext& gameContext) override;
 
 private:
+
+	//フェードインにかける時間
+	float m_FadeInTime = 1.0f;
+	
+	//フェードアウトにかける時間
+	float m_FadeOutTime = 1.0f;
+
 	// フェードインをしてよい
-    bool m_canFadeIn = false;
+	bool m_canFadeIn = false;
 
 	// フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;

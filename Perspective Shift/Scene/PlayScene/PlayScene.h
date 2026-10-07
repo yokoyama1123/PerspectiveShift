@@ -23,8 +23,12 @@ public:
 	void OnEnter(GameContext& gameContext) override;
 
 private:
-    // ビュー行列
-    DirectX::SimpleMath::Matrix m_view;
+
+    //フェードインにかける時間
+    float m_FadeInTime = 1.0f;
+
+    //フェードアウトにかける時間
+    float m_FadeOutTime = 1.0f;
 
     // フェードインをしてよい
     bool m_canFadeIn = false;
@@ -34,6 +38,9 @@ private:
 
     // 前のシーンへいく
     bool m_backScene = false;
+
+    // ビュー行列
+    DirectX::SimpleMath::Matrix m_view;
 
     // フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
