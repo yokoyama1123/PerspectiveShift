@@ -62,6 +62,9 @@ namespace Yokoyama
         // セルの追加
         void AddCell();
 
+        // ステージデータを登録
+        void RegistingStageData(const GameContext& gameContext);
+
     private:
         //----- 定数 -----//
         // ステージの大きさ(n倍)
@@ -91,8 +94,6 @@ namespace Yokoyama
         //----------//
 
         //----- メンバー関数 -----//
-        // ステージデータを登録
-        void RegistingStageData(const GameContext& gameContext);
         // 当たり判定の登録
         void SetBoundingBox();
         //----------//

@@ -9,6 +9,8 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 	// 経過時間を取得する
 	float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
 
+	//ステージの更新
+	m_stage->Update(gameContext, elapsedTime);
 
 	// フェードアウトが終わったかつフェードインしない
 	if (m_fadeInOut->GetFedeOutEnd() && !m_canFadeIn)
@@ -28,10 +30,12 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 			// ステージ最大の時に押したらステージ0に行く
 			if (m_selectStage >= m_stageCount)m_selectStage = 0;
 		}
-		// 現在選択しているステージの表示
-		Imase::DebugRenderer& debugRenderer = gameContext.debugRenderer;
-		std::wstring stage = L"Stage:" + std::to_wstring(m_selectStage);
-		debugRenderer.DrawText({ Yokoyama::Screen::CENTER_X, Yokoyama::Screen::CENTER_Y }, stage);
+
+		// 選んだステージを記録
+		gameContext.selectStage = m_selectStage;
+
+		//板ポリゴンの登録
+		m_stage->RegistingStageData(gameContext);
 
 		// スペースキーが押されたら
         if (gameContext.keyboardTracker.pressed.Space)
@@ -74,8 +78,6 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 	// フェードインし終わった
 	if (m_fadeInOut->GetFedeInEnd())
 	{
-		// 選んだステージを記録
-		gameContext.selectStage = m_selectStage;
 		// 次のシーンへ
 		if (!m_backScene) sceneController.RequestSwitch(SceneId::Play);
 		// 前のシーン
@@ -86,9 +88,11 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 // 描画
 void StageSelectScene::Render(GameContext& gameContext)
 {
-	gameContext;
+	// DirectX3Dのデバイスコンテキストを取得する
+	auto context = gameContext.deviceResources.GetD3DDeviceContext();
 
-
+	//ステージの描画
+	m_stage->Render(gameContext, m_view, gameContext.projection, context);
 
 	// フェードイン描画
     m_fadeInOut->FedeInRender(gameContext);
@@ -99,6 +103,12 @@ void StageSelectScene::Render(GameContext& gameContext)
 // シーン切り替え時に呼び出される関数
 void StageSelectScene::OnEnter(GameContext& gameContext)
 {
+	// DirectX3Dのデバイスを取得する
+	auto device = gameContext.deviceResources.GetD3DDevice();
+
+	// DirectX3Dのデバイスコンテキストを取得する
+	auto context = gameContext.deviceResources.GetD3DDeviceContext();
+
 	gameContext;
 	// フェードインをしてはいけない
     m_canFadeIn = false;
@@ -108,6 +118,12 @@ void StageSelectScene::OnEnter(GameContext& gameContext)
 
 	// 現在選択しているステージ
 	m_selectStage = gameContext.selectStage;
+
+	//ビュー行列の作成
+	m_view = SimpleMath::Matrix::CreateLookAt(EYE, TARGET, SimpleMath::Vector3::Up);
+
+	//ステージの作成
+	m_stage = std::make_unique<Yokoyama::Stage>(device, context, gameContext);
 
 	// フェードインアウトを作成
     m_fadeInOut = std::make_unique<Yokoyama::FadeInOut>();

@@ -5,6 +5,7 @@
 #include "../SceneId.h"
 
 #include"Scene/FadeInOut.h"
+#include"Scene/PlayScene/Stage.h"
 
 class StageSelectScene : public Imase::SceneBase<SceneId, GameContext>
 {
@@ -20,6 +21,11 @@ public:
 	void OnEnter(GameContext& gameContext) override;
 
 private:
+	// カメラの位置
+	static constexpr DirectX::SimpleMath::Vector3 EYE = { 0,30,0 };
+
+	// ターゲットの位置
+	static constexpr DirectX::SimpleMath::Vector3 TARGET = { 15, 15, -15 };
 
 	//フェードインにかける時間
 	float m_FadeInTime = 1.0f;
@@ -38,6 +44,12 @@ private:
 
 	// 現在選択しているステージ
 	int m_selectStage = 0;
+
+	// ビュー行列
+	DirectX::SimpleMath::Matrix m_view;
+
+	// ステージ
+	std::unique_ptr<Yokoyama::Stage> m_stage;
 
 	// フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
