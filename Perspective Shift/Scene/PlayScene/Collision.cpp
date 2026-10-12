@@ -107,6 +107,14 @@ bool Yokoyama::Collision::HitCheckAABB2AABB(const BoundingBox& box1, const Bound
     return true;
 }
 
+/// <summary>
+/// 線分と面の当たり判定
+/// </summary>
+/// <param name="a">線分の始まり</param>
+/// <param name="b">線分の終わり</param>
+/// <param name="p">面</param>
+/// <param name="q">当たっている場所の座標</param>
+/// <returns>当たっていたらtrue</returns>
 bool Yokoyama::Collision::IntersectSegmentPlane(const DirectX::SimpleMath::Vector3& a, const DirectX::SimpleMath::Vector3& b, const DirectX::SimpleMath::Plane& p, DirectX::SimpleMath::Vector3* q)
 {
     float t;
@@ -225,7 +233,8 @@ void Yokoyama::Collision::PlayerStageCollision()
                 addpos.z -= m_pPlayer->GetVelocity().z;
                 m_pPlayer->SetPosition(addpos);
 
-                if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetWallData()[i].boundingBox))
+                //床との当たり判定は取らない
+                if (m_pStage->GetWallData()[i].type != Yokoyama::WallType::Ym && HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), m_pStage->GetWallData()[i].boundingBox))
                 {
                     // プレイヤーの位置修正(Y座標)
                     addpos.z += m_pPlayer->GetVelocity().z;

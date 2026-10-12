@@ -49,6 +49,17 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
             //ベストタイムの更新
             gameContext.saveLoad->SaveBestTime(gameContext.selectStage, m_timer->GetTime());
         }
+        //プレイヤーが落ちたらゲームオーバー
+        if (m_player->GetPosition().y <= DEATH_POSITION)
+        {
+            //フェードインしてよい
+            m_canFadeIn = true;
+            //前のシーンへ行く
+            m_backScene = true;
+            //フェードインの時間を変更
+            m_FadeInTime = DEATH_FADE_TIME;
+        }
+
         // Rキーが押されたら
         if (gameContext.keyboardTracker.pressed.R)
         {

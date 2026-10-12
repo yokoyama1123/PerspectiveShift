@@ -24,6 +24,12 @@ public:
 
 private:
 
+    //ゲームオーバーとなるY座標
+    static constexpr float DEATH_POSITION = -30.0f;
+
+    //ゲームオーバー時のフェードインの時間
+    static constexpr float DEATH_FADE_TIME = 2.0f;
+
     //フェードインにかける時間
     float m_FadeInTime = 1.0f;
 
