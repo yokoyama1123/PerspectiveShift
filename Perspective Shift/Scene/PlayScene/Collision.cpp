@@ -297,77 +297,85 @@ void Yokoyama::Collision::PlayerGoalCollision(bool isDebugMode)
 /// </summary>
 void Yokoyama::Collision::CameraStageCollision()
 {
-    auto cameraPos = m_pCamera->GetEyePosition();
-    SimpleMath::Vector3 Intersection{};
+    bool useLineClip = (m_pCamera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking);
+    constexpr float margin = 0.3f;   // line clip 方式の余白(クランプ方式は0)
+    const auto& walls = m_pStage->GetWallData();
 
-    // ステージ外枠の六面の当たり判定を確認する
-    for (size_t i = 0; i < m_pStage->GetWallData().size(); i++)
-    {
-        // どの面に当たったか
-        switch (m_pStage->GetWallData()[i].type)
+    auto eye = m_pCamera->GetEyePosition();
+    auto pivot = m_pCamera->GetTargetPosition();
+    auto d = eye - pivot;
+
+    auto at = [](SimpleMath::Vector3& v, int axis) -> float&
         {
-        case Yokoyama::WallType::Xm:// Xマイナス方向の面
-            if (m_pCamera->GetEyePosition().x < m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x)
+            return axis == 0 ? v.x : axis == 1 ? v.y : v.z;
+        };
+
+    // axis: 0=X 1=Y 2=Z / sign: -1=マイナス側 +1=プラス側 / face: 内側の面の座標
+    auto info = [](const auto& w, int& axis, float& sign, float& face)
+        {
+            const auto& c = w.boundingBox.Center;
+            const auto& e = w.boundingBox.Extents;
+            switch (w.type)
             {
-                // 位置の修正
-                cameraPos.x = m_pStage->GetWallData()[i].boundingBox.Center.x + m_pStage->GetWallData()[i].boundingBox.Extents.x;
-                m_pCamera->SetPosition(cameraPos);
-                // 当たった壁を緑色にする
-                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
+            case WallType::Xm: axis = 0; sign = -1; face = c.x + e.x; break;
+            case WallType::Xp: axis = 0; sign = +1; face = c.x - e.x; break;
+            case WallType::Ym: axis = 1; sign = -1; face = c.y + e.y; break;
+            case WallType::Yp: axis = 1; sign = +1; face = c.y - e.y; break;
+            case WallType::Zm: axis = 2; sign = -1; face = c.z + e.z; break;
+            case WallType::Zp: axis = 2; sign = +1; face = c.z - e.z; break;
+            default:           axis = -1; break;
             }
-            break;
-        case Yokoyama::WallType::Xp:// Xプラス方向の面
-            if (m_pCamera->GetEyePosition().x > m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x)
+        };
+
+    // ---- ① 線分クリップ(Ym以外)----
+    if (useLineClip)
+    {
+        float t = 1.0f;
+        int hitIndex = -1;
+
+        for (size_t i = 0; i < walls.size(); i++)
+        {
+            if (walls[i].type == WallType::Ym) continue;   // Ymは②で処理
+
+            int axis; float sign, face;
+            info(walls[i], axis, sign, face);
+            if (axis < 0) continue;
+
+            face -= sign * margin;                          // 余白を内側へ
+            float p = at(pivot, axis);
+            float dd = at(d, axis);
+
+            if (dd * sign > 0.0f && (p + dd - face) * sign > 0.0f)
             {
-                // 位置の修正
-                cameraPos.x = m_pStage->GetWallData()[i].boundingBox.Center.x - m_pStage->GetWallData()[i].boundingBox.Extents.x;
-                m_pCamera->SetPosition(cameraPos);
-                // 当たった壁を緑色にする
-                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
+                float newT = (face - p) / dd;
+                if (newT < t) { t = newT; hitIndex = static_cast<int>(i); }
             }
-            break;
-        case Yokoyama::WallType::Ym:// Yマイナス方向の面
-            if (m_pCamera->GetEyePosition().y < m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y)
-            {
-                // 位置の修正
-                cameraPos.y = m_pStage->GetWallData()[i].boundingBox.Center.y + m_pStage->GetWallData()[i].boundingBox.Extents.y;
-                m_pCamera->SetPosition(cameraPos);
-                // 当たった壁を緑色にする
-                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
-            }
-            break;
-        case Yokoyama::WallType::Yp:// Yプラス方向の面
-            if (m_pCamera->GetEyePosition().y > m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y)
-            {
-                // 位置の修正
-                cameraPos.y = m_pStage->GetWallData()[i].boundingBox.Center.y - m_pStage->GetWallData()[i].boundingBox.Extents.y;
-                m_pCamera->SetPosition(cameraPos);
-                // 当たった壁を緑色にする
-                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
-            }
-            break;
-        case Yokoyama::WallType::Zm:// Zマイナス方向の面
-            if (m_pCamera->GetEyePosition().z < m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z)
-            {
-                // 位置の修正
-                cameraPos.z = m_pStage->GetWallData()[i].boundingBox.Center.z + m_pStage->GetWallData()[i].boundingBox.Extents.z;
-                m_pCamera->SetPosition(cameraPos);
-                // 当たった壁を緑色にする
-                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
-            }
-            break;
-        case Yokoyama::WallType::Zp:// Zプラス方向の面
-            if (m_pCamera->GetEyePosition().z > m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z)
-            {
-                // 位置の修正
-                cameraPos.z = m_pStage->GetWallData()[i].boundingBox.Center.z - m_pStage->GetWallData()[i].boundingBox.Extents.z;
-                m_pCamera->SetPosition(cameraPos);
-                // 当たった壁を緑色にする
-                if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pStage->GetWallData()[i].boundingBox, Colors::Green);
-            }
-            break;
-        default:
-            break;
+        }
+
+        if (hitIndex >= 0)
+        {
+            eye = pivot + d * std::max(t, 0.0f);
+            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(walls[hitIndex].boundingBox, Colors::Green);
         }
     }
+
+    // ---- ② 従来のクランプ(useLineClip=falseなら全面、trueならYmだけ)----
+    for (const auto& w : walls)
+    {
+        if (useLineClip && w.type != WallType::Ym) continue;
+
+        int axis; float sign, face;
+        info(w, axis, sign, face);
+        if (axis < 0) continue;
+
+        float& v = at(eye, axis);
+        if ((v - face) * sign > 0.0f)
+        {
+            v = face;
+            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(w.boundingBox, Colors::Green);
+        }
+    }
+
+    //位置の反映
+    m_pCamera->SetPosition(eye);
 }
