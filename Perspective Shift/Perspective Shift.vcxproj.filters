@@ -98,6 +98,9 @@
     <ClCompile Include="Scene\ResultScene\ResultBackground.cpp">
       <Filter>Scene\ResultScene</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\PlayScene\StageBlocks.cpp">
+      <Filter>Scene\PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -215,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="MagicEnum\magic_enum.hpp">
       <Filter>MagicEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\PlayScene\StageBlocks.h">
+      <Filter>Scene\PlayScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

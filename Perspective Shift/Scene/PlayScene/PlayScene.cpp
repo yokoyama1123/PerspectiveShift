@@ -34,6 +34,9 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         // カメラ更新
         m_camera->Update(gameContext, elapsedTime, m_player->GetCenterPosition());
 
+        //ステージ開始時のブロックの更新
+        m_stageBlocks->Update(elapsedTime, m_camera->GetEyePosition());
+
         // プレイヤー更新(カメラモードでないかつデバッグモードでない)
         if (m_camera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
@@ -189,6 +192,9 @@ void PlayScene::Render(GameContext& gameContext)
     // ステージの描画
     m_stage->Render(gameContext, m_view, gameContext.projection, context);
 
+    //ステージ開始時のブロックの描画
+    m_stageBlocks->Render(m_view, gameContext.projection);
+
     // 当たり判定の描画
     m_collision->Render(gameContext, m_view, gameContext.projection);
 
@@ -242,4 +248,7 @@ void PlayScene::OnEnter(GameContext& gameContext)
 
     // BGM再生(ループ)
     m_playBGMInstance->Play(true);
+
+    // ステージ開始時のブロックの作成
+    m_stageBlocks = std::make_unique<Yokoyama::StageBlocks>(context, m_stage->GetCellDatas());
 }

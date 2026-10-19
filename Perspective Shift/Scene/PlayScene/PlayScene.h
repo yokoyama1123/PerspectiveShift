@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Stage.h"
 #include "Timer.h"
+#include "StageBlocks.h"
 
 class PlayScene : public Imase::SceneBase<SceneId, GameContext>
 {
@@ -68,5 +69,8 @@ private:
 
     // BGMのインスタンス
     std::unique_ptr<DirectX::SoundEffectInstance> m_playBGMInstance;
+
+    //ステージ開始時にあるブロック
+    std::unique_ptr<Yokoyama::StageBlocks> m_stageBlocks;
 };
 

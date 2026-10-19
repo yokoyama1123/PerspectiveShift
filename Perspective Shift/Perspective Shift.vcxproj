@@ -214,6 +214,7 @@
     <ClInclude Include="Scene\PlayScene\Player.h" />
     <ClInclude Include="Scene\PlayScene\PlayScene.h" />
     <ClInclude Include="Scene\PlayScene\Stage.h" />
+    <ClInclude Include="Scene\PlayScene\StageBlocks.h" />
     <ClInclude Include="Scene\PlayScene\Timer.h" />
     <ClInclude Include="Scene\ResultScene\ResultBackground.h" />
     <ClInclude Include="Scene\ResultScene\ResultScene.h" />
@@ -278,6 +279,7 @@
     <ClCompile Include="Scene\PlayScene\Player.cpp" />
     <ClCompile Include="Scene\PlayScene\PlayScene.cpp" />
     <ClCompile Include="Scene\PlayScene\Stage.cpp" />
+    <ClCompile Include="Scene\PlayScene\StageBlocks.cpp" />
     <ClCompile Include="Scene\PlayScene\Timer.cpp" />
     <ClCompile Include="Scene\ResultScene\ResultBackground.cpp" />
     <ClCompile Include="Scene\ResultScene\ResultScene.cpp" />

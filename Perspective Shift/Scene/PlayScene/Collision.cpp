@@ -327,7 +327,7 @@ void Yokoyama::Collision::CameraStageCollision()
             }
         };
 
-    // ---- ① 線分クリップ(Ym以外)----
+    //① 線分クリップ(Ym以外)
     if (useLineClip)
     {
         float t = 1.0f;
@@ -359,7 +359,7 @@ void Yokoyama::Collision::CameraStageCollision()
         }
     }
 
-    // ---- ② 従来のクランプ(useLineClip=falseなら全面、trueならYmだけ)----
+    //② 従来のクランプ(useLineClip=falseなら全面、trueならYmだけ)
     for (const auto& w : walls)
     {
         if (useLineClip && w.type != WallType::Ym) continue;
