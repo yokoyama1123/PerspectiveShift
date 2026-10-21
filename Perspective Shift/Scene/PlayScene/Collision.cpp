@@ -297,20 +297,24 @@ void Yokoyama::Collision::PlayerGoalCollision(bool isDebugMode)
 /// </summary>
 void Yokoyama::Collision::CameraStageCollision()
 {
+    //線分クリップを使うか
     bool useLineClip = (m_pCamera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking);
-    constexpr float margin = 0.3f;   // line clip 方式の余白(クランプ方式は0)
-    const auto& walls = m_pStage->GetWallData();
+    //壁との余白
+    float margin = 0.1f;
+    //壁のデータ
+    const std::vector<Yokoyama::WallData>& walls = m_pStage->GetWallData();
 
-    auto eye = m_pCamera->GetEyePosition();
-    auto pivot = m_pCamera->GetTargetPosition();
-    auto d = eye - pivot;
+    SimpleMath::Vector3 eye = m_pCamera->GetEyePosition();      //目の場所
+    SimpleMath::Vector3 pivot = m_pCamera->GetTargetPosition(); //ターゲットの場所
+    SimpleMath::Vector3 d = eye - pivot;                        //目とターゲットの距離
 
+    //その軸の値を参照で返す
     auto at = [](SimpleMath::Vector3& v, int axis) -> float&
         {
             return axis == 0 ? v.x : axis == 1 ? v.y : v.z;
         };
 
-    // axis: 0=X 1=Y 2=Z / sign: -1=マイナス側 +1=プラス側 / face: 内側の面の座標
+    //壁の向き,軸,面の座標を返す
     auto info = [](const auto& w, int& axis, float& sign, float& face)
         {
             const auto& c = w.boundingBox.Center;
@@ -327,21 +331,22 @@ void Yokoyama::Collision::CameraStageCollision()
             }
         };
 
-    //① 線分クリップ(Ym以外)
+    //カメラモードがtrackingなら線分クリップで修正
     if (useLineClip)
     {
         float t = 1.0f;
         int hitIndex = -1;
 
+        //どの壁にぶつかっているか
         for (size_t i = 0; i < walls.size(); i++)
         {
-            if (walls[i].type == WallType::Ym) continue;   // Ymは②で処理
+            if (walls[i].type == WallType::Ym) continue;
 
             int axis; float sign, face;
             info(walls[i], axis, sign, face);
             if (axis < 0) continue;
 
-            face -= sign * margin;                          // 余白を内側へ
+            face -= sign * margin;
             float p = at(pivot, axis);
             float dd = at(d, axis);
 
@@ -352,6 +357,7 @@ void Yokoyama::Collision::CameraStageCollision()
             }
         }
 
+        //ぶつかっていた場合の位置修正
         if (hitIndex >= 0)
         {
             eye = pivot + d * std::max(t, 0.0f);
@@ -359,7 +365,7 @@ void Yokoyama::Collision::CameraStageCollision()
         }
     }
 
-    //② 従来のクランプ(useLineClip=falseなら全面、trueならYmだけ)
+    //押し出し補正
     for (const auto& w : walls)
     {
         if (useLineClip && w.type != WallType::Ym) continue;

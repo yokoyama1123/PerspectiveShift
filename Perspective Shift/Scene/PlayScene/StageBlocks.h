@@ -20,6 +20,8 @@ namespace Yokoyama
         //----- 定数 -----//
 		//ブロックの一辺の長さ
 		static constexpr float LENGTH = 2.9f;
+		//1秒に減るα値
+		static constexpr float ALPHA = 0.5;
         //----------//
 
         //----- メンバー変数 -----//

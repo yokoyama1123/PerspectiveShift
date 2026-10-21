@@ -38,7 +38,8 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         m_stageBlocks->Update(elapsedTime, m_camera->GetEyePosition());
 
         // プレイヤー更新(カメラモードでないかつデバッグモードでない)
-        if (m_camera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking && !gameContext.isDebugMode) m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
+        if (m_camera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking && !gameContext.isDebugMode)
+            m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
 
         // 当たり判定の更新
         m_collision->Update(gameContext);
