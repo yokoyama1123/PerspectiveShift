@@ -16,15 +16,23 @@ namespace Yokoyama
 		//描画
 		void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 
+		//現在のα値を返す
+		float GetAlpha();
+
+		//α値の変更
+		void SetAlpha(float alpha);
+
 	private:
         //----- 定数 -----//
 		//ブロックの一辺の長さ
 		static constexpr float LENGTH = 2.9f;
 		//1秒に減るα値
-		static constexpr float ALPHA = 0.5;
+		static constexpr float ALPHA = 0.3f;
         //----------//
 
         //----- メンバー変数 -----//
+		//現在のα値
+		float m_nowAlpha;
 		//ブロック
 		std::unique_ptr<DirectX::GeometricPrimitive> m_cube;
 		//ブロックの色

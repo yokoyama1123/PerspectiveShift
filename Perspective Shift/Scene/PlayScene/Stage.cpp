@@ -11,6 +11,7 @@ using namespace DirectX;
 /// <param name="pStates">コモンステート</param>
 /// <param name="textureHandle">板ポリゴンのテクスチャ</param>
 Yokoyama::Stage::Stage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const GameContext& gameContext)
+    :m_rotateCount{}
 {
     // 板ポリゴンの登録
     RegistingStageData(gameContext);
@@ -29,6 +30,9 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
     // ゴールの位置
     SimpleMath::Vector3 goalPosition{};
 
+    //カウントの加算
+    m_rotateCount += elapsedTime;
+
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
         if (m_cellDatas[i].type == CellType::Goal)
@@ -36,7 +40,14 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
             // ゴールの位置を設定
             goalPosition = m_cellDatas[i].boundingBox.Center;
         }
+        if (m_cellDatas[i].isRotate && m_rotateCount>=ROTATE_COUNT)
+        {
+            m_cellDatas[i].type = static_cast<Yokoyama::CellType>(static_cast<int>(m_cellDatas[i].type) + 1);
+            if (m_cellDatas[i].type == Yokoyama::CellType::None)m_cellDatas[i].type = Yokoyama::CellType::Xm;
+        }
     }
+
+    if (m_rotateCount >= ROTATE_COUNT) m_rotateCount = 0;
 
     // ワールド行列への反映
     m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
@@ -161,6 +172,7 @@ void Yokoyama::Stage::AddCell()
         { 
             {0,0,0},
             Yokoyama::CellType::Xm,
+            false,
             BoundingBox{{CellData::SIZE / 2, CellData::SIZE / 2, -CellData::SIZE / 2}, Yokoyama::CellData::DISTANCE}
         }
     );

@@ -1,107 +1,271 @@
 {
     "bestTime": 0,
     "blocks": [
-        {
-            "X": 4.0,
-            "Y": 0.0,
-            "Z": 4.0,
-            "type": "Player"
-        },
-        {
-            "X": 2.0,
-            "Y": 9.0,
-            "Z": 0.0,
-            "type": "Goal"
-        },
-        {
-            "X": 0.0,
-            "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
-        },
-        {
-            "X": 1.0,
-            "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
-        },
-        {
-            "X": 2.0,
-            "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
-        },
-        {
-            "X": 3.0,
-            "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
-        },
-        {
-            "X": 4.0,
-            "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
-        },
-        {
-            "X": 0.0,
-            "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
-        },
-        {
-            "X": 1.0,
-            "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
-        },
-        {
-            "X": 2.0,
-            "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
-        },
-        {
-            "X": 3.0,
-            "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
-        },
-        {
-            "X": 4.0,
-            "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
-        },
-        {
-            "X": 0.0,
-            "Y": 8.0,
-            "Z": 2.0,
-            "type": "Ym"
-        },
-        {
-            "X": 1.0,
-            "Y": 8.0,
-            "Z": 2.0,
-            "type": "Ym"
-        },
-        {
-            "X": 2.0,
-            "Y": 8.0,
-            "Z": 2.0,
-            "type": "Ym"
-        },
-        {
-            "X": 3.0,
-            "Y": 8.0,
-            "Z": 2.0,
-            "type": "Ym"
-        },
-        {
-            "X": 4.0,
-            "Y": 8.0,
-            "Z": 2.0,
-            "type": "Ym"
-        }
+      {
+        "X": 9.0,
+        "Y": 1.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Player"
+      },
+      {
+        "X": 9.0,
+        "Y": 9.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Goal"
+      },
+      {
+        "X": 9.0,
+        "Y": 8.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 9.0,
+        "Y": 8.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 8.0,
+        "Y": 8.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 8.0,
+        "Y": 8.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 5.0,
+        "Y": 7.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 5.0,
+        "Y": 7.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 4.0,
+        "Y": 7.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 4.0,
+        "Y": 7.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Ym"
+      },
+      {
+        "X": 1.0,
+        "Y": 6.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Xp"
+      },
+      {
+        "X": 0.0,
+        "Y": 6.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 0.0,
+        "Y": 6.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 1.0,
+        "Y": 6.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Ym"
+      },
+      {
+        "X": 0.0,
+        "Y": 5.0,
+        "Z": 4.0,
+        "Rotate": false,
+        "type": "Ym"
+      },
+      {
+        "X": 0.0,
+        "Y": 5.0,
+        "Z": 5.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 1.0,
+        "Y": 5.0,
+        "Z": 5.0,
+        "Rotate": false,
+        "type": "Ym"
+      },
+      {
+        "X": 1.0,
+        "Y": 5.0,
+        "Z": 4.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 0.0,
+        "Y": 4.0,
+        "Z": 8.0,
+        "Rotate": false,
+        "type": "Xp"
+      },
+      {
+        "X": 0.0,
+        "Y": 4.0,
+        "Z": 9.0,
+        "Rotate": false,
+        "type": "Ym"
+      },
+      {
+        "X": 1.0,
+        "Y": 4.0,
+        "Z": 8.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 1.0,
+        "Y": 4.0,
+        "Z": 9.0,
+        "Rotate": false,
+        "type": "Xm"
+      },
+      {
+        "X": 5.0,
+        "Y": 3.0,
+        "Z": 8.0,
+        "Rotate": false,
+        "type": "Xp"
+      },
+      {
+        "X": 5.0,
+        "Y": 3.0,
+        "Z": 9.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 4.0,
+        "Y": 3.0,
+        "Z": 8.0,
+        "Rotate": false,
+        "type": "Xm"
+      },
+      {
+        "X": 4.0,
+        "Y": 3.0,
+        "Z": 9.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 9.0,
+        "Y": 2.0,
+        "Z": 8.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 9.0,
+        "Y": 2.0,
+        "Z": 9.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 8.0,
+        "Y": 2.0,
+        "Z": 8.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 8.0,
+        "Y": 2.0,
+        "Z": 9.0,
+        "Rotate": false,
+        "type": "Xp"
+      },
+      {
+        "X": 9.0,
+        "Y": 1.0,
+        "Z": 5.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 8.0,
+        "Y": 1.0,
+        "Z": 5.0,
+        "Rotate": false,
+        "type": "Xm"
+      },
+      {
+        "X": 9.0,
+        "Y": 1.0,
+        "Z": 4.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 8.0,
+        "Y": 1.0,
+        "Z": 4.0,
+        "Rotate": false,
+        "type": "Zp"
+      },
+      {
+        "X": 9.0,
+        "Y": 0.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Zm"
+      },
+      {
+        "X": 9.0,
+        "Y": 0.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 8.0,
+        "Y": 0.0,
+        "Z": 1.0,
+        "Rotate": false,
+        "type": "Yp"
+      },
+      {
+        "X": 8.0,
+        "Y": 0.0,
+        "Z": 0.0,
+        "Rotate": false,
+        "type": "Xm"
+      }
     ]
 }

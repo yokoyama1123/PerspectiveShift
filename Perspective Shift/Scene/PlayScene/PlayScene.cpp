@@ -37,9 +37,11 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         //ステージ開始時のブロックの更新
         m_stageBlocks->Update(elapsedTime, m_camera->GetEyePosition());
 
-        // プレイヤー更新(カメラモードでないかつデバッグモードでない)
-        if (m_camera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking && !gameContext.isDebugMode)
+        // プレイヤー更新
+        if (m_camera->GetCameraMode() == Yokoyama::Camera::CameraMode::Tracking && !gameContext.isDebugMode && m_stageBlocks->GetAlpha() <= 0)
+        {
             m_player->Update(gameContext, elapsedTime, m_camera->GetEyePosition());
+        }
 
         // 当たり判定の更新
         m_collision->Update(gameContext);
@@ -109,20 +111,12 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
 // 描画
 void PlayScene::Render(GameContext& gameContext)
 {
-	gameContext;
-
-    // DirectX3Dのデバイスコンテキストを取得する
-    auto context = gameContext.deviceResources.GetD3DDeviceContext();
-
-    // ビュー行列を設定
-    m_camera->SetCameraMatrix();
-
-    // ビュー行列を取得
-    m_view = m_camera->GetCameraMatrix();
-
     // デバッグモードならIMGUの表示
     if (gameContext.isDebugMode)
     {
+        //ゲーム開始時のブロックを削除
+        m_stageBlocks->SetAlpha(0.0f);
+
         // GUIの作成
         std::string GuiName = "Stage" + std::to_string(gameContext.selectStage) + "Data";
         ImGui::Begin(GuiName.c_str());
@@ -152,6 +146,15 @@ void PlayScene::Render(GameContext& gameContext)
                 cellposition = { static_cast<float>(cellPosInt[0]),
                                  static_cast<float>(cellPosInt[1]),
                                  static_cast<float>(cellPosInt[2]) };
+
+                //ステージ外に出ないよう修正
+                if (cellposition.x < 0)cellposition.x = 0;
+                if (cellposition.y < 0)cellposition.y = 0;
+                if (cellposition.z < 0)cellposition.z = 0;
+                if (cellposition.x > 9)cellposition.x = 9;
+                if (cellposition.y > 9)cellposition.y = 9;
+                if (cellposition.z > 9)cellposition.z = 9;
+
                 m_stage->SetCellPosition(i, cellposition);
 
                 // セルの現在のタイプを取得
@@ -186,6 +189,16 @@ void PlayScene::Render(GameContext& gameContext)
         // GUIでの変更を反映
         m_player->SetPosition(m_stage->GetPlayerSetPosition());
     }
+
+    // DirectX3Dのデバイスコンテキストを取得する
+    auto context = gameContext.deviceResources.GetD3DDeviceContext();
+
+    // ビュー行列を設定
+    m_camera->SetCameraMatrix();
+
+    // ビュー行列を取得
+    if (m_stageBlocks->GetAlpha() <= 0) m_view = m_camera->GetCameraMatrix();
+    else m_view = SimpleMath::Matrix::CreateLookAt(START_EYE, START_TARGET, SimpleMath::Vector3::Up);
 
     // プレイヤーの描画
     m_player->Render(gameContext, m_view, gameContext.projection);

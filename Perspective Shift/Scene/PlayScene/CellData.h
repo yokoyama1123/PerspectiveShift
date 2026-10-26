@@ -27,6 +27,9 @@ namespace Yokoyama
         // ‚»‚±‚É‚ ‚é‚à‚Ì
         Yokoyama::CellType type;
 
+        // Œü‚«‚ª•Ï‚í‚é‚©‚Ç‚¤‚©
+        bool isRotate;
+
         // AABBiÕ“Ë”»’è—pj
         DirectX::BoundingBox boundingBox;
 

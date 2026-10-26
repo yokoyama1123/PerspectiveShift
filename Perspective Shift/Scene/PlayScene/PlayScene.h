@@ -31,6 +31,12 @@ private:
     //ゲームオーバー時のフェードインの時間
     static constexpr float DEATH_FADE_TIME = 2.0f;
 
+    //開始時の目の位置
+    static constexpr DirectX::SimpleMath::Vector3 START_EYE = { 30, 30, -30 };
+
+    //開始時のターゲットの位置
+    static constexpr DirectX::SimpleMath::Vector3 START_TARGET = { 15, 0, -15 };
+
     //フェードインにかける時間
     float m_FadeInTime = 1.0f;
 

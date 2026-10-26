@@ -38,31 +38,31 @@ void Yokoyama::SaveLoad::SaveData(int stageNumber, const std::vector<Yokoyama::C
         switch (cellDatas[i].type)
         {
         case Yokoyama::CellType::Player:
-            idata["blocks"].push_back({ {"type","Player"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ { "type","Player" },{"Rotate",cellDatas[i].isRotate},{"X",cellDatas[i].stagePosition.x},{"Y",cellDatas[i].stagePosition.y},{"Z",cellDatas[i].stagePosition.z}});
             break;
         case Yokoyama::CellType::Goal:
-            idata["blocks"].push_back({ {"type","Goal"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Goal"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         case Yokoyama::CellType::Xm:
-            idata["blocks"].push_back({ {"type","Xm"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Xm"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         case Yokoyama::CellType::Xp:
-            idata["blocks"].push_back({ {"type","Xp"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Xp"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         case Yokoyama::CellType::Ym:
-            idata["blocks"].push_back({ {"type","Ym"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Ym"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         case Yokoyama::CellType::Yp:
-            idata["blocks"].push_back({ {"type","Yp"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Yp"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         case Yokoyama::CellType::Zm:
-            idata["blocks"].push_back({ {"type","Zm"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Zm"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         case Yokoyama::CellType::Zp:
-            idata["blocks"].push_back({ {"type","Zp"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","Zp"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         default:
-            idata["blocks"].push_back({ {"type","None"},{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
+            idata["blocks"].push_back({ {"type","None"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
             break;
         }
     }
@@ -121,6 +121,7 @@ json* Yokoyama::SaveLoad::GetStagesJson(int stageNumber)
 std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
 {
     std::vector<Yokoyama::CellData> celldatas{};
+    bool isRotate{ false };
 
     for (const auto& data : stage["blocks"])
     {
@@ -135,8 +136,10 @@ std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
         else if (data["type"] == "Zp")      type = Yokoyama::CellType::Zp;
         else if (data["type"] == "Player")  type = Yokoyama::CellType::Player;
         else if (data["type"] == "Goal")    type = Yokoyama::CellType::Goal;
+        
+        isRotate = data["Rotate"];
 
-        celldatas.push_back(CellData{ position, type, BoundingBox{{},Yokoyama::CellData::DISTANCE} });
+        celldatas.push_back(CellData{ position, type, isRotate, BoundingBox{{},Yokoyama::CellData::DISTANCE} });
     }
    
 	return celldatas;

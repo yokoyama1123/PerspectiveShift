@@ -71,6 +71,8 @@ namespace Yokoyama
         static constexpr float STAGESCALE = 10.0f;
         // ゴールの大きさ(n倍)
         static constexpr float GOALSCALE = 0.8f;
+        //回転の間隔(秒)
+        static constexpr float ROTATE_COUNT = 1.0f;
         // ステージ外枠の当たり判定
         std::vector<Yokoyama::WallData> WALL_DATA{
             {DirectX::BoundingBox{DirectX::SimpleMath::Vector3{-1, 3 * STAGESCALE / 2, -(3 * STAGESCALE / 2)},DirectX::SimpleMath::Vector3{1, 3 * STAGESCALE / 2, 3 * STAGESCALE / 2}}, WallType::Xm},
@@ -83,6 +85,8 @@ namespace Yokoyama
         //----------//
 
         //----- メンバー変数 -----//
+        //回転カウント
+        float m_rotateCount;
         // ステージのワールド行列
         DirectX::SimpleMath::Matrix m_worldStage;
         // ゴールのワールド行列
