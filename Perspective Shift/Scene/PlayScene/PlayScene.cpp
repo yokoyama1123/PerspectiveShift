@@ -135,6 +135,8 @@ void PlayScene::Render(GameContext& gameContext)
             SimpleMath::Vector3 cellposition = m_stage->GetCellDatas()[i].stagePosition;
             //セルの位置をint型で保存
             int cellPosInt[3]{ cellposition.x ,cellposition.y ,cellposition.z };
+            //回転の有無
+            bool isRotate = m_stage->GetCellDatas()[i].isRotate;
             //何番目のセルなのかを表示
             std::string cellnumber = "Cell" + std::to_string(i);
             if (ImGui::TreeNodeEx(cellnumber.c_str()))
@@ -142,7 +144,7 @@ void PlayScene::Render(GameContext& gameContext)
                 // 位置を表示
                 ImGui::DragInt3("Pos", &cellPosInt[0], 0.1f);
 
-                // GUIでの変更を反映
+                //float型に修正
                 cellposition = { static_cast<float>(cellPosInt[0]),
                                  static_cast<float>(cellPosInt[1]),
                                  static_cast<float>(cellPosInt[2]) };
@@ -155,6 +157,7 @@ void PlayScene::Render(GameContext& gameContext)
                 if (cellposition.y > 9)cellposition.y = 9;
                 if (cellposition.z > 9)cellposition.z = 9;
 
+                // GUIでの変更を反映
                 m_stage->SetCellPosition(i, cellposition);
 
                 // セルの現在のタイプを取得
@@ -163,6 +166,11 @@ void PlayScene::Render(GameContext& gameContext)
                 ImGui::Combo("Type", &selectType, typeNames.data(), static_cast<int>(typeNames.size()));
                 // GUIでの変更を反映
                 m_stage->SetCellType(i, static_cast<Yokoyama::CellType>(selectType));
+
+                //回転の有無の設定
+                ImGui::Checkbox("Rotate", &isRotate);
+                // GUIでの変更を反映
+                m_stage->SetIsRotate(i, isRotate);
 
                 // このセルを消すボタン
                 if (ImGui::Button("Delete"))

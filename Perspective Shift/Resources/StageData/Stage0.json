@@ -1,215 +1,215 @@
 {
-    "bestTime": 7.444747447967529,
+    "bestTime": 0,
     "blocks": [
         {
+            "Rotate": false,
             "X": 0.0,
             "Y": 1.0,
-          "Z": 0.0,
-            "Rotate": false,
+            "Z": 0.0,
             "type": "Player"
         },
-      {
-        "X": 9.0,
-        "Y": 1.0,
-        "Z": 9.0,
-        "Rotate": false,
-        "type": "Goal"
-      },
-      {
-        "X": 0.0,
-        "Y": 0.0,
-        "Z": 0.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 1.0,
-        "Y": 0.0,
-        "Z": 0.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 0.0,
-        "Y": 0.0,
-        "Z": 1.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 1.0,
-        "Y": 0.0,
-        "Z": 1.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 2.0,
-        "Y": 0.0,
-        "Z": 1.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 1.0,
-        "Y": 0.0,
-        "Z": 2.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 2.0,
-        "Y": 0.0,
-        "Z": 2.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 3.0,
-        "Y": 0.0,
-        "Z": 2.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 2.0,
-        "Y": 0.0,
-        "Z": 3.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 3.0,
-        "Y": 0.0,
-        "Z": 3.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 4.0,
-        "Y": 0.0,
-        "Z": 3.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 3.0,
-        "Y": 0.0,
-        "Z": 4.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 4.0,
-        "Y": 0.0,
-        "Z": 4.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 5.0,
-        "Y": 0.0,
-        "Z": 4.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 4.0,
-        "Y": 0.0,
-        "Z": 5.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 5.0,
-        "Y": 0.0,
-        "Z": 5.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 6.0,
-        "Y": 0.0,
-        "Z": 5.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 5.0,
-        "Y": 0.0,
-        "Z": 6.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 6.0,
-        "Y": 0.0,
-        "Z": 6.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 7.0,
-        "Y": 0.0,
-        "Z": 6.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 6.0,
-        "Y": 0.0,
-        "Z": 7.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 7.0,
-        "Y": 0.0,
-        "Z": 7.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 8.0,
-        "Y": 0.0,
-        "Z": 7.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 7.0,
-        "Y": 0.0,
-        "Z": 8.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 8.0,
-        "Y": 0.0,
-        "Z": 8.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 9.0,
-        "Y": 0.0,
-        "Z": 8.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 8.0,
-        "Y": 0.0,
-        "Z": 9.0,
-        "Rotate": false,
-        "type": "Yp"
-      },
-      {
-        "X": 9.0,
-        "Y": 0.0,
-        "Z": 9.0,
-        "Rotate": false,
-        "type": "Yp"
-      }
+        {
+            "Rotate": false,
+            "X": 9.0,
+            "Y": 1.0,
+            "Z": 9.0,
+            "type": "Goal"
+        },
+        {
+            "Rotate": false,
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 1.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 1.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 2.0,
+            "Y": 0.0,
+            "Z": 1.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 2.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 2.0,
+            "Y": 0.0,
+            "Z": 2.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 3.0,
+            "Y": 0.0,
+            "Z": 2.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 2.0,
+            "Y": 0.0,
+            "Z": 3.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 3.0,
+            "Y": 0.0,
+            "Z": 3.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 4.0,
+            "Y": 0.0,
+            "Z": 3.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 3.0,
+            "Y": 0.0,
+            "Z": 4.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 4.0,
+            "Y": 0.0,
+            "Z": 4.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 5.0,
+            "Y": 0.0,
+            "Z": 4.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 4.0,
+            "Y": 0.0,
+            "Z": 5.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 5.0,
+            "Y": 0.0,
+            "Z": 5.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 6.0,
+            "Y": 0.0,
+            "Z": 5.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 5.0,
+            "Y": 0.0,
+            "Z": 6.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 6.0,
+            "Y": 0.0,
+            "Z": 6.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 7.0,
+            "Y": 0.0,
+            "Z": 6.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 6.0,
+            "Y": 0.0,
+            "Z": 7.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 7.0,
+            "Y": 0.0,
+            "Z": 7.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 8.0,
+            "Y": 0.0,
+            "Z": 7.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 7.0,
+            "Y": 0.0,
+            "Z": 8.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 8.0,
+            "Y": 0.0,
+            "Z": 8.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 9.0,
+            "Y": 0.0,
+            "Z": 8.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 8.0,
+            "Y": 0.0,
+            "Z": 9.0,
+            "type": "Yp"
+        },
+        {
+            "Rotate": false,
+            "X": 9.0,
+            "Y": 0.0,
+            "Z": 9.0,
+            "type": "Yp"
+        }
     ]
 }

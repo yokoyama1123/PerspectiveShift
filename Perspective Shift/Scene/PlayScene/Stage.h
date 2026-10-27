@@ -56,6 +56,9 @@ namespace Yokoyama
         // セルのタイプを変更する
         void SetCellType(int cellnumber, Yokoyama::CellType type);
 
+        // セルの回転の有無を変更する
+        void SetIsRotate(int cellnumber, bool isRotate);
+
         // そのセルを削除する
         void DeleteCell(int cellnumber);
 
@@ -72,7 +75,7 @@ namespace Yokoyama
         // ゴールの大きさ(n倍)
         static constexpr float GOALSCALE = 0.8f;
         //回転の間隔(秒)
-        static constexpr float ROTATE_COUNT = 1.0f;
+        static constexpr float ROTATE_COUNT = 3.0f;
         // ステージ外枠の当たり判定
         std::vector<Yokoyama::WallData> WALL_DATA{
             {DirectX::BoundingBox{DirectX::SimpleMath::Vector3{-1, 3 * STAGESCALE / 2, -(3 * STAGESCALE / 2)},DirectX::SimpleMath::Vector3{1, 3 * STAGESCALE / 2, 3 * STAGESCALE / 2}}, WallType::Xm},

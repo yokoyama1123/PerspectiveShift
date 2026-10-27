@@ -151,6 +151,16 @@ void Yokoyama::Stage::SetCellType(int cellnumber, Yokoyama::CellType type)
 }
 
 /// <summary>
+/// セルの回転の有無を変更する
+/// </summary>
+/// <param name="cellnumber">どのセルか</param>
+/// <param name="isRotate">変更先のbool</param>
+void Yokoyama::Stage::SetIsRotate(int cellnumber, bool isRotate)
+{
+    m_cellDatas[cellnumber].isRotate = isRotate;
+}
+
+/// <summary>
 /// そのセルを削除する
 /// </summary>
 /// <param name="cellnumber">消したいセルの番号</param>
