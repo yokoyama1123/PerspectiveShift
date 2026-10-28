@@ -52,7 +52,7 @@ namespace Yokoyama
     private:
         //-----定数集-----//
         // カメラの距離
-        static constexpr float DEFAULT_CAMERA_DISTANCE = 6.0f;
+        static constexpr float DEFAULT_CAMERA_DISTANCE = 8.0f;
         // カメラの距離(デバッグモード時)
         static constexpr float DEBUG_CAMERA_DISTANCE = 10.0f;
         // カメラが移動できる角度
