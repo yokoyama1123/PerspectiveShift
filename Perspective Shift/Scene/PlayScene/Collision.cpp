@@ -133,78 +133,98 @@ bool Yokoyama::Collision::IntersectSegmentPlane(const DirectX::SimpleMath::Vecto
 /// </summary>
 void Yokoyama::Collision::PlayerBlockCollision()
 {
-    // ソートしたステージデータ
+    // ブロックの情報のみをコピーする
     std::vector<BoundingBox> sortBoxes{};
-    // ソートのための仮ボックス
-    BoundingBox tmp{};
-
-    // ステージデータをコピー
-    for (size_t i = 0; i < m_pStage->GetCellDatas().size(); i++)
+    for (const auto& cell : m_pStage->GetCellDatas())
     {
-        // ブロックの情報のみをコピーする
-        if ((m_pStage->GetCellDatas()[i].type != Yokoyama::CellType::Player) && (m_pStage->GetCellDatas()[i].type != Yokoyama::CellType::Goal))
+        if (!(cell.type == Yokoyama::CellType::Player) && !(cell.type == Yokoyama::CellType::Goal))
         {
-            sortBoxes.push_back(m_pStage->GetCellDatas()[i].boundingBox);
+            sortBoxes.push_back(cell.boundingBox);
         }
     }
 
     // ブロックが無かったら何もしない
-    if (sortBoxes.size() == 0)
-    {
-        return;
-    }
+    if (sortBoxes.empty()) return;
 
     // プレイヤーから近い順にソート
+    const SimpleMath::Vector3 playerCenter = m_pPlayer->GetCenterPosition();
     std::sort(sortBoxes.begin(), sortBoxes.end(),
-        [this](const auto& a, const auto& b) {
-            return SimpleMath::Vector3::Distance(a.Center, m_pPlayer->GetCenterPosition())
-                < SimpleMath::Vector3::Distance(b.Center, m_pPlayer->GetCenterPosition());
-        }
-    );
-
-    // 修正する移動量
-    SimpleMath::Vector3 addpos{};
-
-    // ステージデータの当たり判定の登録&当たっているこの判定&位置修正
-    for (size_t i = 0; i < sortBoxes.size(); i++)
-    {
-        // プレイヤーとブロックが当たっているか
-        if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), sortBoxes[i]))
+        [&playerCenter](const BoundingBox& a, const BoundingBox& b)
         {
-            // プレイヤーの位置修正(X座標)
-            addpos = m_pPlayer->GetPosition();
-            addpos.x -= m_pPlayer->GetVelocity().x;
-            m_pPlayer->SetPosition(addpos);
+            return SimpleMath::Vector3::DistanceSquared(a.Center, playerCenter)
+                < SimpleMath::Vector3::DistanceSquared(b.Center, playerCenter);
+        });
 
-            if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), sortBoxes[i]))
+    for (const BoundingBox& block : sortBoxes)
+    {
+        // プレイヤーの当たり判定を取得
+        const BoundingBox playerBox = m_pPlayer->GetBoundingBox();
+
+        // 当たっているか
+        if (!HitCheckAABB2AABB(playerBox, block))
+        {
+            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(block);
+            //当たっていなければ次のセルへ
+            continue;
+        }
+
+        // ブロック中心とプレイヤー中心の差を求める
+        const SimpleMath::Vector3 delta = SimpleMath::Vector3(playerBox.Center) - SimpleMath::Vector3(block.Center);
+
+        // 各軸のめり込み量を求める
+        const SimpleMath::Vector3 overlap(
+            (playerBox.Extents.x + block.Extents.x) - fabsf(delta.x),
+            (playerBox.Extents.y + block.Extents.y) - fabsf(delta.y),
+            (playerBox.Extents.z + block.Extents.z) - fabsf(delta.z));
+
+        // 接しているだけなら何もしない
+        if (overlap.x <= 0.0f || overlap.y <= 0.0f || overlap.z <= 0.0f)
+        {
+            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(block);
+            continue;
+        }
+
+        //現在のプレイヤーのPositionとVelocity
+        SimpleMath::Vector3 pos = m_pPlayer->GetPosition();
+        SimpleMath::Vector3 vel = m_pPlayer->GetVelocity();
+
+        // めり込みが最も小さい軸で押し出す
+        if (overlap.y <= overlap.x && overlap.y <= overlap.z)
+        {
+            //y座標の修正
+            if (delta.y > 0.0f)
             {
-                // プレイヤーの位置修正(Z座標)
-                addpos.x += m_pPlayer->GetVelocity().x;
-                addpos.z -= m_pPlayer->GetVelocity().z;
-                m_pPlayer->SetPosition(addpos);
-
-                if (HitCheckAABB2AABB(m_pPlayer->GetBoundingBox(), sortBoxes[i]))
-                {
-                    // プレイヤーの位置修正(Y座標)
-                    addpos.z += m_pPlayer->GetVelocity().z;
-                    addpos.y -= m_pPlayer->GetVelocity().y;
-                    m_pPlayer->SetPosition(addpos);
-
-                    // 地面に接している場合ジャンプができるようにする
-                    if (m_pPlayer->GetVelocity().y < 0) m_pPlayer->SetCanJump(true);
-                    // 垂直抗力
-                    m_pPlayer->SetVelocity(SimpleMath::Vector3{ m_pPlayer->GetVelocity().x, 0.0f, m_pPlayer->GetVelocity().z });
-                }
+                // プレイヤーがブロックの上
+                pos.y += overlap.y;
+                if (vel.y < 0.0f) m_pPlayer->SetCanJump(true);
             }
-
-            // 当たっているブロックとプレイヤーの当たり判定のを赤色にする
-            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox(), Colors::Red);
-            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(sortBoxes[i], Colors::Red);
+            else
+            {
+                // プレイヤーがブロックの下
+                pos.y -= overlap.y;
+            }
+            vel.y = 0.0f;   // 垂直抗力
+        }
+        else if (overlap.x <= overlap.z)
+        {
+            //x座標の修正
+            pos.x += (delta.x >= 0.0f) ? overlap.x : -overlap.x;
         }
         else
         {
-            // ブロックの当たり判定の登録
-            if (m_showCollision) m_collisionRenderer->AddBoundingVolume(sortBoxes[i]);
+            //z座標の修正
+            pos.z += (delta.z >= 0.0f) ? overlap.z : -overlap.z;
+        }
+
+        //修正を反映
+        m_pPlayer->SetPosition(pos);
+        m_pPlayer->SetVelocity(vel);
+
+        // 当たっているブロックとプレイヤーの当たり判定を赤色にする
+        if (m_showCollision)
+        {
+            m_collisionRenderer->AddBoundingVolume(m_pPlayer->GetBoundingBox(), Colors::Red);
+            m_collisionRenderer->AddBoundingVolume(block, Colors::Red);
         }
     }
 }

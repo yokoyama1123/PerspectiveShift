@@ -200,6 +200,8 @@ const DirectX::BoundingBox& Yokoyama::Player::GetBoundingBox()
 void Yokoyama::Player::SetPosition(const SimpleMath::Vector3& position)
 {
     m_position = position;
+    // 中心座標の更新
+    m_boundingBox.Center = GetCenterPosition();
 }
 
 /// <summary>
