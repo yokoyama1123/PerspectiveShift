@@ -60,8 +60,8 @@ void PlayScene::Update(Imase::ISceneController<SceneId>& sceneController, GameCo
         {
             //フェードインしてよい
             m_canFadeIn = true;
-            //前のシーンへ行く
-            m_backScene = true;
+            //リトライする
+            m_retry = true;
             //フェードインの時間を変更
             m_FadeInTime = DEATH_FADE_TIME;
         }

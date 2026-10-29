@@ -20,28 +20,28 @@
             "X": 9.0,
             "Y": 8.0,
             "Z": 1.0,
-            "type": "Yp"
+            "type": "Ym"
         },
         {
             "Rotate": true,
             "X": 9.0,
             "Y": 8.0,
             "Z": 0.0,
-            "type": "Yp"
+            "type": "Ym"
         },
         {
             "Rotate": true,
             "X": 8.0,
             "Y": 8.0,
             "Z": 1.0,
-            "type": "Yp"
+            "type": "Ym"
         },
         {
             "Rotate": true,
             "X": 8.0,
             "Y": 8.0,
             "Z": 0.0,
-            "type": "Yp"
+            "type": "Ym"
         },
         {
             "Rotate": false,
@@ -188,7 +188,7 @@
             "X": 9.0,
             "Y": 2.0,
             "Z": 8.0,
-            "type": "Zm"
+            "type": "Zp"
         },
         {
             "Rotate": false,
@@ -266,6 +266,34 @@
             "Y": 0.0,
             "Z": 0.0,
             "type": "Xm"
+        },
+        {
+            "Rotate": false,
+            "X": 9.0,
+            "Y": 3.0,
+            "Z": 8.0,
+            "type": "Zm"
+        },
+        {
+            "Rotate": false,
+            "X": 8.0,
+            "Y": 3.0,
+            "Z": 8.0,
+            "type": "Zm"
+        },
+        {
+            "Rotate": false,
+            "X": 7.0,
+            "Y": 2.0,
+            "Z": 9.0,
+            "type": "Xm"
+        },
+        {
+            "Rotate": false,
+            "X": 7.0,
+            "Y": 2.0,
+            "Z": 8.0,
+            "type": "Zm"
         }
     ]
 }
