@@ -9,6 +9,9 @@ void ResultScene::Update(Imase::ISceneController<SceneId>& sceneController, Game
     // 経過時間を取得する
     float elapsedTime = static_cast<float>(gameContext.timer.GetElapsedSeconds());
 
+    // ESCキーでプログラムを終了
+    if (gameContext.keyboardTracker.pressed.Escape) PostQuitMessage(0);
+
     // デバッグモードをOFFにする
     gameContext.isDebugMode = false;
 
@@ -44,7 +47,7 @@ void ResultScene::Update(Imase::ISceneController<SceneId>& sceneController, Game
     if (m_fadeInOut->GetFedeInEnd())
     {
         // 次のシーンへ
-        sceneController.RequestSwitch(SceneId::Title);
+        sceneController.RequestSwitch(SceneId::StageSelect);
     }
 }
 
