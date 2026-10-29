@@ -52,8 +52,9 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
     // ワールド行列への反映
     m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
 
-    m_worldGoal = SimpleMath::Matrix::CreateScale(GOALSCALE) * //大きさ
-                  SimpleMath::Matrix::CreateTranslation(goalPosition);//位置
+    m_worldGoal = SimpleMath::Matrix::CreateScale(GOALSCALE) *                               //大きさ
+                  SimpleMath::Matrix::CreateRotationY(gameContext.timer.GetTotalSeconds()) * //回転
+                  SimpleMath::Matrix::CreateTranslation(goalPosition);                       //位置
 }
 
 /// <summary>
