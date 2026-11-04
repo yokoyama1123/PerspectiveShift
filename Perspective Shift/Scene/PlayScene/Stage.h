@@ -94,6 +94,8 @@ namespace Yokoyama
         DirectX::SimpleMath::Matrix m_worldStage;
         // ゴールのワールド行列
         DirectX::SimpleMath::Matrix m_worldGoal;
+        // 外界のモデルのワールド行列
+        DirectX::SimpleMath::Matrix m_worldOutSideWorld;
         // どこに何があるかをまとめたやつ
         std::vector<CellData> m_cellDatas;
         // 板ポリゴン

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <MeshContentTask Include="Models\OutsideWorld.obj" />
     <MeshContentTask Include="Models\Stage0.obj" />
     <MeshContentTask Include="Models\Stage1.obj" />
     <MeshContentTask Include="Models\Stage2.obj" />

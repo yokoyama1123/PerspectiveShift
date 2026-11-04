@@ -86,6 +86,8 @@ private:
     std::vector<std::unique_ptr<DirectX::Model>> m_mStages;
     // ゴール
     std::unique_ptr<DirectX::Model> m_mGoal;
+    //外界
+    std::unique_ptr<DirectX::Model> m_mOutsideWorld;
     //----------//
 
     //-----テクスチャハンドル-----//

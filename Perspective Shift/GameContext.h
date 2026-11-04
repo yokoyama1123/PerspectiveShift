@@ -50,6 +50,8 @@ struct GameContext
     std::vector<std::unique_ptr<DirectX::Model>>& stages;
     // ゴールのモデル
     DirectX::Model* goalModel;
+    // 外界のモデル
+    DirectX::Model* outsideWorldModel;
     // ---------- //
 
     //-----テクスチャ-----//

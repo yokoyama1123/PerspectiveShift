@@ -18,6 +18,12 @@ Yokoyama::Stage::Stage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, con
 
     // 板ポリゴンの作成
     m_plane = std::make_unique<Yokoyama::Plane>(pDevice, pContext, &gameContext.commonStates, gameContext.textureHandle);
+
+    //ワールド行列の設定
+    m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
+
+    m_worldOutSideWorld = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
+
 }
 
 /// <summary>
@@ -49,9 +55,8 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
 
     if (m_rotateCount >= ROTATE_COUNT) m_rotateCount = 0;
 
-    // ワールド行列への反映
-    m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
 
+    // ワールド行列への反映
     m_worldGoal = SimpleMath::Matrix::CreateScale(GOALSCALE) *                               //大きさ
                   SimpleMath::Matrix::CreateRotationY(gameContext.timer.GetTotalSeconds()) * //回転
                   SimpleMath::Matrix::CreateTranslation(goalPosition);                       //位置
@@ -66,6 +71,15 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
 /// <param name="pContext">コンテキスト</param>
 void Yokoyama::Stage::Render(const GameContext& gameContext, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, ID3D11DeviceContext* pContext)
 {
+    // 外界のモデルの描画
+    gameContext.outsideWorldModel->Draw(
+        gameContext.deviceResources.GetD3DDeviceContext(),
+        gameContext.commonStates,
+        m_worldOutSideWorld,
+        view,
+        projection
+    );
+
      // ステージのモデルの描画
     gameContext.stages[gameContext.selectStage]->Draw(
         gameContext.deviceResources.GetD3DDeviceContext(),

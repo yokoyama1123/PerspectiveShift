@@ -51,5 +51,8 @@
     <MeshContentTask Include="Models\Stage9.obj">
       <Filter>Models</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Models\OutsideWorld.obj">
+      <Filter>Models</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

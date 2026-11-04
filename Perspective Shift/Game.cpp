@@ -103,7 +103,9 @@ void Game::Initialize(HWND window, int width, int height)
 
 
     // ----- モデルの読み込み ----- //
-    m_mPlayer = Model::CreateFromCMO(device, L"Resources/Models/Player.cmo", fx);
+    m_mOutsideWorld   = Model::CreateFromCMO(device, L"Resources/Models/OutsideWorld.cmo", fx);
+    m_mPlayer         = Model::CreateFromCMO(device, L"Resources/Models/Player.cmo", fx);
+    m_mGoal           = Model::CreateFromCMO(device, L"Resources/Models/Goal.cmo", fx);
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage0.cmo", fx));
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage1.cmo", fx));
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage2.cmo", fx));
@@ -114,7 +116,6 @@ void Game::Initialize(HWND window, int width, int height)
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage7.cmo", fx));
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage8.cmo", fx));
     m_mStages.push_back(Model::CreateFromCMO(device, L"Resources/Models/Stage9.cmo", fx));
-    m_mGoal   = Model::CreateFromCMO(device, L"Resources/Models/Goal.cmo", fx);
     // ---------- //
 
     //-----テクスチャのハンドル設定-----//
@@ -166,7 +167,8 @@ void Game::Initialize(HWND window, int width, int height)
         false,                      // <-デバッグモード
         m_mPlayer.get(),            // <- プレイヤーのモデル
         m_mStages,                  // <-ステージ外枠のモデル
-        m_mGoal.get()  ,            // <- ゴールのモデル
+        m_mGoal.get(),              // <- ゴールのモデル
+        m_mOutsideWorld.get(),      // <- 外界のモデル
         m_textureHandle.c_str(),    // <- 板ポリゴンのテクスチャハンドル
         m_titlelogo,                // <- タイトルロゴのテクスチャ
         m_fadeInOutTexture,         // <- フェードインアウトのテクスチャ
@@ -256,6 +258,9 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
     context;
+
+    //背景色を黒に設定
+    context->ClearRenderTargetView(m_deviceResources->GetRenderTargetView(), Colors::Black);
 
     // デバッグ関連の文字列などを描画
     m_debugRenderer->Render(context, m_states.get());
