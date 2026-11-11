@@ -1,5 +1,6 @@
 #include"pch.h"
 #include "Save&Load.h"
+#include"MagicEnum/magic_enum.hpp"
 #include<fstream>
 #include<filesystem>
 
@@ -35,36 +36,10 @@ void Yokoyama::SaveLoad::SaveData(int stageNumber, const std::vector<Yokoyama::C
     // セルのタイプと座標を保存
     for (size_t i = 0; i < cellDatas.size(); i++)
     {
-        switch (cellDatas[i].type)
-        {
-        case Yokoyama::CellType::Player:
-            idata["blocks"].push_back({ { "type","Player" },{"Rotate",cellDatas[i].isRotate},{"X",cellDatas[i].stagePosition.x},{"Y",cellDatas[i].stagePosition.y},{"Z",cellDatas[i].stagePosition.z}});
-            break;
-        case Yokoyama::CellType::Goal:
-            idata["blocks"].push_back({ {"type","Goal"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        case Yokoyama::CellType::Xm:
-            idata["blocks"].push_back({ {"type","Xm"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        case Yokoyama::CellType::Xp:
-            idata["blocks"].push_back({ {"type","Xp"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        case Yokoyama::CellType::Ym:
-            idata["blocks"].push_back({ {"type","Ym"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        case Yokoyama::CellType::Yp:
-            idata["blocks"].push_back({ {"type","Yp"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        case Yokoyama::CellType::Zm:
-            idata["blocks"].push_back({ {"type","Zm"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        case Yokoyama::CellType::Zp:
-            idata["blocks"].push_back({ {"type","Zp"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        default:
-            idata["blocks"].push_back({ {"type","None"},{ "Rotate",cellDatas[i].isRotate },{"X",cellDatas[i].stagePosition.x}, {"Y",cellDatas[i].stagePosition.y}, {"Z",cellDatas[i].stagePosition.z} });
-            break;
-        }
+        //タイプをstring型に修正して取得
+        auto type = magic_enum::enum_name<Yokoyama::CellType>(cellDatas[i].type);
+        //セルを保存
+        idata["blocks"].push_back({ { "type",type },{"Rotate",cellDatas[i].isRotate},{"X",cellDatas[i].stagePosition.x},{"Y",cellDatas[i].stagePosition.y},{"Z",cellDatas[i].stagePosition.z}});
     }
 
     // ファイルに保存
@@ -125,20 +100,20 @@ std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
 
     for (const auto& data : stage["blocks"])
     {
+        //位置を取得
         SimpleMath::Vector3 position = { data["X"], data["Y"], data["Z"] };
-        Yokoyama::CellType type{};
 
-        if (data["type"] == "Xm")           type = Yokoyama::CellType::Xm;
-        else if (data["type"] == "Xp")      type = Yokoyama::CellType::Xp;
-        else if (data["type"] == "Ym")      type = Yokoyama::CellType::Ym;
-        else if (data["type"] == "Yp")      type = Yokoyama::CellType::Yp;
-        else if (data["type"] == "Zm")      type = Yokoyama::CellType::Zm;
-        else if (data["type"] == "Zp")      type = Yokoyama::CellType::Zp;
-        else if (data["type"] == "Player")  type = Yokoyama::CellType::Player;
-        else if (data["type"] == "Goal")    type = Yokoyama::CellType::Goal;
+        //タイプを取得
+        Yokoyama::CellType type;//タイプを入れる変数
+        //タイプをstring型で取得
+        std::string a = data["type"];
+        //string型からCellTypeに変換して保存
+        type = magic_enum::enum_cast<Yokoyama::CellType>(a).value_or(Yokoyama::CellType::Xm);
         
+        //回転可かを取得
         isRotate = data["Rotate"];
 
+        //上記を保存
         celldatas.push_back(CellData{ position, type, isRotate, BoundingBox{{},Yokoyama::CellData::DISTANCE} });
     }
    
