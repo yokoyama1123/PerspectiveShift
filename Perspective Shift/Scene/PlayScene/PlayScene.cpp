@@ -128,6 +128,13 @@ void PlayScene::Render(GameContext& gameContext)
             typeNames.emplace_back(name.data());
         }
 
+        //回転軸の名前一覧
+        std::vector<const char*> axisNames;
+        for (auto name : magic_enum::enum_names<Yokoyama::CubeEdgeAxis>())
+        {
+            axisNames.emplace_back(name.data());
+        }
+
         // セルデータを表示
         for (size_t i = 0; i < m_stage->GetCellDatas().size(); i++)
         {
@@ -135,8 +142,6 @@ void PlayScene::Render(GameContext& gameContext)
             SimpleMath::Vector3 cellposition = m_stage->GetCellDatas()[i].stagePosition;
             //セルの位置をint型で保存
             int cellPosInt[3]{ cellposition.x ,cellposition.y ,cellposition.z };
-            //回転の有無
-            bool isRotate = m_stage->GetCellDatas()[i].isRotate;
             //何番目のセルなのかを表示
             std::string cellnumber = "Cell" + std::to_string(i);
             if (ImGui::TreeNodeEx(cellnumber.c_str()))
@@ -149,28 +154,24 @@ void PlayScene::Render(GameContext& gameContext)
                                  static_cast<float>(cellPosInt[1]),
                                  static_cast<float>(cellPosInt[2]) };
 
-                //ステージ外に出ないよう修正
-                if (cellposition.x < 0)cellposition.x = 0;
-                if (cellposition.y < 0)cellposition.y = 0;
-                if (cellposition.z < 0)cellposition.z = 0;
-                if (cellposition.x > 9)cellposition.x = 9;
-                if (cellposition.y > 9)cellposition.y = 9;
-                if (cellposition.z > 9)cellposition.z = 9;
 
                 // GUIでの変更を反映
                 m_stage->SetCellPosition(i, cellposition);
 
                 // セルの現在のタイプを取得
-                int selectType = static_cast<int>(m_stage->GetCellDatas()[i].type);
+                int selectCellType = static_cast<int>(m_stage->GetCellDatas()[i].type);
                 // セルのタイプを表示
-                ImGui::Combo("Type", &selectType, typeNames.data(), static_cast<int>(typeNames.size()));
+                ImGui::Combo("Type", &selectCellType, typeNames.data(), static_cast<int>(typeNames.size()));
                 // GUIでの変更を反映
-                m_stage->SetCellType(i, static_cast<Yokoyama::CellType>(selectType));
+                m_stage->SetCellType(i, static_cast<Yokoyama::CellType>(selectCellType));
 
-                //回転の有無の設定
-                ImGui::Checkbox("Rotate", &isRotate);
+                //セルの現在の回転軸を取得
+                int selectEdgeAxis = static_cast<int>(m_stage->GetCellDatas()[i].cubeEdgeAxis);
+                //回転軸を表示
+                ImGui::Combo("Axis", &selectEdgeAxis, axisNames.data(), static_cast<int>(axisNames.size()));
                 // GUIでの変更を反映
-                m_stage->SetIsRotate(i, isRotate);
+                m_stage->SetEdgeAxis(i, static_cast<Yokoyama::CubeEdgeAxis>(selectEdgeAxis));
+
 
                 // このセルを消すボタン
                 if (ImGui::Button("Delete"))

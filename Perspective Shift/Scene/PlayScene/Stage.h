@@ -56,8 +56,8 @@ namespace Yokoyama
         // セルのタイプを変更する
         void SetCellType(int cellnumber, Yokoyama::CellType type);
 
-        // セルの回転の有無を変更する
-        void SetIsRotate(int cellnumber, bool isRotate);
+        //セルの回転軸を変更する
+        void SetEdgeAxis(int cellnumber, Yokoyama::CubeEdgeAxis type);
 
         // そのセルを削除する
         void DeleteCell(int cellnumber);
@@ -105,6 +105,12 @@ namespace Yokoyama
         //----- メンバー関数 -----//
         // 当たり判定の登録
         void SetBoundingBox();
+        //X軸回転
+        Yokoyama::CellType AxisX(Yokoyama::CellType type);
+        //Y軸回転
+        Yokoyama::CellType AxisY(Yokoyama::CellType type);
+        //Z軸回転
+        Yokoyama::CellType AxisZ(Yokoyama::CellType type);
         //----------//
 	};
 }

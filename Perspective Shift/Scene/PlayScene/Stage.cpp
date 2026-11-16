@@ -46,10 +46,73 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
             // ゴールの位置を設定
             goalPosition = m_cellDatas[i].boundingBox.Center;
         }
-        if (m_cellDatas[i].isRotate && m_rotateCount>=ROTATE_COUNT)
+        if (m_cellDatas[i].cubeEdgeAxis != Yokoyama::CubeEdgeAxis::None && m_rotateCount>=ROTATE_COUNT)
         {
-            m_cellDatas[i].type = static_cast<Yokoyama::CellType>(static_cast<int>(m_cellDatas[i].type) + 1);
-            if (m_cellDatas[i].type == Yokoyama::CellType::None)m_cellDatas[i].type = Yokoyama::CellType::Xm;
+            switch (m_cellDatas[i].cubeEdgeAxis)
+            {
+            case Yokoyama::CubeEdgeAxis::EdgeX_y0z0:
+                m_cellDatas[i].stagePosition.z--;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y0z1;
+                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeX_y0z1:
+                m_cellDatas[i].stagePosition.y--;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y1z1;
+                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeX_y1z0:
+                m_cellDatas[i].stagePosition.y++;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y0z0;
+                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeX_y1z1:
+                m_cellDatas[i].stagePosition.z++;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y1z0;
+                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeY_x0z0:
+                m_cellDatas[i].stagePosition.x--;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x1z0;
+                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeY_x0z1:
+                m_cellDatas[i].stagePosition.z++;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x0z0;
+                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeY_x1z0:
+                m_cellDatas[i].stagePosition.z--;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x1z1;
+                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeY_x1z1:
+                m_cellDatas[i].stagePosition.x++;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x0z1;
+                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeZ_x0y0:
+                m_cellDatas[i].stagePosition.y--;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x0y1;
+                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeZ_x0y1:
+                m_cellDatas[i].stagePosition.x--;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x1y1;
+                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeZ_x1y0:
+                m_cellDatas[i].stagePosition.x++;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x0y0;
+                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                break;
+            case Yokoyama::CubeEdgeAxis::EdgeZ_x1y1:
+                m_cellDatas[i].stagePosition.y++;
+                m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x1y0;
+                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -165,14 +228,9 @@ void Yokoyama::Stage::SetCellType(int cellnumber, Yokoyama::CellType type)
     m_cellDatas[cellnumber].type = type;
 }
 
-/// <summary>
-/// セルの回転の有無を変更する
-/// </summary>
-/// <param name="cellnumber">どのセルか</param>
-/// <param name="isRotate">変更先のbool</param>
-void Yokoyama::Stage::SetIsRotate(int cellnumber, bool isRotate)
+void Yokoyama::Stage::SetEdgeAxis(int cellnumber, Yokoyama::CubeEdgeAxis type)
 {
-    m_cellDatas[cellnumber].isRotate = isRotate;
+    m_cellDatas[cellnumber].cubeEdgeAxis= type;
 }
 
 /// <summary>
@@ -197,7 +255,7 @@ void Yokoyama::Stage::AddCell()
         { 
             {0,0,0},
             Yokoyama::CellType::Xm,
-            false,
+            Yokoyama::CubeEdgeAxis::None,
             BoundingBox{{CellData::SIZE / 2, CellData::SIZE / 2, -CellData::SIZE / 2}, Yokoyama::CellData::DISTANCE}
         }
     );
@@ -239,5 +297,71 @@ void Yokoyama::Stage::SetBoundingBox()
                                      CellData::SIZE * m_cellDatas[i].stagePosition.y + CellData::SIZE / 2,
                                    -(CellData::SIZE * m_cellDatas[i].stagePosition.z + CellData::SIZE / 2) };
         }
+    }
+}
+
+Yokoyama::CellType Yokoyama::Stage::AxisX(Yokoyama::CellType type)
+{
+    switch (type)
+    {
+    case Yokoyama::CellType::Yp:
+        return Yokoyama::CellType::Zm;
+        break;
+    case Yokoyama::CellType::Ym:
+        return Yokoyama::CellType::Zp;
+        break;
+    case Yokoyama::CellType::Zp:
+        return Yokoyama::CellType::Yp;
+        break;
+    case Yokoyama::CellType::Zm:
+        return Yokoyama::CellType::Ym;
+        break;
+    default:
+        return type;
+        break;
+    }
+}
+
+Yokoyama::CellType Yokoyama::Stage::AxisY(Yokoyama::CellType type)
+{
+    switch (type)
+    {
+    case Yokoyama::CellType::Xp:
+        return Yokoyama::CellType::Zp;
+        break;
+    case Yokoyama::CellType::Xm:
+        return Yokoyama::CellType::Zm;
+        break;
+    case Yokoyama::CellType::Zp:
+        return Yokoyama::CellType::Xm;
+        break;
+    case Yokoyama::CellType::Zm:
+        return Yokoyama::CellType::Xp;
+        break;
+    default:
+        return type;
+        break;
+    }
+}
+
+Yokoyama::CellType Yokoyama::Stage::AxisZ(Yokoyama::CellType type)
+{
+    switch (type)
+    {
+    case Yokoyama::CellType::Yp:
+        return Yokoyama::CellType::Xp;
+        break;
+    case Yokoyama::CellType::Ym:
+        return Yokoyama::CellType::Xm;
+        break;
+    case Yokoyama::CellType::Xp:
+        return Yokoyama::CellType::Ym;
+        break;
+    case Yokoyama::CellType::Xm:
+        return Yokoyama::CellType::Yp;
+        break;
+    default:
+        return type;
+        break;
     }
 }

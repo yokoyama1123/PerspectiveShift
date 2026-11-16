@@ -4,7 +4,7 @@
 // ステージ内のブロックの情報
 namespace Yokoyama
 {
-    // それが何か
+    // ブロックの属性
     enum class CellType
     {
         Player, // プレイヤーの初期位置
@@ -17,6 +17,19 @@ namespace Yokoyama
         Zm,     // 板ポリゴン(Zマイナス方向)
         None,   // 何でもないよ
     };
+
+    //回転軸
+    enum class CubeEdgeAxis
+    {
+        //回転しない
+        None,
+        //X軸回転
+        EdgeX_y0z0, EdgeX_y0z1, EdgeX_y1z0, EdgeX_y1z1,
+        //Y軸回転
+        EdgeY_x0z0, EdgeY_x0z1, EdgeY_x1z0, EdgeY_x1z1,
+        //Z軸回転
+        EdgeZ_x0y0, EdgeZ_x0y1, EdgeZ_x1y0, EdgeZ_x1y1,
+    };
     
     // どこに何があるか(ステージ座標)
     struct CellData
@@ -27,8 +40,8 @@ namespace Yokoyama
         // そこにあるもの
         Yokoyama::CellType type;
 
-        // 向きが変わるかどうか
-        bool isRotate;
+        //回転ギミック
+        CubeEdgeAxis cubeEdgeAxis;
 
         // AABB（衝突判定用）
         DirectX::BoundingBox boundingBox;

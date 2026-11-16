@@ -2,298 +2,298 @@
     "bestTime": 0,
     "blocks": [
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Player",
             "X": 9.0,
             "Y": 1.0,
-            "Z": 0.0,
-            "type": "Player"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Goal",
             "X": 9.0,
             "Y": 9.0,
-            "Z": 0.0,
-            "type": "Goal"
+            "Z": 0.0
         },
         {
-            "Rotate": true,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 9.0,
             "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
+            "Z": 1.0
         },
         {
-            "Rotate": true,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 9.0,
             "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
+            "Z": 0.0
         },
         {
-            "Rotate": true,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 8.0,
             "Y": 8.0,
-            "Z": 1.0,
-            "type": "Ym"
+            "Z": 1.0
         },
         {
-            "Rotate": true,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 8.0,
             "Y": 8.0,
-            "Z": 0.0,
-            "type": "Ym"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 5.0,
             "Y": 7.0,
-            "Z": 1.0,
-            "type": "Yp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 5.0,
             "Y": 7.0,
-            "Z": 0.0,
-            "type": "Zp"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 4.0,
             "Y": 7.0,
-            "Z": 1.0,
-            "type": "Zp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 4.0,
             "Y": 7.0,
-            "Z": 0.0,
-            "type": "Ym"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xp",
             "X": 1.0,
             "Y": 6.0,
-            "Z": 1.0,
-            "type": "Xp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 0.0,
             "Y": 6.0,
-            "Z": 1.0,
-            "type": "Zp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 0.0,
             "Y": 6.0,
-            "Z": 0.0,
-            "type": "Zm"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 1.0,
             "Y": 6.0,
-            "Z": 0.0,
-            "type": "Ym"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 0.0,
             "Y": 5.0,
-            "Z": 4.0,
-            "type": "Ym"
+            "Z": 4.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 0.0,
             "Y": 5.0,
-            "Z": 5.0,
-            "type": "Zm"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 1.0,
             "Y": 5.0,
-            "Z": 5.0,
-            "type": "Ym"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 1.0,
             "Y": 5.0,
-            "Z": 4.0,
-            "type": "Zm"
+            "Z": 4.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xp",
             "X": 0.0,
             "Y": 4.0,
-            "Z": 8.0,
-            "type": "Xp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Ym",
             "X": 0.0,
             "Y": 4.0,
-            "Z": 9.0,
-            "type": "Ym"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 1.0,
             "Y": 4.0,
-            "Z": 8.0,
-            "type": "Zm"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xm",
             "X": 1.0,
             "Y": 4.0,
-            "Z": 9.0,
-            "type": "Xm"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xp",
             "X": 5.0,
             "Y": 3.0,
-            "Z": 8.0,
-            "type": "Xp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 5.0,
             "Y": 3.0,
-            "Z": 9.0,
-            "type": "Zp"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xm",
             "X": 4.0,
             "Y": 3.0,
-            "Z": 8.0,
-            "type": "Xm"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 4.0,
             "Y": 3.0,
-            "Z": 9.0,
-            "type": "Zp"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 9.0,
             "Y": 2.0,
-            "Z": 8.0,
-            "type": "Zp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 9.0,
             "Y": 2.0,
-            "Z": 9.0,
-            "type": "Zm"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 8.0,
             "Y": 2.0,
-            "Z": 8.0,
-            "type": "Zp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xp",
             "X": 8.0,
             "Y": 2.0,
-            "Z": 9.0,
-            "type": "Xp"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 9.0,
             "Y": 1.0,
-            "Z": 5.0,
-            "type": "Zm"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xm",
             "X": 8.0,
             "Y": 1.0,
-            "Z": 5.0,
-            "type": "Xm"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 9.0,
             "Y": 1.0,
-            "Z": 4.0,
-            "type": "Zm"
+            "Z": 4.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zp",
             "X": 8.0,
             "Y": 1.0,
-            "Z": 4.0,
-            "type": "Zp"
+            "Z": 4.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 9.0,
             "Y": 0.0,
-            "Z": 1.0,
-            "type": "Zm"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 9.0,
             "Y": 0.0,
-            "Z": 0.0,
-            "type": "Yp"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 8.0,
             "Y": 0.0,
-            "Z": 1.0,
-            "type": "Yp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xm",
             "X": 8.0,
             "Y": 0.0,
-            "Z": 0.0,
-            "type": "Xm"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 9.0,
             "Y": 3.0,
-            "Z": 8.0,
-            "type": "Zm"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 8.0,
             "Y": 3.0,
-            "Z": 8.0,
-            "type": "Zm"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Xm",
             "X": 7.0,
             "Y": 2.0,
-            "Z": 9.0,
-            "type": "Xm"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Zm",
             "X": 7.0,
             "Y": 2.0,
-            "Z": 8.0,
-            "type": "Zm"
+            "Z": 8.0
         }
     ]
 }

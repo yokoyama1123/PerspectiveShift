@@ -2,144 +2,144 @@
     "bestTime": 0,
     "blocks": [
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Player",
             "X": 0.0,
             "Y": 1.0,
-            "Z": 0.0,
-            "type": "Player"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 9.0,
             "Y": 0.0,
-            "Z": 8.0,
-            "type": "Yp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 8.0,
             "Y": 0.0,
-            "Z": 9.0,
-            "type": "Yp"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Goal",
             "X": 9.0,
             "Y": 1.0,
-            "Z": 9.0,
-            "type": "Goal"
+            "Z": 9.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 0.0,
             "Y": 0.0,
-            "Z": 0.0,
-            "type": "Yp"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 1.0,
             "Y": 0.0,
-            "Z": 0.0,
-            "type": "Yp"
+            "Z": 0.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 0.0,
             "Y": 0.0,
-            "Z": 1.0,
-            "type": "Yp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 1.0,
             "Y": 0.0,
-            "Z": 1.0,
-            "type": "Yp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 8.0,
             "Y": 0.0,
-            "Z": 8.0,
-            "type": "Yp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 1.0,
             "Y": 0.0,
-            "Z": 4.0,
-            "type": "Yp"
+            "Z": 4.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 2.0,
             "Y": 0.0,
-            "Z": 4.0,
-            "type": "Yp"
+            "Z": 4.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 1.0,
             "Y": 0.0,
-            "Z": 5.0,
-            "type": "Yp"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 2.0,
             "Y": 0.0,
-            "Z": 5.0,
-            "type": "Yp"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 5.0,
             "Y": 0.0,
-            "Z": 8.0,
-            "type": "Yp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 4.0,
             "Y": 0.0,
-            "Z": 8.0,
-            "type": "Yp"
+            "Z": 8.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 4.0,
             "Y": 0.0,
-            "Z": 7.0,
-            "type": "Yp"
+            "Z": 7.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 5.0,
             "Y": 0.0,
-            "Z": 7.0,
-            "type": "Yp"
+            "Z": 7.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 4.0,
             "Y": 0.0,
-            "Z": 1.0,
-            "type": "Yp"
+            "Z": 1.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 8.0,
             "Y": 0.0,
-            "Z": 5.0,
-            "type": "Yp"
+            "Z": 5.0
         },
         {
-            "Rotate": false,
+            "Axis": "None",
+            "Type": "Yp",
             "X": 6.0,
             "Y": 0.0,
-            "Z": 3.0,
-            "type": "Yp"
+            "Z": 3.0
         }
     ]
 }

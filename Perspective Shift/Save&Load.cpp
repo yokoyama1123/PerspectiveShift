@@ -38,8 +38,10 @@ void Yokoyama::SaveLoad::SaveData(int stageNumber, const std::vector<Yokoyama::C
     {
         //ƒ^ƒCƒv‚ğstringŒ^‚ÉC³‚µ‚Äæ“¾
         auto type = magic_enum::enum_name<Yokoyama::CellType>(cellDatas[i].type);
+        //‰ñ“]²‚ğstringŒ^‚ÉC³‚µ‚Äæ“¾
+        auto cubeEdgeAxis = magic_enum::enum_name<Yokoyama::CubeEdgeAxis>(cellDatas[i].cubeEdgeAxis);
         //ƒZƒ‹‚ğ•Û‘¶
-        idata["blocks"].push_back({ { "type",type },{"Rotate",cellDatas[i].isRotate},{"X",cellDatas[i].stagePosition.x},{"Y",cellDatas[i].stagePosition.y},{"Z",cellDatas[i].stagePosition.z}});
+        idata["blocks"].push_back({ { "Type",type },{"Axis",cubeEdgeAxis},{"X",cellDatas[i].stagePosition.x},{"Y",cellDatas[i].stagePosition.y},{"Z",cellDatas[i].stagePosition.z}});
     }
 
     // ƒtƒ@ƒCƒ‹‚É•Û‘¶
@@ -96,7 +98,6 @@ json* Yokoyama::SaveLoad::GetStagesJson(int stageNumber)
 std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
 {
     std::vector<Yokoyama::CellData> celldatas{};
-    bool isRotate{ false };
 
     for (const auto& data : stage["blocks"])
     {
@@ -106,15 +107,19 @@ std::vector<Yokoyama::CellData> Yokoyama::SaveLoad::GetCellDatas(json stage)
         //ƒ^ƒCƒv‚ğæ“¾
         Yokoyama::CellType type;//ƒ^ƒCƒv‚ğ“ü‚ê‚é•Ï”
         //ƒ^ƒCƒv‚ğstringŒ^‚Åæ“¾
-        std::string a = data["type"];
+        std::string typeS = data["Type"];
         //stringŒ^‚©‚çCellType‚É•ÏŠ·‚µ‚Ä•Û‘¶
-        type = magic_enum::enum_cast<Yokoyama::CellType>(a).value_or(Yokoyama::CellType::Xm);
+        type = magic_enum::enum_cast<Yokoyama::CellType>(typeS).value_or(Yokoyama::CellType::Xm);
         
-        //‰ñ“]‰Â‚©‚ğæ“¾
-        isRotate = data["Rotate"];
+        //‰ñ“]²‚ğæ“¾
+        Yokoyama::CubeEdgeAxis cubeEdgeAxis;//‰ñ“]²‚ğ“ü‚ê‚é•Ï”
+        //‰ñ“]²‚ğstringŒ^‚Åæ“¾
+        std::string AxisS = data["Axis"];
+        //stringŒ^‚©‚çCubeEdgeAxis‚É•ÏŠ·‚µ‚Ä•Û‘¶
+        cubeEdgeAxis = magic_enum::enum_cast<Yokoyama::CubeEdgeAxis>(AxisS).value_or(Yokoyama::CubeEdgeAxis::None);
 
         //ã‹L‚ğ•Û‘¶
-        celldatas.push_back(CellData{ position, type, isRotate, BoundingBox{{},Yokoyama::CellData::DISTANCE} });
+        celldatas.push_back(CellData{ position, type, cubeEdgeAxis, BoundingBox{{},Yokoyama::CellData::DISTANCE} });
     }
    
 	return celldatas;
