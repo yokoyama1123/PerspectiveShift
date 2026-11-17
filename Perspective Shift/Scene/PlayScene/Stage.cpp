@@ -41,74 +41,75 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
 
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
+        // ゴールの位置を設定
         if (m_cellDatas[i].type == CellType::Goal)
         {
-            // ゴールの位置を設定
             goalPosition = m_cellDatas[i].boundingBox.Center;
         }
+        //ブロックの回転処理
         if (m_cellDatas[i].cubeEdgeAxis != Yokoyama::CubeEdgeAxis::None && m_rotateCount>=ROTATE_COUNT)
         {
             switch (m_cellDatas[i].cubeEdgeAxis)
             {
             case Yokoyama::CubeEdgeAxis::EdgeX_y0z0:
-                m_cellDatas[i].stagePosition.z--;
+                m_cellDatas[i].stagePosition.z++;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y0z1;
-                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisXRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeX_y0z1:
                 m_cellDatas[i].stagePosition.y--;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y1z1;
-                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisXRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeX_y1z0:
                 m_cellDatas[i].stagePosition.y++;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y0z0;
-                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisXRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeX_y1z1:
-                m_cellDatas[i].stagePosition.z++;
+                m_cellDatas[i].stagePosition.z--;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeX_y1z0;
-                m_cellDatas[i].type = AxisX(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisXRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeY_x0z0:
                 m_cellDatas[i].stagePosition.x--;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x1z0;
-                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisYRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeY_x0z1:
-                m_cellDatas[i].stagePosition.z++;
+                m_cellDatas[i].stagePosition.z--;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x0z0;
-                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisYRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeY_x1z0:
-                m_cellDatas[i].stagePosition.z--;
+                m_cellDatas[i].stagePosition.z++;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x1z1;
-                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisYRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeY_x1z1:
                 m_cellDatas[i].stagePosition.x++;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeY_x0z1;
-                m_cellDatas[i].type = AxisY(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisYRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeZ_x0y0:
                 m_cellDatas[i].stagePosition.y--;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x0y1;
-                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisZRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeZ_x0y1:
                 m_cellDatas[i].stagePosition.x--;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x1y1;
-                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisZRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeZ_x1y0:
                 m_cellDatas[i].stagePosition.x++;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x0y0;
-                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisZRotation(m_cellDatas[i].type);
                 break;
             case Yokoyama::CubeEdgeAxis::EdgeZ_x1y1:
                 m_cellDatas[i].stagePosition.y++;
                 m_cellDatas[i].cubeEdgeAxis = Yokoyama::CubeEdgeAxis::EdgeZ_x1y0;
-                m_cellDatas[i].type = AxisZ(m_cellDatas[i].type);
+                m_cellDatas[i].type = AxisZRotation(m_cellDatas[i].type);
                 break;
             default:
                 break;
@@ -300,7 +301,7 @@ void Yokoyama::Stage::SetBoundingBox()
     }
 }
 
-Yokoyama::CellType Yokoyama::Stage::AxisX(Yokoyama::CellType type)
+Yokoyama::CellType Yokoyama::Stage::AxisXRotation(Yokoyama::CellType type)
 {
     switch (type)
     {
@@ -322,7 +323,7 @@ Yokoyama::CellType Yokoyama::Stage::AxisX(Yokoyama::CellType type)
     }
 }
 
-Yokoyama::CellType Yokoyama::Stage::AxisY(Yokoyama::CellType type)
+Yokoyama::CellType Yokoyama::Stage::AxisYRotation(Yokoyama::CellType type)
 {
     switch (type)
     {
@@ -344,7 +345,7 @@ Yokoyama::CellType Yokoyama::Stage::AxisY(Yokoyama::CellType type)
     }
 }
 
-Yokoyama::CellType Yokoyama::Stage::AxisZ(Yokoyama::CellType type)
+Yokoyama::CellType Yokoyama::Stage::AxisZRotation(Yokoyama::CellType type)
 {
     switch (type)
     {

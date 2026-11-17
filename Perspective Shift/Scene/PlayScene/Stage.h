@@ -106,11 +106,11 @@ namespace Yokoyama
         // “–‚½‚è”»’è‚Ì“o˜^
         void SetBoundingBox();
         //XŽ²‰ñ“]
-        Yokoyama::CellType AxisX(Yokoyama::CellType type);
+        Yokoyama::CellType AxisXRotation(Yokoyama::CellType type);
         //YŽ²‰ñ“]
-        Yokoyama::CellType AxisY(Yokoyama::CellType type);
+        Yokoyama::CellType AxisYRotation(Yokoyama::CellType type);
         //ZŽ²‰ñ“]
-        Yokoyama::CellType AxisZ(Yokoyama::CellType type);
+        Yokoyama::CellType AxisZRotation(Yokoyama::CellType type);
         //----------//
 	};
 }
