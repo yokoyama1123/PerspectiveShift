@@ -8,7 +8,7 @@ namespace Yokoyama
 	/// </summary>
 	/// <param name="srv">シェーダーリソースビュー</param>
 	/// <returns>アスペクト比(RECT)</returns>
-	RECT Getrect(ID3D11ShaderResourceView* srv)
+	inline RECT Getrect(ID3D11ShaderResourceView* srv)
 	{
 		// シェーダーリソースビューから元になるリソースを取得
 		Microsoft::WRL::ComPtr<ID3D11Resource> resource;
