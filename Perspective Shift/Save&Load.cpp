@@ -159,13 +159,16 @@ void Yokoyama::SaveLoad::LoadData()
     {
         filename = path + "Stage" + std::to_string(i) + ".json";
 
+        //ファイルがない場合
+        if(!std::filesystem::exists(filename))continue;
+
         // ファイルから読み込み
-        std::ifstream satage(filename);
-        if (satage.is_open())
+        std::ifstream file(filename);
+        if (file.is_open())
         {
             // ステージデータの読み込み
-            m_stages.push_back(json::parse(satage));
-            satage.close();
+            m_stages.push_back(json::parse(file));
+            file.close();
         }
     }
 }

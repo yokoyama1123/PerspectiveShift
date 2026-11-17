@@ -42,8 +42,7 @@ void Yokoyama::StageBlocks::Update(float elapsedTime, DirectX::SimpleMath::Vecto
 	);
 
 	//ƒ¿’l‚ð‰º‚°‚é
-	m_color.w -= ALPHA * elapsedTime;
-	m_nowAlpha = m_color.w;
+	m_color.w = std::max(0.0f, m_color.w - ALPHA * elapsedTime);
 }
 
 /// <summary>
@@ -69,10 +68,10 @@ void Yokoyama::StageBlocks::Render(const SimpleMath::Matrix& view, const SimpleM
 
 float Yokoyama::StageBlocks::GetAlpha()
 {
-	return m_nowAlpha;
+	return m_color.w;
 }
 
 void Yokoyama::StageBlocks::SetAlpha(float alpha)
 {
-	m_nowAlpha = alpha;
+	m_color.w = alpha;
 }

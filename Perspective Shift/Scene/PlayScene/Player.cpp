@@ -210,6 +210,7 @@ void Yokoyama::Player::SetPosition(const SimpleMath::Vector3& position)
 /// <param name="velocity">ê›íËÇµÇΩÇ¢ë¨Ç≥</param>
 void Yokoyama::Player::SetVelocity(const DirectX::SimpleMath::Vector3& velocity)
 {
+    if (m_elapsedTime == 0)return;
     m_velocity = velocity / m_elapsedTime;
 }
 

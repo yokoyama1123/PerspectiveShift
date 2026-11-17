@@ -31,8 +31,6 @@ namespace Yokoyama
         //----------//
 
         //----- メンバー変数 -----//
-		//現在のα値
-		float m_nowAlpha;
 		//ブロック
 		std::unique_ptr<DirectX::GeometricPrimitive> m_cube;
 		//ブロックの色

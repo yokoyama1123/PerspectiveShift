@@ -25,7 +25,7 @@ Yokoyama::TitleLogo::TitleLogo(GameContext& gameContext)
 
 	// スタートテキストを移動
 	STARTTEXTPOSITION.x = Yokoyama::Screen::CENTER_X - m_startTextRect.right / 2.0f * SCALESTARTTEXT;
-	STARTTEXTPOSITION.y = Yokoyama::Screen::CENTER_X - m_startTextRect.bottom / 2.0f * SCALESTARTTEXT;
+	STARTTEXTPOSITION.y = Yokoyama::Screen::BOTTOM - m_startTextRect.bottom / 2.0f * SCALESTARTTEXT;
 }
 
 /// <summary>
@@ -40,14 +40,14 @@ void Yokoyama::TitleLogo::Update(float elapsedTime)
 	if (m_time >= CYCLE)m_time = 0;
 
 	// サイン波で上下に移動（振幅20ピクセル、周期2秒）
-	float offsetY = AMPLITUDE * sinf(m_time * 2.0f * PI / CYCLE);
+	float offsetY = AMPLITUDE * (sinf(m_time * 2.0f * PI / CYCLE) + 1.0f) * 0.5f;
 
 	// 移動を反映
 	m_position.x = LOGOPOSITION.x;
 	m_position.y = LOGOPOSITION.y + offsetY;
 
 	// スタートテキストのα値を変更
-	m_startTextColor.w = sinf(m_time * 2.0f * PI / CYCLE);
+	m_startTextColor.w = (sinf(m_time * 2.0f * PI / CYCLE) + 1.0f) * 0.5f;
 }
 
 /// <summary>

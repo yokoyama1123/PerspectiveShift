@@ -9,11 +9,15 @@ using namespace DirectX;
 Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     : m_x{0}
     , m_y{0}
+    , m_sx{0.0f}
+    , m_sy{0.0f}
+    , m_xTmp{0.0f}
+    , m_yTmp{0.0f}
     , m_yAngle{0.0f}
     , m_xAngle{0.0f}
     , m_cameraMode{Camera::CameraMode::Tracking}
     , m_view{}
-    , m_eye{0.0f, 0.0f, 0.0f}
+    , m_eye{15.0f, 15.0f, -15.0f}
     , m_target{ 15.0f, 0.0f, -15.0f }
     , m_up{0.0f, 1.0f, 0.0f}
     , m_velocity{}

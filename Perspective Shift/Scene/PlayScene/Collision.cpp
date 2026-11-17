@@ -108,27 +108,6 @@ bool Yokoyama::Collision::HitCheckAABB2AABB(const BoundingBox& box1, const Bound
 }
 
 /// <summary>
-/// 線分と面の当たり判定
-/// </summary>
-/// <param name="a">線分の始まり</param>
-/// <param name="b">線分の終わり</param>
-/// <param name="p">面</param>
-/// <param name="q">当たっている場所の座標</param>
-/// <returns>当たっていたらtrue</returns>
-bool Yokoyama::Collision::IntersectSegmentPlane(const DirectX::SimpleMath::Vector3& a, const DirectX::SimpleMath::Vector3& b, const DirectX::SimpleMath::Plane& p, DirectX::SimpleMath::Vector3* q)
-{
-    float t;
-    DirectX::SimpleMath::Vector3 ab = b - a;
-    t = (p.D() - p.Normal().Dot(a)) / p.Normal().Dot(ab);
-    if (t>= 0 && t < 1.0f)
-    {
-        (*q) = a + t * ab;
-        return true;
-    }
-    return false;
-}
-
-/// <summary>
 /// ステージのブロックとプレイヤーの当たり判定と修正
 /// </summary>
 void Yokoyama::Collision::PlayerBlockCollision()

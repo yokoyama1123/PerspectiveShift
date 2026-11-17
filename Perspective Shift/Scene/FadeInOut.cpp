@@ -28,6 +28,7 @@ void Yokoyama::FadeInOut::FedeInUpdate(float elapsedTime, float fadeInSecond, So
 
     // 今の進行割合を計算
     m_fadeInPercent = m_fadeInCount / fadeInSecond;
+    std::clamp(m_fadeInPercent, 0.0f, 1.0f);
 
     // 音量の調整
     if(bgm != nullptr) bgm->SetVolume(1.0f - m_fadeInPercent);
@@ -48,6 +49,7 @@ void Yokoyama::FadeInOut::FedeOutUpdate(float elapsedTime, float fadeOutSecond, 
 
     // 今の進行割合を計算
     m_fadeOutPercent = m_fadeOutCount / fadeOutSecond;
+    std::clamp(m_fadeOutPercent, 0.0f, 1.0f);
 
     // 音量の調整
     if (bgm != nullptr) bgm->SetVolume(m_fadeOutPercent);
@@ -109,6 +111,10 @@ void Yokoyama::FadeInOut::OnEnter()
 {
     m_fedeInEnd = false;
     m_fedeOutEnd = false;
+    m_fadeInCount = 0;
+    m_fadeOutCount = 0;
+    m_fadeInPercent = 0;
+    m_fadeOutPercent = 0;
 }
 
 /// <summary>

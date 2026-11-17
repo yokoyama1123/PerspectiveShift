@@ -41,11 +41,6 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
 
     for (size_t i = 0; i < m_cellDatas.size(); i++)
     {
-        // ゴールの位置を設定
-        if (m_cellDatas[i].type == CellType::Goal)
-        {
-            goalPosition = m_cellDatas[i].boundingBox.Center;
-        }
         //ブロックの回転処理
         if (m_cellDatas[i].cubeEdgeAxis != Yokoyama::CubeEdgeAxis::None && m_rotateCount>=ROTATE_COUNT)
         {
@@ -115,10 +110,17 @@ void Yokoyama::Stage::Update(const GameContext& gameContext, float elapsedTime)
                 break;
             }
         }
+        // ゴールの位置を設定
+        if (m_cellDatas[i].type == CellType::Goal)
+        {
+            goalPosition = m_cellDatas[i].boundingBox.Center;
+        }
     }
 
     if (m_rotateCount >= ROTATE_COUNT) m_rotateCount = 0;
 
+    //当たり判定の再設定;
+    SetBoundingBox();
 
     // ワールド行列への反映
     m_worldGoal = SimpleMath::Matrix::CreateScale(GOALSCALE) *                               //大きさ

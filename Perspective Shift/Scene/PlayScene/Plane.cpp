@@ -128,6 +128,7 @@ void Yokoyama::Plane::Render(ID3D11DeviceContext* pContext, const DirectX::Simpl
                 v[3] = {SimpleMath::Vector3(0.0f, CellData::SIZE, -CellData::SIZE) + addPosition, SimpleMath::Vector2(1.0f, 0.0f)};
                 break;
             default:
+                continue;
                 break;
         }
 
