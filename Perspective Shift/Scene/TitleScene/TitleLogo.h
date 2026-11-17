@@ -49,8 +49,6 @@ namespace Yokoyama
 		//----------//
 		
 		//----- メンバー関数 -----//
-		// その画像のアスペクト比を返す(RECT)
-		RECT Getrect(ID3D11ShaderResourceView* srv);
 		//----------//
 	};
 }

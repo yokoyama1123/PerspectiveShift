@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TitleLogo.h"
+#include"Scene/TextureUtil.h"
 
 using namespace DirectX;
 
@@ -15,9 +16,9 @@ Yokoyama::TitleLogo::TitleLogo(GameContext& gameContext)
 	, m_startTextRect{}
 {
 	// タイトルロゴのRectを設定
-	m_titleRect = Getrect(gameContext.titlelogo.Get());
+	m_titleRect = Yokoyama::Getrect(gameContext.titlelogo.Get());
 	// スタートテキストのRectを設定
-	m_startTextRect = Getrect(gameContext.startTextTexture.Get());
+	m_startTextRect = Yokoyama::Getrect(gameContext.startTextTexture.Get());
 
 	// 画面中央にロゴを移動
 	LOGOPOSITION.x = Yokoyama::Screen::CENTER_X - m_titleRect.right / 2.0f * SCALELOGO;
@@ -87,32 +88,4 @@ void Yokoyama::TitleLogo::Render(GameContext& gameContext)
 
 	// 描画終了
 	gameContext.spriteBatch.End();
-}
-
-/// <summary>
-/// その画像のアスペクト比を返す(RECT)
-/// </summary>
-/// <param name="srv">シェーダーリソースビュー</param>
-/// <returns>アスペクト比(RECT)</returns>
-RECT Yokoyama::TitleLogo::Getrect(ID3D11ShaderResourceView* srv)
-{
-	// シェーダーリソースビューから元になるリソースを取得
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
-	srv->GetResource(resource.GetAddressOf());
-
-	// リソースを2Dテクスチャとして扱う
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
-	resource.As(&texture);
-
-	// テクスチャの幅や高さなどを取得
-	D3D11_TEXTURE2D_DESC desc;
-	texture->GetDesc(&desc);
-
-	// 取得した幅と高さをlongに変換
-	long Width = static_cast<long>(desc.Width);
-	long Height = static_cast<long>(desc.Height);
-
-	// RECT を作成して返す
-	RECT r{ 0, 0, Width, Height };
-	return r;
 }

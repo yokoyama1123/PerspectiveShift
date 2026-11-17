@@ -221,6 +221,7 @@
     <ClInclude Include="Scene\ResultScene\StageClearText.h" />
     <ClInclude Include="Scene\SceneId.h" />
     <ClInclude Include="Scene\StageSelectScene\StageSelectScene.h" />
+    <ClInclude Include="Scene\TextureUtil.h" />
     <ClInclude Include="Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="Scene\TitleScene\TitleStage.h" />
     <ClInclude Include="Screen.h" />
