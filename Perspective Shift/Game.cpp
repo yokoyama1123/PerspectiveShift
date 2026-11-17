@@ -162,11 +162,13 @@ void Game::Initialize(HWND window, int width, int height)
         *m_states,                  // <- CommonStates
         *m_debugRenderer,           // <- DebugRenderer 
         m_projection,               // <- プロゼクション行列
-        *m_spriteBatch,             // <-スプライトバッチ
-        0,                          // <-選択しているステージ
-        false,                      // <-デバッグモード
+        *m_spriteBatch,             // <- スプライトバッチ
+        NEAR_CLIP,                  // <- ニアクリップ
+        FAR_CLIP,                   // <- ファークリップ
+        0,                          // <- 選択しているステージ
+        false,                      // <- デバッグモード
         m_mPlayer.get(),            // <- プレイヤーのモデル
-        m_mStages,                  // <-ステージ外枠のモデル
+        m_mStages,                  // <- ステージ外枠のモデル
         m_mGoal.get(),              // <- ゴールのモデル
         m_mOutsideWorld.get(),      // <- 外界のモデル
         m_textureHandle.c_str(),    // <- 板ポリゴンのテクスチャハンドル
@@ -392,8 +394,8 @@ DirectX::SimpleMath::Matrix Game::CreateProjectionMatrix()
     m = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
         XMConvertToRadians(45.0f),                                        // 画角
         static_cast<float>(rect.right) / static_cast<float>(rect.bottom), // アスペクト比
-        0.1f,                                                             // Near Clip
-        1000.0f                                                           // Far Clip
+        NEAR_CLIP,
+        FAR_CLIP
     );
 
     return m;

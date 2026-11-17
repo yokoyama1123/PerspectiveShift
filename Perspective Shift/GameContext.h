@@ -37,6 +37,11 @@ struct GameContext
     // スプライトバッチ
     DirectX::SpriteBatch& spriteBatch;
 
+    //ニアクリップ
+    float nearClip;
+    //ファークリップ
+    float farClip;
+
     // 現在選択しているステージ
     int selectStage;
 

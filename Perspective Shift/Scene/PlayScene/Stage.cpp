@@ -19,10 +19,23 @@ Yokoyama::Stage::Stage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, con
     // 板ポリゴンの作成
     m_plane = std::make_unique<Yokoyama::Plane>(pDevice, pContext, &gameContext.commonStates, gameContext.textureHandle);
 
-    //ワールド行列の設定
-    m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
+    //外界にフォグをかける
+    gameContext.outsideWorldModel->UpdateEffects([&](IEffect* effect)
+        {
+            auto fog = dynamic_cast<IEffectFog*>(effect);
+            if (fog)
+            {
+                fog->SetFogEnabled(true);
+                fog->SetFogStart(gameContext.nearClip);
+                fog->SetFogEnd(gameContext.farClip);
+                fog->SetFogColor(Colors::Black);
+            }
+        }
+    );
 
-    m_worldOutSideWorld = SimpleMath::Matrix::CreateScale(STAGESCALE);//大きさ
+    //ワールド行列の設定
+    m_worldStage = SimpleMath::Matrix::CreateScale(STAGESCALE);//ステージの大きさ
+    m_worldOutSideWorld = SimpleMath::Matrix::CreateScale(STAGESCALE);//外界の大きさ
 
 }
 
