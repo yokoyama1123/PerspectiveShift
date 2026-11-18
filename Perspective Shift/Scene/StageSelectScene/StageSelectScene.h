@@ -54,6 +54,9 @@ private:
 	// フェードインアウト
     std::unique_ptr<Yokoyama::FadeInOut> m_fadeInOut;
 
+	// 選択音のインスタンス
+	std::unique_ptr<DirectX::SoundEffectInstance> m_selectSoundInstance;
+
 	// BGMのインスタンス
 	std::unique_ptr<DirectX::SoundEffectInstance> m_titleBGMInstance;
 };

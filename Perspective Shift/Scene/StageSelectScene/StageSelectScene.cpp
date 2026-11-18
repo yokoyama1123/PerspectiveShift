@@ -50,6 +50,9 @@ void StageSelectScene::Update(Imase::ISceneController<SceneId>& sceneController,
 				gameContext.isDebugMode = false;
 			}
 
+			//選択音をならす
+			m_selectSoundInstance->Play(false);
+
 			// フェードインしてよい
             m_canFadeIn = true;
 		}
@@ -127,6 +130,9 @@ void StageSelectScene::OnEnter(GameContext& gameContext)
 
 	// フェードインアウトを作成
     m_fadeInOut = std::make_unique<Yokoyama::FadeInOut>();
+
+	// 選択音のインスタンス作成
+	m_selectSoundInstance = gameContext.selectSound->CreateInstance();
 
 	// タイトルBGMのインスタンス作成
 	m_titleBGMInstance = gameContext.titleBGM->CreateInstance();

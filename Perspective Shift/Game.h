@@ -86,7 +86,7 @@ private:
     std::vector<std::unique_ptr<DirectX::Model>> m_mStages;
     // ゴール
     std::unique_ptr<DirectX::Model> m_mGoal;
-    //外界
+    // 外界
     std::unique_ptr<DirectX::Model> m_mOutsideWorld;
     //----------//
 
@@ -114,8 +114,10 @@ private:
     std::unique_ptr<DirectX::SoundEffect> m_titleBGM;
     // プレイシーンのBGM
     std::unique_ptr<DirectX::SoundEffect> m_palyBGM;
-    //　ジャンプの効果音
+    // ジャンプの効果音
     std::unique_ptr<DirectX::SoundEffect> m_jumpSound;
+    // 選択の効果音
+    std::unique_ptr < DirectX::SoundEffect> m_selectSound;
     //----------//
 
     // セーブロード
@@ -126,7 +128,7 @@ private:
     static constexpr float FAR_CLIP = 1000.0f;
 
     // 音量(1~0)
-    static constexpr float SOUND_VOLUME = 0.0f;
+    static constexpr float SOUND_VOLUME = 0.2f;
 
     // imguiのフォントサイズ
     static constexpr float IMGUI_FONTSIZE = 20.0f;

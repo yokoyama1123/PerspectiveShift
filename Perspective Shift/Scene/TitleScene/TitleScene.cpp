@@ -26,6 +26,9 @@ void TitleScene::Update(Imase::ISceneController<SceneId>& sceneController, GameC
 		// スペースキーが押されたら
 		if (gameContext.keyboardTracker.pressed.Space)
 		{
+			//選択音をならす
+			m_selectSoundInstance->Play(false);
+
 			// フェードインしてよい
             m_canFadeIn = true;
 		}
@@ -82,6 +85,9 @@ void TitleScene::OnEnter(GameContext& gameContext)
 
 	// 背景ステージの作成
 	m_titleStage = std::make_unique<Yokoyama::TitleStage>();
+
+	// 選択音のインスタンス作成
+	m_selectSoundInstance = gameContext.selectSound->CreateInstance();
 
 	// タイトルBGMのインスタンス作成
 	m_titleBGMInstance = gameContext.titleBGM->CreateInstance();

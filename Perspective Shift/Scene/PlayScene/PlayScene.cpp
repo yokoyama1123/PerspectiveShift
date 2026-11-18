@@ -147,7 +147,7 @@ void PlayScene::Render(GameContext& gameContext)
             if (ImGui::TreeNodeEx(cellnumber.c_str()))
             {
                 // à íuÇï\é¶
-                ImGui::DragInt3("Pos", &cellPosInt[0], 0.1f);
+                ImGui::DragInt3("Pos", &cellPosInt[0], 0.1f, 0, 9);
 
                 //floatå^Ç…èCê≥
                 cellposition = { static_cast<float>(cellPosInt[0]),
