@@ -43,8 +43,11 @@ namespace Yokoyama
         // カメラモード
         Camera::CameraMode GetCameraMode() const;
 
-        // 位置を設定
-        void SetPosition(const DirectX::SimpleMath::Vector3& position);
+        // カメラの位置を設定
+        void SetEyePosition(const DirectX::SimpleMath::Vector3& position);
+
+        // ターゲットの位置の設定
+        void SetTargetPosition(const DirectX::SimpleMath::Vector3& position);
 
         // ビュー行列を設定
         void SetCameraMatrix();
@@ -63,6 +66,8 @@ namespace Yokoyama
         static constexpr float SENSITIVITY = 0.003f;
         //カメラモード時のテクスチャのスケール
         static constexpr float SCALE = 10.0f;
+        //プレイヤー追従に変化するまでの時間(秒)
+        static constexpr float SWITCH_TIME = 0.5f;
         // RECT
         static constexpr RECT CAMERAMODERECT = { 0, 0, 16, 16 };
         //----------//
@@ -84,18 +89,29 @@ namespace Yokoyama
         float m_yAngle;
         // 縦回転
         float m_xAngle;
+        // プレイヤー追従への変更割合
+        float m_switchPercent;
         // 前回のコントロールキー状態
         bool m_prevControlPressed;
         // カメラのモード
         Camera::CameraMode m_cameraMode;
         // 生成されたビュー行列
         DirectX::SimpleMath::Matrix m_view;
+        // 追従前のカメラの位置
         // 視点
         DirectX::SimpleMath::Vector3 m_eye;
-        // 速度
-        DirectX::SimpleMath::Vector3 m_velocity;
+        // 追従前のカメラの位置
+        DirectX::SimpleMath::Vector3 m_eyeStart;
+        // 追従後のカメラの位置
+        DirectX::SimpleMath::Vector3 m_eyeEnd;
         // 注視点
         DirectX::SimpleMath::Vector3 m_target;
+        // 追従前のターゲットの位置
+        DirectX::SimpleMath::Vector3 m_targetStart;
+        // 追従後のターゲットの位置
+        DirectX::SimpleMath::Vector3 m_targetEnd;
+        // 速度
+        DirectX::SimpleMath::Vector3 m_velocity;
         // 上方向ベクトル
         DirectX::SimpleMath::Vector3 m_up;
         // マウストラッカー

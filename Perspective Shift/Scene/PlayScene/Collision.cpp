@@ -382,5 +382,5 @@ void Yokoyama::Collision::CameraStageCollision()
     }
 
     //ˆÊ’u‚Ì”½‰f
-    m_pCamera->SetPosition(eye);
+    m_pCamera->SetEyePosition(eye);
 }

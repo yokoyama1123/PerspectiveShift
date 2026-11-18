@@ -128,7 +128,7 @@ private:
     static constexpr float FAR_CLIP = 1000.0f;
 
     // 音量(1~0)
-    static constexpr float SOUND_VOLUME = 0.2f;
+    static constexpr float SOUND_VOLUME = 0.0f;
 
     // imguiのフォントサイズ
     static constexpr float IMGUI_FONTSIZE = 20.0f;

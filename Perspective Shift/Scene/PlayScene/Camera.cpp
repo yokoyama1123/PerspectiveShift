@@ -157,10 +157,15 @@ Yokoyama::Camera::CameraMode Yokoyama::Camera::GetCameraMode() const
 /// 位置を設定
 /// </summary>
 /// <param name="position">設定したいカメラの位置</param>
-void Yokoyama::Camera::SetPosition(const DirectX::SimpleMath::Vector3& position)
+void Yokoyama::Camera::SetEyePosition(const DirectX::SimpleMath::Vector3& position)
 {
     if(m_cameraMode == Camera::CameraMode::FreeLook) m_target += position - m_eye;
     m_eye = position;
+}
+
+void Yokoyama::Camera::SetTargetPosition(const DirectX::SimpleMath::Vector3& position)
+{
+    m_target = position;
 }
 
 /// <summary>
@@ -188,6 +193,9 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         }
         else if (m_cameraMode == Camera::CameraMode::FreeLook)
         {
+            m_switchPercent = 0.0f;
+            m_eyeStart = m_eye;
+            m_targetStart = target;
             m_cameraMode = Camera::CameraMode::Switching;
         }
     }
@@ -239,7 +247,34 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         m_target = m_eye + lookDir;
         break;
     case Yokoyama::Camera::CameraMode::Switching:
-        m_cameraMode = Camera::CameraMode::Tracking;
+
+        if (m_switchPercent == 0.0f)
+        {
+            // カメラの位置を設定
+            eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
+            // プレイヤーから一定の距離離す
+            eye *= DEFAULT_CAMERA_DISTANCE;
+
+            m_eyeEnd = target + eye;
+            m_targetEnd = target;
+        }
+
+        if ((SWITCH_TIME > 0.0f) && (m_switchPercent < 1.0f))
+        {
+            // 割合を変えていく
+            m_switchPercent += 1.0f / SWITCH_TIME * elapsedTime;
+            if (m_switchPercent > 1.0f)
+            {
+                m_cameraMode = Camera::CameraMode::Tracking;
+                m_switchPercent = 1.0f;
+            }
+        }
+
+        // 視点の計算
+        SetEyePosition(SimpleMath::Vector3::Lerp(m_eyeStart, m_eyeEnd, m_switchPercent));
+        // 注視点の計算
+        SetTargetPosition(SimpleMath::Vector3::Lerp(m_targetStart, m_targetEnd, m_switchPercent));
+
         break;
     default:
         break;
