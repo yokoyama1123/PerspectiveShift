@@ -193,9 +193,10 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         }
         else if (m_cameraMode == Camera::CameraMode::FreeLook)
         {
-            m_switchPercent = 0.0f;
+            m_switchEyePercent = 0.0f;
+            m_switchTargetPercent = 0.0f;
             m_eyeStart = m_eye;
-            m_targetStart = target;
+            m_targetStart = m_target;
             m_cameraMode = Camera::CameraMode::Switching;
         }
     }
@@ -248,7 +249,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         break;
     case Yokoyama::Camera::CameraMode::Switching:
 
-        if (m_switchPercent == 0.0f)
+        if (m_switchTargetPercent == 0.0f)
         {
             // カメラの位置を設定
             eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
@@ -259,21 +260,31 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
             m_targetEnd = target;
         }
 
-        if ((SWITCH_TIME > 0.0f) && (m_switchPercent < 1.0f))
+        if ((SWITCH_TIME > 0.0f) && (m_switchTargetPercent < 1.0f))
         {
             // 割合を変えていく
-            m_switchPercent += 1.0f / SWITCH_TIME * elapsedTime;
-            if (m_switchPercent > 1.0f)
+            m_switchTargetPercent += 1.0f / (SWITCH_TIME / 2.0f) * elapsedTime;
+            if (m_switchTargetPercent > 1.0f)
+            {
+                m_switchTargetPercent = 1.0f;
+            }
+        }
+
+        if ((m_switchTargetPercent >= 1.0f)&&(m_switchEyePercent < 1.0f))
+        {
+            // 割合を変えていく
+            m_switchEyePercent += 1.0f / (SWITCH_TIME / 2.0f) * elapsedTime;
+            if (m_switchEyePercent > 1.0f)
             {
                 m_cameraMode = Camera::CameraMode::Tracking;
-                m_switchPercent = 1.0f;
+                m_switchEyePercent = 1.0f;
             }
         }
 
         // 視点の計算
-        SetEyePosition(SimpleMath::Vector3::Lerp(m_eyeStart, m_eyeEnd, m_switchPercent));
+        SetEyePosition(SimpleMath::Vector3::Lerp(m_eyeStart, m_eyeEnd, m_switchEyePercent));
         // 注視点の計算
-        SetTargetPosition(SimpleMath::Vector3::Lerp(m_targetStart, m_targetEnd, m_switchPercent));
+        SetTargetPosition(SimpleMath::Vector3::Lerp(m_targetStart, m_targetEnd, m_switchTargetPercent));
 
         break;
     default:

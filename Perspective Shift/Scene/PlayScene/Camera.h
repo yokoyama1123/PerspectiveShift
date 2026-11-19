@@ -89,8 +89,10 @@ namespace Yokoyama
         float m_yAngle;
         // 縦回転
         float m_xAngle;
-        // プレイヤー追従への変更割合
-        float m_switchPercent;
+        // プレイヤー追従への目の変更割合
+        float m_switchEyePercent;
+        // プレイヤー追従へのターゲットの変更割合
+        float m_switchTargetPercent;
         // 前回のコントロールキー状態
         bool m_prevControlPressed;
         // カメラのモード
