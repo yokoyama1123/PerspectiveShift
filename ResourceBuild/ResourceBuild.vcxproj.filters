@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Models\Player.obj">
+    <MeshContentTask Include="Models\OutsideWorld.obj">
       <Filter>Models</Filter>
     </MeshContentTask>
   </ItemGroup>
