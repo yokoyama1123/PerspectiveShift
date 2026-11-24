@@ -121,7 +121,7 @@ namespace Yokoyama
         //----------//
 
         //-----メンバー関数-----//
-        // 通常時の後進
+        // 通常時の更新
         void DefaultUpdate(GameContext& gameContext, DirectX::Mouse::State state, const DirectX::SimpleMath::Vector3& target, float elapsedTime);
         // デバッグモード更新
         void DebugUpdate(DirectX::Mouse::State state);

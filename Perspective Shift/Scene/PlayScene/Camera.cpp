@@ -6,6 +6,8 @@ using namespace DirectX;
 /// <summary>
 /// コンストラクタ
 /// </summary>
+/// <param name="windowWidth"></param>
+/// <param name="windowHeight"></param>
 Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     : m_x{0}
     , m_y{0}
@@ -30,6 +32,9 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
 /// <summary>
 /// 更新関数
 /// </summary>
+/// <param name="gameContext"></param>
+/// <param name="elapsedTime"></param>
+/// <param name="target">追従するターゲットの位置</param>
 void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const DirectX::SimpleMath::Vector3& target)
 {
     // マウスのステートを取得
@@ -41,15 +46,21 @@ void Yokoyama::Camera::Update(GameContext& gameContext, float elapsedTime, const
     // デバッグモードでないなら
     if (!gameContext.isDebugMode)
     {
+        //通常のカメラの更新
         DefaultUpdate(gameContext, state, target, elapsedTime);
     }
     // デバッグモード
     else
     {
+        //デバッグ時のカメラの更新
         DebugUpdate(state);
     }
 }
 
+/// <summary>
+/// 描画関数
+/// </summary>
+/// <param name="gameContext"></param>
 void Yokoyama::Camera::Render(GameContext& gameContext)
 {
     if (m_cameraMode == Camera::CameraMode::FreeLook)
@@ -154,7 +165,7 @@ Yokoyama::Camera::CameraMode Yokoyama::Camera::GetCameraMode() const
 }
 
 /// <summary>
-/// 位置を設定
+/// カメラの位置を設定
 /// </summary>
 /// <param name="position">設定したいカメラの位置</param>
 void Yokoyama::Camera::SetEyePosition(const DirectX::SimpleMath::Vector3& position)
@@ -163,6 +174,10 @@ void Yokoyama::Camera::SetEyePosition(const DirectX::SimpleMath::Vector3& positi
     m_eye = position;
 }
 
+/// <summary>
+/// ターゲットの位置を設定
+/// </summary>
+/// <param name="position">ターゲットの位置</param>
 void Yokoyama::Camera::SetTargetPosition(const DirectX::SimpleMath::Vector3& position)
 {
     m_target = position;
@@ -179,6 +194,13 @@ void Yokoyama::Camera::SetCameraMatrix()
     }
 }
 
+/// <summary>
+/// 通常時の更新
+/// </summary>
+/// <param name="gameContext"></param>
+/// <param name="state">マウスのステート</param>
+/// <param name="target">追従するターゲットの位置</param>
+/// <param name="elapsedTime"></param>
 void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State state, const SimpleMath::Vector3& target, float elapsedTime)
 {
     // 速度の初期化
@@ -193,6 +215,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         }
         else if (m_cameraMode == Camera::CameraMode::FreeLook)
         {
+            //移動前の位置とパーセントのリセット
             m_switchEyePercent = 0.0f;
             m_switchTargetPercent = 0.0f;
             m_eyeStart = m_eye;
@@ -249,6 +272,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
         break;
     case Yokoyama::Camera::CameraMode::Switching:
 
+        //最終的なカメラとターゲットの位置を設定
         if (m_switchTargetPercent == 0.0f)
         {
             // カメラの位置を設定
@@ -260,6 +284,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
             m_targetEnd = target;
         }
 
+        //ターゲットの位置を向く
         if ((SWITCH_TIME > 0.0f) && (m_switchTargetPercent < 1.0f))
         {
             // 割合を変えていく
@@ -270,6 +295,7 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
             }
         }
 
+        //カメラの位置を移動
         if ((m_switchTargetPercent >= 1.0f)&&(m_switchEyePercent < 1.0f))
         {
             // 割合を変えていく
@@ -292,6 +318,10 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
     }
 }
 
+/// <summary>
+/// デバッグ時の更新
+/// </summary>
+/// <param name="state">マウスのステート</param>
 void Yokoyama::Camera::DebugUpdate(Mouse::State state)
 {
     // 相対モードなら何もしない

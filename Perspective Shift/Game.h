@@ -124,8 +124,9 @@ private:
     std::unique_ptr<Yokoyama::SaveLoad> m_saveLoad;
 
 private:
+    //Ž‹ŠE‚Ì‹——£
     static constexpr float NEAR_CLIP = 0.1f;
-    static constexpr float FAR_CLIP = 1000.0f;
+    static constexpr float FAR_CLIP = 2000.0f;
 
     // ‰¹—Ê(1~0)
     static constexpr float SOUND_VOLUME = 0.0f;
