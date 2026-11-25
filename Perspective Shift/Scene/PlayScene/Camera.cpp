@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Camera.h"
+#include"Scene/TextureUtil.h"
 
 using namespace DirectX;
 
@@ -25,6 +26,7 @@ Yokoyama::Camera::Camera(int windowWidth, int windowHeight)
     , m_velocity{}
     , m_prevControlPressed{false}
 {
+
     // 画面サイズに対する相対的なスケールを記録
     SetWindowSize(windowWidth, windowHeight);
 }
@@ -65,6 +67,7 @@ void Yokoyama::Camera::Render(GameContext& gameContext)
 {
     if (m_cameraMode == Camera::CameraMode::FreeLook)
     {
+        CAMERAMODERECT = Yokoyama::Getrect(gameContext.cameramodeTexture.Get());
         //描画開始
         gameContext.spriteBatch.Begin(
             DirectX::DX11::SpriteSortMode::SpriteSortMode_Deferred,// 通常のソートモード
@@ -75,37 +78,10 @@ void Yokoyama::Camera::Render(GameContext& gameContext)
         // カメラモード時の描画
         gameContext.spriteBatch.Draw(
             gameContext.cameramodeTexture.Get(),
-            SimpleMath::Vector2{ Screen::LEFT, Screen::BOTTOM - CAMERAMODERECT.bottom * SCALE },
+            SimpleMath::Vector2{Yokoyama::Screen::LEFT, Yokoyama::Screen::TOP},
             &CAMERAMODERECT,
             Colors::White,
-            XMConvertToRadians(0.0f),
-            SimpleMath::Vector2{ 0.0f,0.0f },
-            SCALE
-        );
-        gameContext.spriteBatch.Draw(
-            gameContext.cameramodeTexture.Get(),
-            SimpleMath::Vector2{ Screen::LEFT + CAMERAMODERECT.right * SCALE, Screen::TOP },
-            &CAMERAMODERECT,
-            Colors::White,
-            XMConvertToRadians(90.0f),
-            SimpleMath::Vector2{ 0.0f,0.0f },
-            SCALE
-        );
-        gameContext.spriteBatch.Draw(
-            gameContext.cameramodeTexture.Get(),
-            SimpleMath::Vector2{ Screen::RIGHT, Screen::TOP + CAMERAMODERECT.bottom * SCALE },
-            &CAMERAMODERECT,
-            Colors::White,
-            XMConvertToRadians(180.0f),
-            SimpleMath::Vector2{ 0.0f,0.0f },
-            SCALE
-        );
-        gameContext.spriteBatch.Draw(
-            gameContext.cameramodeTexture.Get(),
-            SimpleMath::Vector2{ Screen::RIGHT - CAMERAMODERECT.right * SCALE, Screen::BOTTOM },
-            &CAMERAMODERECT,
-            Colors::White,
-            XMConvertToRadians(270.0f),
+            0.0f,
             SimpleMath::Vector2{ 0.0f,0.0f },
             SCALE
         );
@@ -188,10 +164,7 @@ void Yokoyama::Camera::SetTargetPosition(const DirectX::SimpleMath::Vector3& pos
 /// </summary>
 void Yokoyama::Camera::SetCameraMatrix()
 {
-    if (m_eye != m_target)
-    {
-        m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
-    }
+    if (m_eye != m_target) m_view = SimpleMath::Matrix::CreateLookAt(m_eye, m_target, m_up);
 }
 
 /// <summary>
@@ -220,6 +193,21 @@ void Yokoyama::Camera::DefaultUpdate(GameContext& gameContext, Mouse::State stat
             m_switchTargetPercent = 0.0f;
             m_eyeStart = m_eye;
             m_targetStart = m_target;
+
+            // 現在のカメラ位置から一番近いTrackingの角度を逆算する
+            SimpleMath::Vector3 offset = m_eye - target;
+            if (offset.LengthSquared() > 0.0001f)
+            {
+                offset.Normalize();
+
+                // X軸回転(上下)：角度制限の範囲に収める
+                constexpr float radLimit = XMConvertToRadians(LIMIT);
+                m_xAngle = std::clamp(asinf(offset.y), -radLimit, radLimit);
+
+                // Y軸回転(左右)
+                m_yAngle = atan2f(-offset.x, offset.z);
+            }
+
             m_cameraMode = Camera::CameraMode::Switching;
         }
     }
@@ -360,7 +348,6 @@ void Yokoyama::Camera::DebugUpdate(Mouse::State state)
     eye = SimpleMath::Vector3::Transform(eye, rt.Invert());
     eye *= DEBUG_CAMERA_DISTANCE;
     up = SimpleMath::Vector3::Transform(up, rt.Invert());
-
 
     // 目、ターゲットの位置、上方向ベクトルの更新
     m_eye = target + eye;

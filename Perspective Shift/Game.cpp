@@ -126,11 +126,11 @@ void Game::Initialize(HWND window, int width, int height)
     //フェードインアウトのテクスチャの読み込み
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/FadeInOut.dds", nullptr, m_fadeInOutTexture.ReleaseAndGetAddressOf()));
     //スタートを促すテキストのテクスチャの読み込み
-    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StartText2.dds", nullptr, m_startTextTexture.ReleaseAndGetAddressOf()));
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StartText.dds", nullptr, m_startTextTexture.ReleaseAndGetAddressOf()));
     //数字のテクスチャの読み込み
-    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/numbers.dds", nullptr, m_numbersTexture.ReleaseAndGetAddressOf()));
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/Numbers.dds", nullptr, m_numbersTexture.ReleaseAndGetAddressOf()));
     //カメラモード時のテクスチャの読み込み
-    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/cameramode.dds", nullptr, m_cameramodeTexture.ReleaseAndGetAddressOf()));
+    DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/Cameramode.dds", nullptr, m_cameramodeTexture.ReleaseAndGetAddressOf()));
     // ステージクリアのテクスチャの読み込み
     DX::ThrowIfFailed(CreateDDSTextureFromFile(device, L"Resources/Textures/StageClear.dds", nullptr, m_stageClearTexture.ReleaseAndGetAddressOf()));
     // リザルトシーンの背景テクスチャの読み込み

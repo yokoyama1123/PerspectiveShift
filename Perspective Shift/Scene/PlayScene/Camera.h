@@ -65,11 +65,9 @@ namespace Yokoyama
         // 相対モード用の感度(1ピクセルあたりの回転量(ラジアン))
         static constexpr float SENSITIVITY = 0.003f;
         //カメラモード時のテクスチャのスケール
-        static constexpr float SCALE = 10.0f;
+        static constexpr float SCALE = 0.29f;
         //プレイヤー追従に変化するまでの時間(秒)
         static constexpr float SWITCH_TIME = 0.5f;
-        // RECT
-        static constexpr RECT CAMERAMODERECT = { 0, 0, 16, 16 };
         //----------//
 
         //-----メンバー変数-----//
@@ -95,6 +93,8 @@ namespace Yokoyama
         float m_switchTargetPercent;
         // 前回のコントロールキー状態
         bool m_prevControlPressed;
+        // RECT
+        RECT CAMERAMODERECT;
         // カメラのモード
         Camera::CameraMode m_cameraMode;
         // 生成されたビュー行列
